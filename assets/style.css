@@ -1,0 +1,27 @@
+.card-header {
+    color: azure;
+    background-color: transparent;
+    }
+
+.ddk-container img {
+    border-style: none;
+    max-height: -webkit-fill-available;
+    padding: 0px;
+    margin: 0px;
+    }
+
+.ddk-container .layout-logo img {
+    padding: 0px;
+}
+
+.ddk-container h6 {
+    font-size: 12px
+}
+
+.ddk-container h1 {
+    font-size: 20px
+}
+
+.ddk-container h2 {
+    font-size: 17px
+}
