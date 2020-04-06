@@ -1,1 +1,1 @@
-web: gunicorn index:dash_app
+web: gunicorn app:dash_app

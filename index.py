@@ -1,10 +1,11 @@
+from app import dash_app, app
+from layouts import layout_main
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_design_kit as ddk
 
-from app import dash_app, app
-from layouts import layout_main
+
 import callbacks
 
 
@@ -14,7 +15,6 @@ dash_app.layout = html.Div([
                      children=[
                          ddk.Header(style={'height': '7vh', 'background-color': '#1f78b494', 'opacity': '1'},
                                     children=[
-                                        ddk.Logo(src='../assets/favicon.ico'),
                                         ddk.Block(style={'text-align': 'right'}, children=[])]),
 
                          ddk.Block(width=100,
