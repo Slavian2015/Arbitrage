@@ -13,20 +13,11 @@ dash_app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     ddk.App(style={'background-color': 'transparent'},
                      children=[
-                         ddk.Header(style={'height': '7vh'},
-                                    children=[
-                                        ddk.Block(style={'text-align': 'right'}, children=[])]),
-
                          ddk.Block(width=100,
-                                   style={'height': '90vh', 'width': '100%', 'text-align':'center', 'padding':'0'},
+                                   style={'height': '100vh', 'width': '100%', 'text-align':'center', 'padding':'0'},
                                    children=ddk.Block(width=100,
                                                       style={'margin': '0', 'width':'100%'},
                                                       children=html.Div(id='page-content')))
-
-
-
-
-
 
 ])])
 

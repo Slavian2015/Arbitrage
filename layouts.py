@@ -3,6 +3,8 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_design_kit as ddk
 import uuid
+import pandas as pd
+import dash_table
 import os
 from app import dash_app
 
@@ -51,6 +53,7 @@ from app import dash_app
 
 
 def serve_layout():
+    df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/solar.csv')
 
 
     param_head = ddk.Card(style={'width': '100%', 'line-height': '1', 'height': '70px', 'margin': '0', 'max-height': 'fit-content', 'background-color': '#fff'},
@@ -358,11 +361,39 @@ def serve_layout():
 
     # create tab to retrieve the value entered in the other tab
     third_tab = dcc.Tab(label="Retrieve the value",
-                         children=ddk.Card(children=[]))
+                         children=ddk.Card(children=dash_table.DataTable(
+    data=df.to_dict('records'),
+    columns=[{'id': c, 'name': c} for c in df.columns],
+    page_action='native',
+    filter_action='native',
+    filter_query='',
+    sort_action='native',
+    sort_mode='multi',
+    sort_by=[],
+    export_format='xlsx',
+    export_headers='display',
+    merge_duplicate_headers=True,
+    style_cell_conditional=[
+        {
+            'if': {'column_id': c},
+            'textAlign': 'left'
+        } for c in ['Date', 'Region']
+    ],
+    style_data_conditional=[
+        {
+            'if': {'row_index': 'odd'},
+            'backgroundColor': 'rgb(248, 248, 248)'
+        }
+    ],
+    style_header={
+        'backgroundColor': 'rgb(230, 230, 230)',
+        'fontWeight': 'bold'
+    }
+    )))
 
 
     # assemble tabs in dcc.Tabs object
-    tabs = dcc.Tabs(children=[first_tab, second_tab, third_tab])
+    tabs = dcc.Tabs(children=[third_tab, second_tab, first_tab])
     # create layout
     layout = html.Div(children=[tabs, store_session_id_div])
 
