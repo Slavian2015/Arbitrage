@@ -95,7 +95,7 @@ def serve_layout():
                                                                                                  'justify-content': 'center'})),
                                                       ddk.Block(width=45,
                                                                 children=[ddk.Block(width=33, style={'vertical-align': '-webkit-baseline-middle'}, children=[
-                                                                    ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                    ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown( style={'background-color': '#fff'},
                                                                         options=[
                                                                             {'label': 'BTC', 'value': 'BTC'},
                                                                             {'label': 'USD', 'value': 'USD'},
@@ -103,7 +103,7 @@ def serve_layout():
                                                                             {'label': 'ETH', 'value': 'ETH'}
                                                                         ],
                                                                         value='BTC')),
-                                                                    ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                    ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(style={'background-color': '#fff'},
                                                                         options=[
                                                                             {'label': 'BTC', 'value': 'BTC'},
                                                                             {'label': 'USD', 'value': 'USD'},
@@ -112,7 +112,7 @@ def serve_layout():
                                                                         ],
                                                                         value='USDt'))]),
                                                                           ddk.Block(width=33, style={'vertical-align': '-webkit-baseline-middle'},children=[
-                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(style={'background-color': '#fff'},
                                                                                   options=[
                                                                                       {'label': 'BTC', 'value': 'BTC'},
                                                                                       {'label': 'USD', 'value': 'USD'},
@@ -120,7 +120,7 @@ def serve_layout():
                                                                                       {'label': 'ETH','value': 'ETH'}
                                                                                   ],
                                                                                   value='BTC')),
-                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(style={'background-color': '#fff'},
                                                                                   options=[
                                                                                       {'label': 'BTC', 'value': 'BTC'},
                                                                                       {'label': 'USD', 'value': 'USD'},
@@ -129,7 +129,7 @@ def serve_layout():
                                                                                   ],
                                                                                   value='USDt'))]),
                                                                           ddk.Block(width=33, style={'vertical-align': '-webkit-baseline-middle'},children=[
-                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(style={'background-color': '#fff'},
                                                                                   options=[
                                                                                       {'label': 'BTC', 'value': 'BTC'},
                                                                                       {'label': 'USD', 'value': 'USD'},
@@ -137,7 +137,7 @@ def serve_layout():
                                                                                       {'label': 'ETH','value': 'ETH'}
                                                                                   ],
                                                                                   value='BTC')),
-                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(
+                                                                              ddk.Block(width=100, style={'width':'80%', 'margin': '2px'}, children=dcc.Dropdown(style={'background-color': '#fff'},
                                                                                   options=[
                                                                                       {'label': 'BTC', 'value': 'BTC'},
                                                                                       {'label': 'USD', 'value': 'USD'},
@@ -282,7 +282,7 @@ def serve_layout():
 
 
     # create tab to enter a value
-    first_tab = dcc.Tab(label="Enter a value",
+    first_tab = dcc.Tab(label="Ключи",
                         children=[ddk.Card(style={'width': '50%', 'margin':'5px','background-color': '#e4e7e7a6'},
                                            children=ddk.Block(width=100,
                                                               style={'justify-content': 'center'},
@@ -332,7 +332,7 @@ def serve_layout():
 
 
     # create tab to retrieve the value entered in the other tab
-    second_tab = dcc.Tab(label="Retrieve the value",
+    second_tab = dcc.Tab(label="Настройки",
                          children=ddk.Card(children=
                                         dbc.ListGroup([
                                             dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
@@ -360,7 +360,7 @@ def serve_layout():
 
 
     # create tab to retrieve the value entered in the other tab
-    third_tab = dcc.Tab(label="Retrieve the value",
+    third_tab = dcc.Tab(label="Статистика",
                          children=ddk.Card(children=dash_table.DataTable(
     data=df.to_dict('records'),
     columns=[{'id': c, 'name': c} for c in df.columns],
