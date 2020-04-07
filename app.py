@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 from dash_database import DashDatabase
 import flask
 
-external_stylesheets = [dbc.themes.SOLAR]
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = flask.Flask(__name__)
 dash_app = dash.Dash(__name__,url_base_pathname="/", server=app,external_stylesheets=external_stylesheets)
 
