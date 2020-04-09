@@ -56,38 +56,54 @@ def serve_layout():
     df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/solar.csv')
 
 
-    param_head = ddk.Card(style={'width': '100%', 'line-height': '1', 'height': '70px', 'margin': '0', 'max-height': 'fit-content', 'background-color': '#fff'},
+    param_head = ddk.Card(style={'width': '100%', 'line-height': '1',
+                                 'height': '70px', 'margin': '0', 'max-height': 'fit-content', 'background-color': '#fff'},
+                          shadow_weight='heavy',
                           children=ddk.Block(width=100,
                                              style={'justify-content': 'center'},
-                                             children=[ddk.Block(width=5, style={'vertical-align': '-webkit-baseline-middle'},children=html.H2('Active',
-                                                                                           style={'margin': '0',
+                                             children=[ddk.Block(width=5,
+                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+                                                                 children=html.H2('Active',
+                                                                                  style={'margin': '0',
                                                                                                'text-align': 'center',
                                                                                                'justify': 'center'})),
-                                                       ddk.Block(width=45, style={'vertical-align': '-webkit-baseline-middle'},children=[
-                                                           ddk.Block(width=33, children=html.H2('btc-Alpha',
+                                                       ddk.Block(width=45,
+                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+                                                                 children=[
+                                                           ddk.Block(width=33,
+                                                                     children=html.H2('',
                                                                                                 style={'margin': '0',
                                                                                                     'text-align': 'center',
                                                                                                     'justify': 'center'})),
-                                                           ddk.Block(width=33, children=html.H2('Livecoin',
+                                                           ddk.Block(width=33,
+                                                                     children=html.H2('',
                                                                                                 style={'margin': '0',
                                                                                                     'text-align': 'center',
                                                                                                     'justify': 'center'})),
-                                                           ddk.Block(width=33, children=html.H2('Hotbit',
+                                                           ddk.Block(width=33,
+                                                                     children=html.H2('',
                                                                                                 style={'margin': '0',
                                                                                                     'text-align': 'center',
                                                                                                     'justify': 'center'}))]),
-                                                       ddk.Block(width=45, style={'vertical-align': '-webkit-baseline-middle'},children=html.H2('PARAMETERS',
+                                                       ddk.Block(width=45,
+                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+                                                                 children=html.H2('PARAMETERS',
                                                                                             style={'margin': '0',
                                                                                                 'text-align': 'center',
                                                                                                 'justify': 'center'})),
-                                                       ddk.Block(width=5, style={'vertical-align': '-webkit-baseline-middle'},children=html.H2('Signal (on/off)',
+                                                       ddk.Block(width=5,
+                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+                                                                 children=html.H2('Signal (on/off)',
                                                                                            style={'margin': '0',
                                                                                                'text-align': 'center',
                                                                                                'justify': 'center'}))]))
 
-    param_val = ddk.Card(style={'width': '100%', 'margin': '0', 'margin-top': '10px','background-color': '#e4e7e7a6'},
+    param_val = ddk.Card(style={'width': '100%', 'margin': '0', 'margin-top': '10px',
+                                'background-color': '#e4e7e7a6'},
+                         card_hover=True,
                          children=ddk.Block(width=100,
-                                            style={'justify-content': 'center','vertical-align': '-webkit-baseline-middle',},
+                                            style={'justify-content': 'center',
+                                                   'vertical-align': '-webkit-baseline-middle',},
                                             children=[ddk.Block(width=5,
                                                                 style={'vertical-align': '-webkit-baseline-middle'},
                                                                 children=html.H2('Active', style={'margin': '0',
@@ -154,7 +170,7 @@ def serve_layout():
                                                                                                                 ddk.Block(
                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                     children=[
-                                                                                                                        html.P(
+                                                                                                                        html.H5(
                                                                                                                             '% profit',
                                                                                                                             style={
                                                                                                                                 'text-align': 'right',
@@ -174,7 +190,7 @@ def serve_layout():
                                                                                                                                     ddk.Block(
                                                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                                         children=[
-                                                                                                                                            html.P(
+                                                                                                                                            html.H5(
                                                                                                                                                 'V ордера',
                                                                                                                                                 style={
                                                                                                                                                     'text-align': 'right',
@@ -194,7 +210,7 @@ def serve_layout():
                                                                                                                                     ddk.Block(
                                                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                                         children=[
-                                                                                                                                            html.P(
+                                                                                                                                            html.H5(
                                                                                                                                                 '% ордера',
                                                                                                                                                 style={
                                                                                                                                                     'text-align': 'right',
@@ -225,14 +241,109 @@ def serve_layout():
 
                                                                                                         ])]),
                                                                           ddk.Block(width=100,
-                                                                                    style={'margin-top': '5px', 'margin-bottom': '5px', 'vertical-align': '-webkit-baseline-middle', 'border-top-style': 'groove', 'border-bottom-style': 'groove'},
-                                                                                    children=[ddk.Block(width=30,
+                                                                                    style={'margin-top': '5px',
+                                                                                           'margin-bottom': '5px',
+                                                                                           'vertical-align': '-webkit-baseline-middle',
+                                                                                           'border-top-style': 'groove',
+                                                                                           'border-bottom-style': 'groove'},
+                                                                                    children=[
+                                                                                        ddk.Block(width=100,
+                                                                                                  style={
+                                                                                                      'vertical-align': '-webkit-baseline-middle'},
+                                                                                                  children=[ddk.Block(
+                                                                                                      width=30,
+                                                                                                      children=[
+                                                                                                          ddk.Block(
+                                                                                                              width=50,
+                                                                                                              style={
+                                                                                                                  'vertical-align': '-webkit-baseline-middle'},
+                                                                                                              children=[
+                                                                                                                  html.H5(
+                                                                                                                      '% profit',
+                                                                                                                      style={
+                                                                                                                          'text-align': 'right',
+                                                                                                                          'justify-content': 'center'})]),
+                                                                                                          ddk.Block(
+                                                                                                              width=50,
+                                                                                                              style={
+                                                                                                                  'text-align': 'left',
+                                                                                                                  'vertical-align': '-webkit-baseline-middle'},
+                                                                                                              children=[
+                                                                                                                  dcc.Input(
+                                                                                                                      style={
+                                                                                                                          'border': 'double',
+                                                                                                                          'margin': '0',
+                                                                                                                          'text-align': 'left',
+                                                                                                                          'background-color': 'ivory',
+                                                                                                                          'width': '-webkit-fill-available',
+                                                                                                                          'max-width': '60px'})])]),
+                                                                                                            ddk.Block(
+                                                                                                                width=30,
+                                                                                                                children=[
+                                                                                                                    ddk.Block(
+                                                                                                                        width=50,
+                                                                                                                        style={
+                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                                                        children=[
+                                                                                                                            html.H5(
+                                                                                                                                'V ордера',
+                                                                                                                                style={
+                                                                                                                                    'text-align': 'right',
+                                                                                                                                    'justify-content': 'center'})]),
+                                                                                                                    ddk.Block(
+                                                                                                                        width=50,
+                                                                                                                        style={
+                                                                                                                            'text-align': 'left',
+                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                                                        children=[
+                                                                                                                            dcc.Input(
+                                                                                                                                style={
+                                                                                                                                    'border': 'double',
+                                                                                                                                    'margin': '0',
+                                                                                                                                    'text-align': 'left',
+                                                                                                                                    'background-color': 'ivory',
+                                                                                                                                    'width': '-webkit-fill-available',
+                                                                                                                                    'max-width': '60px'})])]),
+                                                                                                            ddk.Block(
+                                                                                                                width=30,
+                                                                                                                children=[
+                                                                                                                    ddk.Block(
+                                                                                                                        width=50,
+                                                                                                                        style={
+                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                                                        children=[
+                                                                                                                            html.H5(
+                                                                                                                                '% ордера',
+                                                                                                                                style={
+                                                                                                                                    'text-align': 'right',
+                                                                                                                                    'justify-content': 'center'})]),
+                                                                                                                    ddk.Block(
+                                                                                                                        width=50,
+                                                                                                                        style={
+                                                                                                                            'text-align': 'left',
+                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                                                        children=[
+                                                                                                                            dcc.Input(
+                                                                                                                                style={
+                                                                                                                                    'border': 'double',
+                                                                                                                                    'text-align': 'left',
+                                                                                                                                    'margin': '0',
+                                                                                                                                    'background-color': 'ivory',
+                                                                                                                                    'width': '-webkit-fill-available',
+                                                                                                                                    'max-width': '60px'})])]),
+                                                                                                            ddk.Block(
+                                                                                                                width=10,
+                                                                                                                children=[])]),
+                                                                                        ddk.Block(width=100,
+                                                                                                  style={
+                                                                                                      'vertical-align': '-webkit-baseline-middle'},
+                                                                                                  children=[ddk.Block(width=30,
                                                                                                         style={'margin-top': '5px', 'margin-bottom': '5px'},
                                                                                                         children=[
                                                                                                                 ddk.Block(
                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                     children=[
-                                                                                                                        html.P(
+                                                                                                                        html.H5(
                                                                                                                             'секунд',
                                                                                                                             style={
                                                                                                                                 'text-align': 'right',
@@ -253,7 +364,7 @@ def serve_layout():
                                                                                                         ddk.Block(
                                                                                                             width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                             children=[
-                                                                                                                html.P(
+                                                                                                                html.H5(
                                                                                                                     '1я Ставка (%)',
                                                                                                                     style={
                                                                                                                         'text-align': 'right',
@@ -274,7 +385,7 @@ def serve_layout():
                                                                                                         ddk.Block(
                                                                                                             width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                             children=[
-                                                                                                                html.P(
+                                                                                                                html.H5(
                                                                                                                     '2я Ставка (%)',
                                                                                                                     style={
                                                                                                                         'text-align': 'right',
@@ -304,7 +415,8 @@ def serve_layout():
                                                                                                            id="checklist-inline-input",
                                                                                                            inline=True)
 
-                                                                                                        ])]),
+                                                                                                        ])])
+                                                                                    ]),
                                                                           ddk.Block(width=100,
                                                                                     style={'vertical-align': '-webkit-baseline-middle'},
                                                                                     children=[ddk.Block(width=30,
@@ -312,7 +424,7 @@ def serve_layout():
                                                                                                                 ddk.Block(
                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                     children=[
-                                                                                                                        html.P(
+                                                                                                                        html.H5(
                                                                                                                             '% profit',
                                                                                                                             style={
                                                                                                                                 'text-align': 'right',
@@ -332,7 +444,7 @@ def serve_layout():
                                                                                                                                     ddk.Block(
                                                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                                         children=[
-                                                                                                                                            html.P(
+                                                                                                                                            html.H5(
                                                                                                                                                 'V ордера',
                                                                                                                                                 style={
                                                                                                                                                     'text-align': 'right',
@@ -352,7 +464,7 @@ def serve_layout():
                                                                                                                                     ddk.Block(
                                                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
                                                                                                                                         children=[
-                                                                                                                                            html.P(
+                                                                                                                                            html.H5(
                                                                                                                                                 '% ордера',
                                                                                                                                                 style={
                                                                                                                                                     'text-align': 'right',
@@ -389,20 +501,6 @@ def serve_layout():
 
 
                                                                 )]))
-
-
-
-
-
-
-
-    """Creates the layout for each user of the app.
-    This function is executed each time a session is created for the app.
-    It creates a new session id (a uuid.uuid1 as string) each time.
-
-    This session id will be used in combination with a DashDatabase instance to manage user values.
-    It will be fetched via the property data of a dcc.Store component.
-    """
 
     # create a session id
     session_id = str(uuid.uuid1())
@@ -1003,7 +1101,8 @@ def serve_layout():
     second_tab = dcc.Tab(label="Настройки",
                          style={'background-color': '#ebeded'},
                         selected_style={'border': '2px solid #1f78b4'},
-                         children=ddk.Card(children=
+                         children=ddk.Card(shadow_weight='heavy',
+                                           children=
                                         dbc.ListGroup([
                                             dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
                'height': '70px', 'justify-content': 'center',

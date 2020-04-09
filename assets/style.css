@@ -38,6 +38,13 @@ p {
     padding: 0px;
 }
 
+.ddk-container H5 {
+    font-size: 15px;
+    margin: 0px;
+    padding: 0px;
+}
+
+
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
