@@ -8,6 +8,8 @@ import dash_table
 import os
 from app import dash_app
 
+from VILKA import final
+
 ###########  Main Page   ################
 
 # def serve_layout():
@@ -1135,8 +1137,8 @@ def serve_layout():
                          children=[
                              ddk.Block(width=100, children=[alfa_card, live_card, hotbit_card]),
                              ddk.Card(children=dash_table.DataTable(
-                                                            data=df.to_dict('records'),
-                                                            columns=[{'id': c, 'name': c} for c in df.columns],
+                                                            data=final.to_dict('records'),
+                                                            columns=[{'id': c, 'name': c} for c in final.columns],
                                                             page_action='native',
                                                             filter_action='native',
                                                             filter_query='',
@@ -1149,8 +1151,9 @@ def serve_layout():
                                                             style_cell_conditional=[
                                                                 {
                                                                     'if': {'column_id': c},
-                                                                    'textAlign': 'left'
-                                                                } for c in ['Date', 'Region']
+                                                                    'pd.options.display.float_format':"'${:.2f}'.format",
+                                                                    'textAlign': 'center'
+                                                                } for c in ['PROFIT', 'PERCENT']
                                                             ],
                                                             style_data_conditional=[
                                                                 {
