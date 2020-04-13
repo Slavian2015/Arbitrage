@@ -97,9 +97,3 @@ if __name__ == "__main__":
     print(loadRSS())
     print('ALPHA start TIME : ',(time.process_time() - start))
 
-    # alfa = {
-    #     "USDBTC": {
-    #         "asks": [["7400"], ["7395"], ["7390"]],
-    #         "bids": [["7401"], ["7405"], ["7410"]],
-    #     }
-    # }
