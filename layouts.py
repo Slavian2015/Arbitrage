@@ -511,6 +511,8 @@ def serve_layout():
                                      storage_type='session',  # IMPORTANT! see docstring of dcc.Store
                                      data=session_id)
 
+    interval = dcc.Interval(id='interval', interval=10000, n_intervals=0)
+
 
 
     alfa_card = ddk.Card(width=30,
@@ -1136,7 +1138,8 @@ def serve_layout():
                         style={'background-color': '#ebeded'},
                          children=[
                              ddk.Block(width=100, children=[alfa_card, live_card, hotbit_card]),
-                             ddk.Card(children=dash_table.DataTable(
+                             ddk.Card(children=[dash_table.DataTable(
+                                                            id="table",
                                                             data=final.to_dict('records'),
                                                             columns=[{'id': c, 'name': c} for c in final.columns],
                                                             page_action='native',
@@ -1165,14 +1168,15 @@ def serve_layout():
                                                                 'backgroundColor': 'rgb(230, 230, 230)',
                                                                 'fontWeight': 'bold'
                                                             }
-                                                            ))]
+                                                            ),
+                             ])]
                         )
 
 
     # assemble tabs in dcc.Tabs object
     tabs = dcc.Tabs(children=[third_tab, second_tab, first_tab])
     # create layout
-    layout = html.Div(children=[tabs, store_session_id_div])
+    layout = html.Div(children=[tabs, store_session_id_div, interval])
 
     return layout
 layout_main = serve_layout()

@@ -1,5 +1,6 @@
 from dash.dependencies import Input, Output, State
 from app import dash_app, dash_db
+import VILKA
 from dash.exceptions import PreventUpdate
 from dash_database import DashDatabase
 import dash
@@ -46,6 +47,17 @@ def create_callback_retrieve_value(app: dash.Dash,
         # return success message
         return f"Your value is {value}"
 
+def refresh(app: dash.Dash):
+
+    ###############################    RESTART ALL FUNCTIONS     ########################################
+    @app.callback(Output('table', 'data'), [Input('interval', 'n_intervals')])
+    def trigger_by_modify(n):
+
+        df10 = VILKA.restart()
+        df10['id'] = df10.index
+        return df10.to_dict('records')
 
 create_callback_save_value(dash_app, dash_db)
 create_callback_retrieve_value(dash_app, dash_db)
+refresh(dash_app)
+
