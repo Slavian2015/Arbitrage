@@ -64,9 +64,9 @@ def restart():
 
             r = ("{0:,.10f}".format(float((item[k]['buy'][0]))))
             r2 = r.replace(',','')
-            # rr = compp['main'][value]
+            rr = compp['main'][value]
 
-            r3 = (float(r2) * float(np.asarray(compp['main'][value])))
+            r3 = (float(r2) * float(rr))
             rates.append(r3)
 
 
