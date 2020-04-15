@@ -70,7 +70,7 @@ def restart():
             rr = np.asarray(com['main'][value])
 
             # print('TYPE :', type(rr))
-            r3 = (float(r2) * float(rr))
+            r3 = (float(r2) / float(rr))
             rates.append(r3)
 
             birga.append(value)
@@ -80,7 +80,7 @@ def restart():
             t = ("{0:,.10f}".format(float((item[k]['sell'][0]))))
             t2 = t.replace(',', '')
 
-            t3 = float(t2) / float(com['main'][value])
+            t3 = float(t2) * float(com['main'][value])
             rates.append(t3)
             # if value == "live" or value == "hot":
             #     list = k.split('/')

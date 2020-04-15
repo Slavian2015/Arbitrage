@@ -7,8 +7,14 @@ import pandas as pd
 import dash_table
 import os
 from app import dash_app
+import os
+from VILKA import final
+import json
 
-from VILKA import final, compp
+
+main_path_data = os.path.abspath("./data")
+f = open(main_path_data + "\\commis.json")
+com = json.load(f)
 
 ###########  Main Page   ################
 
@@ -1119,7 +1125,7 @@ def serve_layout():
                                                                                                                id='Alpha_btn')),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-alpha',
-                                                                                                                             children=float(compp['main']['alfa'])))
+                                                                                                                             children=float(com['main']['alfa'])))
                                                                                          ]),
                                                                                    ddk.Block(width=100,
                                                                                              children=[
@@ -1141,7 +1147,7 @@ def serve_layout():
                                                                                                            ),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-live',
-                                                                                                                             children=float(compp['main']['live'])))
+                                                                                                                             children=float(com['main']['live'])))
                                                                                          ]),
                                                                                    ddk.Block(width=100,
                                                                                              children=[
@@ -1164,7 +1170,7 @@ def serve_layout():
                                                                                                                id='Hot_btn')),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-hot',
-                                                                                                                             children=float(compp['main']['hot'])))
+                                                                                                                             children=float(com['main']['hot'])))
                                                                                          ]),
 
 
