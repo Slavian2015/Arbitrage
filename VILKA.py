@@ -26,9 +26,9 @@ if os.path.isfile(main_path_data + "\\commis.json"):
     pass
 else:
     dictionary= {"main": {
-        "hot": 1.0006,
-        "alfa": 1.002,
-        "live": 1.0018
+        "hot": float(1.0006),
+        "alfa": float(1.002),
+        "live": float(1.0018)
                         }}
 
     compp = json.dumps(dictionary, indent=4)
@@ -64,9 +64,9 @@ def restart():
 
             r = ("{0:,.10f}".format(float((item[k]['buy'][0]))))
             r2 = r.replace(',','')
-            rr = np.asarray(compp['main'][value])
+            # rr = compp['main'][value]
 
-            r3 = (float(r2) * float(rr))
+            r3 = (float(r2) * float(np.asarray(compp['main'][value])))
             rates.append(r3)
 
 
