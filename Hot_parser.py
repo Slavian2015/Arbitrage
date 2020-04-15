@@ -288,6 +288,8 @@ def loadRSS():
 
 
     scrape_page()
+
+    # print(hot)
     return hot
 
 
