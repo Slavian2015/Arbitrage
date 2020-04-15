@@ -75,7 +75,7 @@ def commis(app: dash.Dash):
         compp = json.load(f)
         f.close()
 
-        compp['main']["alfa"] = value
+        compp['main']["alfa"] = float(value)
 
         f = open(main_path_data + "\\commis.json", "w")
         json.dump(compp, f)
@@ -96,7 +96,7 @@ def commis(app: dash.Dash):
         compp = json.load(f)
         f.close()
 
-        compp['main']["live"] = value
+        compp['main']["live"] = float(value)
 
         f = open(main_path_data + "\\commis.json", "w")
         json.dump(compp, f)
@@ -118,7 +118,7 @@ def commis(app: dash.Dash):
         compp = json.load(f)
         f.close()
 
-        compp['main']["hot"] = value
+        compp['main']["hot"] = float(value)
 
         f = open(main_path_data + "\\commis.json", "w")
         json.dump(compp, f)
