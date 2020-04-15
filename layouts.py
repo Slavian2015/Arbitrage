@@ -1119,7 +1119,7 @@ def serve_layout():
                                                                                                                id='Alpha_btn')),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-alpha',
-                                                                                                                             children=compp['main']['alfa']))
+                                                                                                                             children=float(compp['main']['alfa'])))
                                                                                          ]),
                                                                                    ddk.Block(width=100,
                                                                                              children=[
@@ -1141,7 +1141,7 @@ def serve_layout():
                                                                                                            ),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-live',
-                                                                                                                             children=compp['main']['live']))
+                                                                                                                             children=float(compp['main']['live'])))
                                                                                          ]),
                                                                                    ddk.Block(width=100,
                                                                                              children=[
@@ -1164,7 +1164,7 @@ def serve_layout():
                                                                                                                id='Hot_btn')),
                                                                                                  ddk.Block(width=50,
                                                                                                            children=html.Div(id='output-hot',
-                                                                                                                             children=compp['main']['hot']))
+                                                                                                                             children=float(compp['main']['hot'])))
                                                                                          ]),
 
 
