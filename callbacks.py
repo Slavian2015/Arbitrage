@@ -67,6 +67,9 @@ def commis(app: dash.Dash):
         [dash.dependencies.Input('Alpha_btn', 'n_clicks')],
         [dash.dependencies.State('Alpha_com', 'value')])
     def update_Alpha(n_clicks, value):
+        if n_clicks is None:
+            raise PreventUpdate
+
         main_path_data = os.path.abspath("./data")
         f = open(main_path_data + "\\commis.json")
         compp = json.load(f)
@@ -86,6 +89,8 @@ def commis(app: dash.Dash):
         [dash.dependencies.Input('Live_btn', 'n_clicks')],
         [dash.dependencies.State('Live_com', 'value')])
     def update_Alpha(n_clicks, value):
+        if n_clicks is None:
+            raise PreventUpdate
         main_path_data = os.path.abspath("./data")
         f = open(main_path_data + "\\commis.json")
         compp = json.load(f)
@@ -99,12 +104,15 @@ def commis(app: dash.Dash):
 
         return "{}".format(value)
 
+
     ###############################    ADD Commis     ########################################
     @app.callback(
         dash.dependencies.Output('output-hot', 'children'),
         [dash.dependencies.Input('Hot_btn', 'n_clicks')],
         [dash.dependencies.State('Hot_com', 'value')])
     def update_Alpha(n_clicks, value):
+        if n_clicks is None:
+            raise PreventUpdate
         main_path_data = os.path.abspath("./data")
         f = open(main_path_data + "\\commis.json")
         compp = json.load(f)
@@ -117,6 +125,7 @@ def commis(app: dash.Dash):
         f.close()
 
         return "{}".format(value)
+
 
 create_callback_save_value(dash_app, dash_db)
 create_callback_retrieve_value(dash_app, dash_db)
