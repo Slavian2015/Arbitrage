@@ -8,7 +8,7 @@ import dash_table
 import os
 from app import dash_app
 
-from VILKA import final
+from VILKA import final, compp
 
 ###########  Main Page   ################
 
@@ -1093,7 +1093,84 @@ def serve_layout():
                                                                                                                children=dcc.Input(placeholder="Chat id",style={'border':'double', 'margin':'0', 'background-color': 'ivory', 'width': '-webkit-fill-available'})),
                                                                                                      ddk.Block(width=100,
                                                                                                                children=dcc.Input(placeholder="Token",style={'border':'double', 'margin':'0', 'background-color': 'ivory', 'width': '-webkit-fill-available'}))]),
-                                                                       ]))
+                                                                       ])),
+                                  ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
+                                           card_hover=True, children=ddk.Block(width=100,
+                                                                               style={'justify-content': 'center'},
+                                                                               children=[
+                                                                                   ddk.Block(width=100,
+                                                                                             children=[
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=html.H2(
+                                                                                                               'Alpha Комиссия')),
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=[
+                                                                                                            dcc.Input(
+                                                                                                                id='Alpha_com',
+                                                                                                 placeholder="1,002 = 0.2%",
+                                                                                                 style={
+                                                                                                     'border': 'double',
+                                                                                                     'margin': '0',
+                                                                                                     'background-color': 'ivory',
+                                                                                                     'width': '-webkit-fill-available'})]),
+                                                                                                 ddk.Block(width=10,
+                                                                                                           children=html.Button(
+                                                                                                               'Submit',
+                                                                                                               id='Alpha_btn')),
+                                                                                                 ddk.Block(width=50,
+                                                                                                           children=html.Div(id='output-alpha',
+                                                                                                                             children=compp['main']['alfa']))
+                                                                                         ]),
+                                                                                   ddk.Block(width=100,
+                                                                                             children=[
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=html.H2(
+                                                                                                               'LiveCoin Комиссия')),
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=[
+                                                                                                            dcc.Input(
+                                                                                                                id='Live_com',
+                                                                                                 placeholder=" 1,002 = 0.2% ",
+                                                                                                 style={
+                                                                                                     'border': 'double',
+                                                                                                     'margin': '0',
+                                                                                                     'background-color': 'ivory',
+                                                                                                     'width': '-webkit-fill-available'})]),
+                                                                                                 ddk.Block(width=10,
+                                                                                                           children=html.Button('Submit', id='LiveCoin_btn'),
+                                                                                                           ),
+                                                                                                 ddk.Block(width=50,
+                                                                                                           children=html.Div(id='output-live',
+                                                                                                                             children=compp['main']['live']))
+                                                                                         ]),
+                                                                                   ddk.Block(width=100,
+                                                                                             children=[
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=html.H2(
+                                                                                                               'HOTBIT Комиссия')),
+                                                                                                 ddk.Block(width=20,
+                                                                                                           children=[
+                                                                                                            dcc.Input(
+                                                                                                                id='Hot_com',
+                                                                                                 placeholder="1,002 = 0.2%",
+                                                                                                 style={
+                                                                                                     'border': 'double',
+                                                                                                     'margin': '0',
+                                                                                                     'background-color': 'ivory',
+                                                                                                     'width': '-webkit-fill-available'})]),
+                                                                                                 ddk.Block(width=10,
+                                                                                                           children=html.Button(
+                                                                                                               'Submit',
+                                                                                                               id='Hot_btn')),
+                                                                                                 ddk.Block(width=50,
+                                                                                                           children=html.Div(id='output-hot',
+                                                                                                                             children=compp['main']['hot']))
+                                                                                         ]),
+
+
+
+
+                                                                               ]))
 
 
 

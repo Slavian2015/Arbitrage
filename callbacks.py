@@ -4,6 +4,8 @@ import VILKA
 from dash.exceptions import PreventUpdate
 from dash_database import DashDatabase
 import dash
+import os
+import json
 
 dash_app.config['suppress_callback_exceptions'] = True
 
@@ -52,12 +54,72 @@ def refresh(app: dash.Dash):
     ###############################    RESTART ALL FUNCTIONS     ########################################
     @app.callback(Output('table', 'data'), [Input('interval', 'n_intervals')])
     def trigger_by_modify(n):
-
+        print ("###############  UPDATE   #########################")
         df10 = VILKA.restart()
         df10['id'] = df10.index
         return df10.to_dict('records')
 
+
+def commis(app: dash.Dash):
+    ###############################    ADD Commis     ########################################
+    @app.callback(
+        dash.dependencies.Output('output-alpha', 'children'),
+        [dash.dependencies.Input('Alpha_btn', 'n_clicks')],
+        [dash.dependencies.State('Alpha_com', 'value')])
+    def update_Alpha(n_clicks, value):
+        main_path_data = os.path.abspath("./data")
+        f = open(main_path_data + "\\commis.json")
+        compp = json.load(f)
+        f.close()
+
+        compp['main']["alfa"] = value
+
+        f = open(main_path_data + "\\commis.json", "w")
+        json.dump(compp, f)
+        f.close()
+
+        return "{}".format(value)
+
+    ###############################    ADD Commis     ########################################
+    @app.callback(
+        dash.dependencies.Output('output-live', 'children'),
+        [dash.dependencies.Input('Live_btn', 'n_clicks')],
+        [dash.dependencies.State('Live_com', 'value')])
+    def update_Alpha(n_clicks, value):
+        main_path_data = os.path.abspath("./data")
+        f = open(main_path_data + "\\commis.json")
+        compp = json.load(f)
+        f.close()
+
+        compp['main']["live"] = value
+
+        f = open(main_path_data + "\\commis.json", "w")
+        json.dump(compp, f)
+        f.close()
+
+        return "{}".format(value)
+
+    ###############################    ADD Commis     ########################################
+    @app.callback(
+        dash.dependencies.Output('output-hot', 'children'),
+        [dash.dependencies.Input('Hot_btn', 'n_clicks')],
+        [dash.dependencies.State('Hot_com', 'value')])
+    def update_Alpha(n_clicks, value):
+        main_path_data = os.path.abspath("./data")
+        f = open(main_path_data + "\\commis.json")
+        compp = json.load(f)
+        f.close()
+
+        compp['main']["hot"] = value
+
+        f = open(main_path_data + "\\commis.json", "w")
+        json.dump(compp, f)
+        f.close()
+
+        return "{}".format(value)
+
 create_callback_save_value(dash_app, dash_db)
 create_callback_retrieve_value(dash_app, dash_db)
 refresh(dash_app)
+commis(dash_app)
 

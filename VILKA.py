@@ -4,6 +4,8 @@ import numpy as np
 import Hot_parser
 import Live_parser
 import A_parser
+import os
+import datetime as dt
 
 # ##################################   SHOW ALL ROWS & COLS   ####################################
 # pd.set_option('display.max_columns', None)
@@ -16,12 +18,26 @@ import A_parser
 # live = {'BTC/USD': {'sell': ['7115.99365', '0.0126934'], 'buy': ['7079.001', '0.0035635']}, 'LTC/USD': {'sell': ['42.47', '0.1'], 'buy': ['42.24', '1.84']}, 'ETH/USD': {'sell': ['164.14', '0.23099188'], 'buy': ['162.48974', '0.6528']}, 'XRP/USD': {'sell': ['0.19385', '7.66806089'], 'buy': ['0.18956', '364.64975524']}, 'USDT/USD': {'sell': ['1.04398', '21.11918813'], 'buy': ['1.02501', '36']}, 'BTC/USDT': {'sell': ['6.95E+3', '0.03181925'], 'buy': ['6859.04578501', '0.01']}, 'ETH/USDT': {'sell': ['170.99999999', '0.02112591'], 'buy': ['149.1', '0.00466711']}, 'XRP/BTC': {'sell': ['0.00002715', '67.77328'], 'buy': ['0.00002699', '10.8185632']}, 'ETH/BTC': {'sell': ['0.02320816', '0.01679207'], 'buy': ['0.023064', '5.97']}, 'LTC/BTC': {'sell': ['0.006035', '0.0174'], 'buy': ['0.00597483', '10.1366']}, 'BCH/BTC': {'sell': ['0.03299954', '0.03407698'], 'buy': ['0.03220001', '0.07028846']}, 'ZEC/BTC': {'sell': ['0.00521679', '0.17689186'], 'buy': ['0.00520734', '0.01450943']}}
 # hot = {'BTC/USD': {'sell': [7009.46, 0.002446], 'buy': [6538.48, 0.003686]}, 'USDT/USD': {'sell': [1.0126, 0.01], 'buy': [1.0123, 569.79]}, 'ETH/USD': {'sell': [160.67, 0.000261], 'buy': [154.4, 0.001049]}, 'ETH/BTC': {'sell': [0.02321272, 2.5], 'buy': [0.02318881, 2.5]}, 'LTC/BTC': {'sell': [0.005996, 7.1374], 'buy': [0.005992, 11.2239]}, 'BTC/USDT': {'sell': [6930.99, 0.14], 'buy': [6930.73, 0.14]}, 'ETH/USDT': {'sell': [160.91, 2.8], 'buy': [160.89, 2e-05]}, 'XRP/BTC': {'sell': [2.729e-05, 923.1], 'buy': [2.704e-05, 2.1]}, 'BCH/BTC': {'sell': [0.032866, 0.3191], 'buy': [0.03222, 0.2939]}}
 
+main_path_data = os.path.abspath("./data")
 
-f = open('commis.json')
-compp = json.load(f)
+if os.path.isfile(main_path_data + "\\commis.json"):
+    f = open(main_path_data + "\\commis.json")
+    compp = json.load(f)
+    pass
+else:
+    dictionary= {"main": {
+        "hot": 1.0006,
+        "alfa": 1.002,
+        "live": 1.0018
+                        }}
 
+    compp = json.dumps(dictionary, indent=4)
 
+    # Writing to sample.json
+    with open(main_path_data + "\\commis.json", "w") as outfile:
+        outfile.write(compp)
 
+        pass
 
 
 def restart():
@@ -115,6 +131,8 @@ def restart():
 
 
     final = result.append([usdt, usd])
+    now = dt.datetime.now()
+    final.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
     print("Restart :", '\n' )
     # print(final)
     return final
