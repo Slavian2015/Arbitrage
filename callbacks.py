@@ -6,6 +6,11 @@ from dash_database import DashDatabase
 import dash
 import os
 import json
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_bootstrap_components as dbc
+import dash_design_kit as ddk
+import layouts
 
 dash_app.config['suppress_callback_exceptions'] = True
 
@@ -126,9 +131,42 @@ def commis(app: dash.Dash):
 
         return "{}".format(value)
 
+def creat_reg(app: dash.Dash):
+
+    @app.callback(
+        dash.dependencies.Output('listcardreg', 'children'),
+        [dash.dependencies.Input('New_Regim_btn', 'n_clicks')])
+
+    def create(n_clicks):
+        if n_clicks is None:
+            raise PreventUpdate
+
+        main_path_data = os.path.abspath("./data")
+        with open(main_path_data + "\\regim.json", "r") as file:
+            param = []
+            data = json.load(file)
+            file.close()
+            for k, v in data.items():
+                param.append(k)
+            next_id = str(int(param[-1]) + 1)
+            data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                             "profit": "",
+                             "order": "", "per": ""}
+            f = open(main_path_data + "\\regim.json", "w")
+            json.dump(data, f)
+            # print("BEFORE2 :", data)
+            f.close()
+
+        list_group = [i for i in layouts.group_of_regims()]
+
+        return list_group
+
+
+
+
 
 create_callback_save_value(dash_app, dash_db)
 create_callback_retrieve_value(dash_app, dash_db)
 refresh(dash_app)
 commis(dash_app)
-
+creat_reg(dash_app)

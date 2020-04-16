@@ -12,6 +12,7 @@ from VILKA import final
 import json
 
 
+
 main_path_data = os.path.abspath("./data")
 f = open(main_path_data + "\\commis.json")
 com = json.load(f)
@@ -58,14 +59,15 @@ com = json.load(f)
 
 ########  MAIN PAGE MY  ##############
 
-
-
-def serve_layout():
-    df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/solar.csv')
-
+def group_of_regims():
+    # main_path_data = os.path.abspath("./data")
+    d = open(main_path_data + "\\regim.json")
+    com2 = json.load(d)
+    group_of_regims = []
 
     param_head = ddk.Card(style={'width': '100%', 'line-height': '1',
-                                 'height': '70px', 'margin': '0', 'max-height': 'fit-content', 'background-color': '#fff'},
+                                 'height': '70px', 'margin': '0', 'max-height': 'fit-content',
+                                 'background-color': '#fff'},
                           shadow_weight='heavy',
                           children=ddk.Block(width=100,
                                              style={'justify-content': 'center'},
@@ -73,442 +75,1029 @@ def serve_layout():
                                                                  style={'vertical-align': '-webkit-baseline-middle'},
                                                                  children=html.H2('Active',
                                                                                   style={'margin': '0',
-                                                                                               'text-align': 'center',
-                                                                                               'justify': 'center'})),
+                                                                                         'text-align': 'center',
+                                                                                         'justify': 'center'})),
                                                        ddk.Block(width=45,
                                                                  style={'vertical-align': '-webkit-baseline-middle'},
                                                                  children=[
-                                                           ddk.Block(width=33,
-                                                                     children=html.H2('',
+                                                                     ddk.Block(width=33,
+                                                                               children=html.H2('',
                                                                                                 style={'margin': '0',
-                                                                                                    'text-align': 'center',
-                                                                                                    'justify': 'center'})),
-                                                           ddk.Block(width=33,
-                                                                     children=html.H2('',
+                                                                                                       'text-align': 'center',
+                                                                                                       'justify': 'center'})),
+                                                                     ddk.Block(width=33,
+                                                                               children=html.H2('',
                                                                                                 style={'margin': '0',
-                                                                                                    'text-align': 'center',
-                                                                                                    'justify': 'center'})),
-                                                           ddk.Block(width=33,
-                                                                     children=html.H2('',
+                                                                                                       'text-align': 'center',
+                                                                                                       'justify': 'center'})),
+                                                                     ddk.Block(width=33,
+                                                                               children=html.H2('',
                                                                                                 style={'margin': '0',
-                                                                                                    'text-align': 'center',
-                                                                                                    'justify': 'center'}))]),
+                                                                                                       'text-align': 'center',
+                                                                                                       'justify': 'center'}))]),
                                                        ddk.Block(width=45,
                                                                  style={'vertical-align': '-webkit-baseline-middle'},
                                                                  children=html.H2('PARAMETERS',
-                                                                                            style={'margin': '0',
-                                                                                                'text-align': 'center',
-                                                                                                'justify': 'center'})),
+                                                                                  style={'margin': '0',
+                                                                                         'text-align': 'center',
+                                                                                         'justify': 'center'})),
                                                        ddk.Block(width=5,
                                                                  style={'vertical-align': '-webkit-baseline-middle'},
                                                                  children=html.H2('Signal (on/off)',
-                                                                                           style={'margin': '0',
-                                                                                               'text-align': 'center',
-                                                                                               'justify': 'center'}))]))
+                                                                                  style={'margin': '0',
+                                                                                         'text-align': 'center',
+                                                                                         'justify': 'center'}))]))
 
-    param_val = ddk.Card(style={'width': '100%', 'margin': '0', 'margin-top': '10px',
-                                'background-color': '#e4e7e7a6'},
-                         card_hover=True,
-                         children=ddk.Block(width=100,
-                                            style={'justify-content': 'center',
-                                                   'vertical-align': '-webkit-baseline-middle',},
-                                            children=[ddk.Block(width=5,
-                                                                style={'vertical-align': '-webkit-baseline-middle'},
-                                                                children=html.H2('Active', style={'margin': '0',
-                                                                                                 'text-align': 'center',
-                                                                                                 'vertical-align': '-webkit-baseline-middle',
-                                                                                                 'justify-content': 'center'})),
-                                                      ddk.Block(width=45,
-                                                                style={'vertical-align': '-webkit-baseline-middle'},
-                                                                children=[ddk.Block(width=100,
-                                                                                    style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                    children=[ddk.Block(width=30,
-                                                                                                        style={'margin': '5px',},
-                                                                                                        children=dcc.Dropdown(style={'background-color': '#fff'},
-                                                                                            options=[
-                                                                                                {'label': 'BTC', 'value': 'BTC'},
-                                                                                                {'label': 'USD', 'value': 'USD'},
-                                                                                                {'label': 'USDt', 'value': 'USDt'},
-                                                                                                {'label': 'ETH', 'value': 'ETH'}
-                                                                                            ],
-                                                                                            value='')),
-                                                                                              ddk.Block(width=30,
-                                                                                                        style={'margin': '5px'},
-                                                                                                        children=dcc.Dropdown(style={'background-color': '#fff'},
-                                                                                            options=[
-                                                                                                {'label': 'BTC', 'value': 'BTC'},
-                                                                                                {'label': 'USD', 'value': 'USD'},
-                                                                                                {'label': 'USDt', 'value': 'USDt'},
-                                                                                                {'label': 'ETH', 'value': 'ETH'}
-                                                                                            ],
-                                                                                            value='')),
-                                                                                              ddk.Block(width=30,
-                                                                                                        style={'margin': '5px'},
-                                                                                                        children=dcc.Dropdown(style={'background-color': '#fff'},
-                                                                                            options=[
-                                                                                                {'label': 'BTC', 'value': 'BTC'},
-                                                                                                {'label': 'USD', 'value': 'USD'},
-                                                                                                {'label': 'USDt', 'value': 'USDt'},
-                                                                                                {'label': 'ETH', 'value': 'ETH'}
-                                                                                            ],
-                                                                                            value=''))
+    group_of_regims.append(param_head)
 
-                                                                                              ]),
-                                                                          ddk.Block(width=100,
-                                                                                    style={'margin': '5px', 'width':'80%', 'vertical-align': '-webkit-baseline-middle'},
-                                                                                    children=[dcc.Dropdown(style={'background-color': '#fff'},
-                                                                                                          multi=True,
-                                                                                                          options=[
-                                                                                                                {'label': 'Alfa >> Hot', 'value': 'Alfa >> Hot'},
-                                                                                                                {'label': 'Alfa >> Live', 'value': 'Alfa >> Live'},
-                                                                                                                {'label': 'Hot >> Alfa', 'value': 'Hot >> Alfa'},
-                                                                                                                {'label': 'Hot >> Live', 'value': 'Hot >> Live'},
-                                                                                                                {'label': 'Live >> Alfa', 'value': 'Live >> Alfa'},
-                                                                                                                {'label': 'Live >> Hot', 'value': 'Live >> Hot'}
-                                                                                                            ],
-                                                                                                          value='')]),
-                                                                            ]),
+    for k, v in com2.items():
+        list_item = dbc.ListGroupItem(style={
+            'line-height': '1', 'margin': '0', 'margin-right': '0',
+            'height': 'fit-content', 'justify-content': 'center',
+            'vertical-align': '-webkit-baseline-middle',
+            'max-height': 'fit-content', 'padding': '0px',
+            'list-style': 'none',
+            'align-items': 'center'},
+            children=ddk.Card(
+                style={'width': '100%',
+                       'margin': '0',
+                       'margin-top': '10px',
+                       'background-color': '#e4e7e7a6'},
+                card_hover=True,
+                children=ddk.Block(
+                    width=100,
+                    style={'justify-content': 'center',
+                           'vertical-align': '-webkit-baseline-middle'},
+                    children=[ddk.Block(width=5,
+                                        style={'vertical-align': '-webkit-baseline-middle'},
+                                        children=html.H2("{}".format(v['option']),
+                                                         id="option_{}".format(k),
+                                                         style={'margin': '0',
+                                                                'text-align': 'center',
+                                                                'vertical-align': '-webkit-baseline-middle',
+                                                                'justify-content': 'center'})),
+                              ddk.Block(width=45,
+                                        style={'vertical-align': '-webkit-baseline-middle'},
+                                        children=[ddk.Block(width=100,
+                                                            style={'vertical-align': '-webkit-baseline-middle'},
+                                                            children=[ddk.Block(width=30,
+                                                                                style={'margin': '5px'},
+                                                                                children=
+                                                                                dcc.Dropdown(
+                                                                                    id="val1_{}".format(k),
+                                                                                    style={
+                                                                                        'background-color': '#fff'},
+                                                                                    options=[
+                                                                                        {'label': 'BTC',
+                                                                                         'value': 'BTC'},
+                                                                                        {'label': 'USD',
+                                                                                         'value': 'USD'},
+                                                                                        {'label': 'USDt',
+                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'ETH',
+                                                                                         'value': 'ETH'}
+                                                                                    ],
+                                                                                    value='')),
+                                                                      ddk.Block(width=30,
+                                                                                style={'margin': '5px'},
+                                                                                children=
+                                                                                dcc.Dropdown(
+                                                                                    id="val2_{}".format(k),
+                                                                                    style={
+                                                                                        'background-color': '#fff'},
+                                                                                    options=[
+                                                                                        {'label': 'BTC',
+                                                                                         'value': 'BTC'},
+                                                                                        {'label': 'USD',
+                                                                                         'value': 'USD'},
+                                                                                        {'label': 'USDt',
+                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'ETH',
+                                                                                         'value': 'ETH'}
+                                                                                    ],
+                                                                                    value='')),
+                                                                      ddk.Block(width=30,
+                                                                                style={'margin': '5px'},
+                                                                                children=dcc.Dropdown(
+                                                                                    id="val3_{}".format(k),
+                                                                                    style={
+                                                                                        'background-color': '#fff'},
+                                                                                    options=[
+                                                                                        {'label': 'BTC',
+                                                                                         'value': 'BTC'},
+                                                                                        {'label': 'USD',
+                                                                                         'value': 'USD'},
+                                                                                        {'label': 'USDt',
+                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'ETH',
+                                                                                         'value': 'ETH'}
+                                                                                    ],
+                                                                                    value=''))
 
-                                                      ddk.Block(width=50,
-                                                                style={'vertical-align': '-webkit-baseline-middle'},
-                                                                children=[ddk.Block(width=100,
-                                                                                    style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                    children=[ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        html.H5(
-                                                                                                                            '% profit',
-                                                                                                                            style={
-                                                                                                                                'text-align': 'right',
-                                                                                                                                'justify-content': 'center'})]),
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        dcc.Input(
-                                                                                                                            style={
-                                                                                                                                'border': 'double',
-                                                                                                                                'margin': '0','text-align': 'left',
-                                                                                                                                'background-color': 'ivory',
-                                                                                                                                'width': '-webkit-fill-available',
-                                                                                                                                'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            html.H5(
-                                                                                                                                                'V ордера',
-                                                                                                                                                style={
-                                                                                                                                                    'text-align': 'right',
-                                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            dcc.Input(
-                                                                                                                                                style={
-                                                                                                                                                    'border': 'double',
-                                                                                                                                                    'margin': '0','text-align': 'left',
-                                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                                    'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            html.H5(
-                                                                                                                                                '% ордера',
-                                                                                                                                                style={
-                                                                                                                                                    'text-align': 'right',
-                                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            dcc.Input(
-                                                                                                                                                style={
-                                                                                                                                                    'border': 'double',
-                                                                                                                                                    'text-align': 'left',
-                                                                                                                                                    'margin': '0',
-                                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                                    'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=10,
-                                                                                                        children=[dbc.Checklist(style={'text-align': 'center',
-                                                                                                                  'border': '#333',
-                                                                                                                  'vertical-align': '-webkit-baseline-middle',
-                                                                                                                  'justify-content': 'center'},
-                                                                                                           options=[
-                                                                                                               {"label": "Off",
-                                                                                                                "value": 1}
-                                                                                                           ],
-                                                                                                           value=[],
-                                                                                                           id="checklist-inline-input",
-                                                                                                           inline=True)
+                                                                      ]),
+                                                  ddk.Block(width=100,
+                                                            style={'vertical-align': '-webkit-baseline-middle'},
+                                                            children=[
+                                                                ddk.Block(width=40,
+                                                                          style={'margin': '5px'},
+                                                                          children=dcc.Dropdown(
+                                                                              id="b1_{}".format(k),
+                                                                              style={'background-color': '#fff'},
+                                                                              placeholder="БИРЖА 1",
+                                                                              options=[
+                                                                                  {
+                                                                                      'label': 'alfa',
+                                                                                      'value': 'alfa'},
+                                                                                  {
+                                                                                      'label': 'hot',
+                                                                                      'value': 'hot'},
+                                                                                  {
+                                                                                      'label': 'live',
+                                                                                      'value': 'live'},
 
-                                                                                                        ])]),
-                                                                          ddk.Block(width=100,
-                                                                                    style={'margin-top': '5px',
-                                                                                           'margin-bottom': '5px',
+                                                                              ],
+                                                                              value='')),
+                                                                ddk.Block(width=40,
+                                                                          style={
+                                                                              'margin': '5px'},
+                                                                          children=dcc.Dropdown(
+                                                                              id="b2_{}".format(k),
+                                                                              placeholder="БИРЖА 2",
+                                                                              style={'background-color': '#fff'},
+                                                                              options=[
+                                                                                  {
+                                                                                      'label': 'alfa',
+                                                                                      'value': 'alfa'},
+                                                                                  {
+                                                                                      'label': 'hot',
+                                                                                      'value': 'hot'},
+                                                                                  {
+                                                                                      'label': 'live',
+                                                                                      'value': 'live'},
+                                                                              ],
+                                                                              value=''))
+                                                            ]),
+                                                  ]),
+
+                              ddk.Block(width=50,
+                                        style={'vertical-align': '-webkit-baseline-middle'},
+                                        children=[ddk.Block(width=100,
+                                                            style={'vertical-align': '-webkit-baseline-middle'},
+                                                            children=[ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5('% profit',
+                                                                                                    style={
+                                                                                                        'text-align': 'right',
+                                                                                                        'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                id="profit_r1_{}".format(
+                                                                                                    k),
+                                                                                                placeholder=v[
+                                                                                                    'profit'],
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'margin': '0',
+                                                                                                    'text-align': 'left',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50, style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5(
+                                                                                                'V ордера',
+                                                                                                style={
+                                                                                                    'text-align': 'right',
+                                                                                                    'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                placeholder=v[
+                                                                                                    'order'],
+                                                                                                id="order_r1_{}".format(
+                                                                                                    k),
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'margin': '0',
+                                                                                                    'text-align': 'left',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50, style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5(
+                                                                                                '% ордера',
+                                                                                                style={
+                                                                                                    'text-align': 'right',
+                                                                                                    'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                placeholder=v[
+                                                                                                    'per'],
+                                                                                                id="perc_r1_{}".format(
+                                                                                                    k),
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'text-align': 'left',
+                                                                                                    'margin': '0',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=10,
+                                                                                children=[dbc.Checklist(
+                                                                                    style={'text-align': 'center',
+                                                                                           'border': '#333',
                                                                                            'vertical-align': '-webkit-baseline-middle',
-                                                                                           'border-top-style': 'groove',
-                                                                                           'border-bottom-style': 'groove'},
-                                                                                    children=[
-                                                                                        ddk.Block(width=100,
+                                                                                           'justify-content': 'center'},
+                                                                                    options=[
+                                                                                        {"label": "Off",
+                                                                                         "value": 1}
+                                                                                    ],
+                                                                                    value=[],
+                                                                                    id="checklist_r1_{}".format(
+                                                                                        k),
+                                                                                    inline=True)
+
+                                                                                ])]),
+                                                  ddk.Block(width=100,
+                                                            style={'margin-top': '5px',
+                                                                   'margin-bottom': '5px',
+                                                                   'vertical-align': '-webkit-baseline-middle',
+                                                                   'border-top-style': 'groove',
+                                                                   'border-bottom-style': 'groove'},
+                                                            children=[
+                                                                ddk.Block(width=100,
+                                                                          style={
+                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                          children=[ddk.Block(
+                                                                              width=30,
+                                                                              children=[
+                                                                                  ddk.Block(
+                                                                                      width=50,
+                                                                                      style={
+                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                      children=[
+                                                                                          html.H5(
+                                                                                              '% profit',
+                                                                                              style={
+                                                                                                  'text-align': 'right',
+                                                                                                  'justify-content': 'center'})]),
+                                                                                  ddk.Block(
+                                                                                      width=50,
+                                                                                      style={
+                                                                                          'text-align': 'left',
+                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                      children=[
+                                                                                          dcc.Input(
+                                                                                              style={
+                                                                                                  'border': 'double',
+                                                                                                  'margin': '0',
+                                                                                                  'text-align': 'left',
+                                                                                                  'background-color': 'ivory',
+                                                                                                  'width': '-webkit-fill-available',
+                                                                                                  'max-width': '60px'})])]),
+                                                                              ddk.Block(
+                                                                                  width=30,
+                                                                                  children=[
+                                                                                      ddk.Block(
+                                                                                          width=50,
+                                                                                          style={
+                                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                                          children=[
+                                                                                              html.H5(
+                                                                                                  'V ордера',
                                                                                                   style={
-                                                                                                      'vertical-align': '-webkit-baseline-middle'},
-                                                                                                  children=[ddk.Block(
-                                                                                                      width=30,
+                                                                                                      'text-align': 'right',
+                                                                                                      'justify-content': 'center'})]),
+                                                                                      ddk.Block(
+                                                                                          width=50,
+                                                                                          style={
+                                                                                              'text-align': 'left',
+                                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                                          children=[
+                                                                                              dcc.Input(
+                                                                                                  style={
+                                                                                                      'border': 'double',
+                                                                                                      'margin': '0',
+                                                                                                      'text-align': 'left',
+                                                                                                      'background-color': 'ivory',
+                                                                                                      'width': '-webkit-fill-available',
+                                                                                                      'max-width': '60px'})])]),
+                                                                              ddk.Block(
+                                                                                  width=30,
+                                                                                  children=[
+                                                                                      ddk.Block(
+                                                                                          width=50,
+                                                                                          style={
+                                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                                          children=[
+                                                                                              html.H5(
+                                                                                                  '% ордера',
+                                                                                                  style={
+                                                                                                      'text-align': 'right',
+                                                                                                      'justify-content': 'center'})]),
+                                                                                      ddk.Block(
+                                                                                          width=50,
+                                                                                          style={
+                                                                                              'text-align': 'left',
+                                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                                          children=[
+                                                                                              dcc.Input(
+                                                                                                  style={
+                                                                                                      'border': 'double',
+                                                                                                      'text-align': 'left',
+                                                                                                      'margin': '0',
+                                                                                                      'background-color': 'ivory',
+                                                                                                      'width': '-webkit-fill-available',
+                                                                                                      'max-width': '60px'})])]),
+                                                                              ddk.Block(
+                                                                                  width=10,
+                                                                                  children=[])]),
+                                                                ddk.Block(width=100,
+                                                                          style={
+                                                                              'vertical-align': '-webkit-baseline-middle'},
+                                                                          children=[ddk.Block(width=30,
+                                                                                              style={
+                                                                                                  'margin-top': '5px',
+                                                                                                  'margin-bottom': '5px'},
+                                                                                              children=[
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'vertical-align': '-webkit-baseline-middle'},
                                                                                                       children=[
-                                                                                                          ddk.Block(
-                                                                                                              width=50,
+                                                                                                          html.H5(
+                                                                                                              'секунд',
                                                                                                               style={
-                                                                                                                  'vertical-align': '-webkit-baseline-middle'},
-                                                                                                              children=[
-                                                                                                                  html.H5(
-                                                                                                                      '% profit',
-                                                                                                                      style={
-                                                                                                                          'text-align': 'right',
-                                                                                                                          'justify-content': 'center'})]),
-                                                                                                          ddk.Block(
-                                                                                                              width=50,
+                                                                                                                  'text-align': 'right',
+                                                                                                                  'justify-content': 'center'})]),
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'text-align': 'left',
+                                                                                                          'vertical-align':
+                                                                                                              '-webkit-baseline-middle'},
+                                                                                                      children=[
+                                                                                                          dcc.Input(
                                                                                                               style={
+                                                                                                                  'border': 'double',
+                                                                                                                  'margin': '0',
                                                                                                                   'text-align': 'left',
-                                                                                                                  'vertical-align': '-webkit-baseline-middle'},
-                                                                                                              children=[
-                                                                                                                  dcc.Input(
-                                                                                                                      style={
-                                                                                                                          'border': 'double',
-                                                                                                                          'margin': '0',
-                                                                                                                          'text-align': 'left',
-                                                                                                                          'background-color': 'ivory',
-                                                                                                                          'width': '-webkit-fill-available',
-                                                                                                                          'max-width': '60px'})])]),
-                                                                                                            ddk.Block(
-                                                                                                                width=30,
-                                                                                                                children=[
-                                                                                                                    ddk.Block(
-                                                                                                                        width=50,
-                                                                                                                        style={
-                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                        children=[
-                                                                                                                            html.H5(
-                                                                                                                                'V ордера',
-                                                                                                                                style={
-                                                                                                                                    'text-align': 'right',
-                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                    ddk.Block(
-                                                                                                                        width=50,
-                                                                                                                        style={
-                                                                                                                            'text-align': 'left',
-                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                        children=[
-                                                                                                                            dcc.Input(
-                                                                                                                                style={
-                                                                                                                                    'border': 'double',
-                                                                                                                                    'margin': '0',
-                                                                                                                                    'text-align': 'left',
-                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                    'max-width': '60px'})])]),
-                                                                                                            ddk.Block(
-                                                                                                                width=30,
-                                                                                                                children=[
-                                                                                                                    ddk.Block(
-                                                                                                                        width=50,
-                                                                                                                        style={
-                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                        children=[
-                                                                                                                            html.H5(
-                                                                                                                                '% ордера',
-                                                                                                                                style={
-                                                                                                                                    'text-align': 'right',
-                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                    ddk.Block(
-                                                                                                                        width=50,
-                                                                                                                        style={
-                                                                                                                            'text-align': 'left',
-                                                                                                                            'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                        children=[
-                                                                                                                            dcc.Input(
-                                                                                                                                style={
-                                                                                                                                    'border': 'double',
-                                                                                                                                    'text-align': 'left',
-                                                                                                                                    'margin': '0',
-                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                    'max-width': '60px'})])]),
-                                                                                                            ddk.Block(
-                                                                                                                width=10,
-                                                                                                                children=[])]),
-                                                                                        ddk.Block(width=100,
-                                                                                                  style={
-                                                                                                      'vertical-align': '-webkit-baseline-middle'},
-                                                                                                  children=[ddk.Block(width=30,
-                                                                                                        style={'margin-top': '5px', 'margin-bottom': '5px'},
-                                                                                                        children=[
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        html.H5(
-                                                                                                                            'секунд',
-                                                                                                                            style={
-                                                                                                                                'text-align': 'right',
-                                                                                                                                'justify-content': 'center'})]),
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        dcc.Input(
-                                                                                                                            style={
-                                                                                                                                'border': 'double',
-                                                                                                                                'margin': '0','text-align': 'left',
-                                                                                                                                'background-color': 'ivory',
-                                                                                                                                'width': '-webkit-fill-available',
-                                                                                                                                'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        style={'margin-top': '5px', 'margin-bottom': '5px'},
-                                                                                                        children=[
-                                                                                                        ddk.Block(
-                                                                                                            width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                            children=[
-                                                                                                                html.H5(
-                                                                                                                    '1я Ставка (%)',
-                                                                                                                    style={
-                                                                                                                        'text-align': 'right',
-                                                                                                                        'justify-content': 'center'})]),
-                                                                                                        ddk.Block(
-                                                                                                            width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                            children=[
-                                                                                                                dcc.Input(
-                                                                                                                    style={
-                                                                                                                        'border': 'double',
-                                                                                                                        'margin': '0','text-align': 'left',
-                                                                                                                        'background-color': 'ivory',
-                                                                                                                        'width': '-webkit-fill-available',
-                                                                                                                        'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        style={'margin-top': '5px', 'margin-bottom': '5px'},
-                                                                                                        children=[
-                                                                                                        ddk.Block(
-                                                                                                            width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                            children=[
-                                                                                                                html.H5(
-                                                                                                                    '2я Ставка (%)',
-                                                                                                                    style={
-                                                                                                                        'text-align': 'right',
-                                                                                                                        'justify-content': 'center'})]),
-                                                                                                        ddk.Block(
-                                                                                                            width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
-                                                                                                            children=[
-                                                                                                                dcc.Input(
-                                                                                                                    style={
-                                                                                                                        'border': 'double',
-                                                                                                                        'text-align': 'left',
-                                                                                                                        'margin': '0',
-                                                                                                                        'background-color': 'ivory',
-                                                                                                                        'width': '-webkit-fill-available',
-                                                                                                                        'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=10,
-                                                                                                        style={'margin-top': '5px', 'margin-bottom': '5px'},
-                                                                                                        children=[dbc.Checklist(style={'text-align': 'center',
-                                                                                                                  'border': '#333',
-                                                                                                                  'vertical-align': '-webkit-baseline-middle',
-                                                                                                                  'justify-content': 'center'},
-                                                                                                           options=[
-                                                                                                               {"label": "Off",
-                                                                                                                "value": 1}
-                                                                                                           ],
-                                                                                                           value=[],
-                                                                                                           id="checklist-inline-input",
-                                                                                                           inline=True)
+                                                                                                                  'background-color': 'ivory',
+                                                                                                                  'width': '-webkit-fill-available',
+                                                                                                                  'max-width': '60px'})])]),
+                                                                                    ddk.Block(width=30,
+                                                                                              style={
+                                                                                                  'margin-top': '5px',
+                                                                                                  'margin-bottom': '5px'},
+                                                                                              children=[
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                                      children=[
+                                                                                                          html.H5(
+                                                                                                              '1я Ставка (%)',
+                                                                                                              style={
+                                                                                                                  'text-align': 'right',
+                                                                                                                  'justify-content': 'center'})]),
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'text-align': 'left',
+                                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                                      children=[
+                                                                                                          dcc.Input(
+                                                                                                              style={
+                                                                                                                  'border': 'double',
+                                                                                                                  'margin': '0',
+                                                                                                                  'text-align': 'left',
+                                                                                                                  'background-color': 'ivory',
+                                                                                                                  'width': '-webkit-fill-available',
+                                                                                                                  'max-width': '60px'})])]),
+                                                                                    ddk.Block(width=30,
+                                                                                              style={
+                                                                                                  'margin-top': '5px',
+                                                                                                  'margin-bottom': '5px'},
+                                                                                              children=[
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                                      children=[
+                                                                                                          html.H5(
+                                                                                                              '2я Ставка (%)',
+                                                                                                              style={
+                                                                                                                  'text-align': 'right',
+                                                                                                                  'justify-content': 'center'})]),
+                                                                                                  ddk.Block(
+                                                                                                      width=50,
+                                                                                                      style={
+                                                                                                          'text-align': 'left',
+                                                                                                          'vertical-align': '-webkit-baseline-middle'},
+                                                                                                      children=[
+                                                                                                          dcc.Input(
+                                                                                                              style={
+                                                                                                                  'border': 'double',
+                                                                                                                  'text-align': 'left',
+                                                                                                                  'margin': '0',
+                                                                                                                  'background-color': 'ivory',
+                                                                                                                  'width': '-webkit-fill-available',
+                                                                                                                  'max-width': '60px'})])]),
+                                                                                    ddk.Block(width=10,
+                                                                                              style={
+                                                                                                  'margin-top': '5px',
+                                                                                                  'margin-bottom': '5px'},
+                                                                                              children=[
+                                                                                                  dbc.Checklist(
+                                                                                                      style={
+                                                                                                          'text-align': 'center',
+                                                                                                          'border': '#333',
+                                                                                                          'vertical-align': '-webkit-baseline-middle',
+                                                                                                          'justify-content': 'center'},
+                                                                                                      options=[
+                                                                                                          {
+                                                                                                              "label": "Off",
+                                                                                                              "value": 1}
+                                                                                                      ],
+                                                                                                      value=[],
+                                                                                                      id="checklist-r2-input{}".format(
+                                                                                                          k),
+                                                                                                      inline=True)
 
-                                                                                                        ])])
-                                                                                    ]),
-                                                                          ddk.Block(width=100,
-                                                                                    style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                    children=[ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        html.H5(
-                                                                                                                            '% profit',
-                                                                                                                            style={
-                                                                                                                                'text-align': 'right',
-                                                                                                                                'justify-content': 'center'})]),
-                                                                                                                ddk.Block(
-                                                                                                                    width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                                    children=[
-                                                                                                                        dcc.Input(
-                                                                                                                            style={
-                                                                                                                                'border': 'double',
-                                                                                                                                'margin': '0','text-align': 'left',
-                                                                                                                                'background-color': 'ivory',
-                                                                                                                                'width': '-webkit-fill-available',
-                                                                                                                                'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            html.H5(
-                                                                                                                                                'V ордера',
-                                                                                                                                                style={
-                                                                                                                                                    'text-align': 'right',
-                                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            dcc.Input(
-                                                                                                                                                style={
-                                                                                                                                                    'border': 'double',
-                                                                                                                                                    'margin': '0','text-align': 'left',
-                                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                                    'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=30,
-                                                                                                        children=[
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            html.H5(
-                                                                                                                                                '% ордера',
-                                                                                                                                                style={
-                                                                                                                                                    'text-align': 'right',
-                                                                                                                                                    'justify-content': 'center'})]),
-                                                                                                                                    ddk.Block(
-                                                                                                                                        width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
-                                                                                                                                        children=[
-                                                                                                                                            dcc.Input(
-                                                                                                                                                style={
-                                                                                                                                                    'border': 'double',
-                                                                                                                                                    'text-align': 'left',
-                                                                                                                                                    'margin': '0',
-                                                                                                                                                    'background-color': 'ivory',
-                                                                                                                                                    'width': '-webkit-fill-available',
-                                                                                                                                                    'max-width': '60px'})])]),
-                                                                                              ddk.Block(width=10,
-                                                                                                        children=[dbc.Checklist(style={'text-align': 'center',
-                                                                                                                  'border': '#333',
-                                                                                                                  'vertical-align': '-webkit-baseline-middle',
-                                                                                                                  'justify-content': 'center'},
-                                                                                                           options=[
-                                                                                                               {"label": "Off",
-                                                                                                                "value": 1}
-                                                                                                           ],
-                                                                                                           value=[],
-                                                                                                           id="checklist-inline-input",
-                                                                                                           inline=True)
+                                                                                              ])])
+                                                            ]),
+                                                  ddk.Block(width=100,
+                                                            style={'vertical-align': '-webkit-baseline-middle'},
+                                                            children=[ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50, style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5(
+                                                                                                '% profit',
+                                                                                                style={
+                                                                                                    'text-align': 'right',
+                                                                                                    'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'margin': '0',
+                                                                                                    'text-align': 'left',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50, style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5(
+                                                                                                'V ордера',
+                                                                                                style={
+                                                                                                    'text-align': 'right',
+                                                                                                    'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'margin': '0',
+                                                                                                    'text-align': 'left',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=30,
+                                                                                children=[
+                                                                                    ddk.Block(
+                                                                                        width=50, style={
+                                                                                            'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            html.H5(
+                                                                                                '% ордера',
+                                                                                                style={
+                                                                                                    'text-align': 'right',
+                                                                                                    'justify-content': 'center'})]),
+                                                                                    ddk.Block(
+                                                                                        width=50,
+                                                                                        style={'text-align': 'left',
+                                                                                               'vertical-align': '-webkit-baseline-middle'},
+                                                                                        children=[
+                                                                                            dcc.Input(
+                                                                                                style={
+                                                                                                    'border': 'double',
+                                                                                                    'text-align': 'left',
+                                                                                                    'margin': '0',
+                                                                                                    'background-color': 'ivory',
+                                                                                                    'width': '-webkit-fill-available',
+                                                                                                    'max-width': '60px'})])]),
+                                                                      ddk.Block(width=10,
+                                                                                children=[dbc.Checklist(
+                                                                                    style={'text-align': 'center',
+                                                                                           'border': '#333',
+                                                                                           'vertical-align': '-webkit-baseline-middle',
+                                                                                           'justify-content': 'center'},
+                                                                                    options=[
+                                                                                        {"label": "Off",
+                                                                                         "value": 1}
+                                                                                    ],
+                                                                                    value=[],
+                                                                                    id="checklist-r3-input{}".format(
+                                                                                        k),
+                                                                                    inline=True)
 
-                                                                                                        ])])
+                                                                                ])])]
+                                        )])))
+
+        group_of_regims.append(list_item)
+    return group_of_regims
 
 
 
-                                                                          ]
 
 
-                                                                )]))
+
+# print(len(group_of_regims()))
+
+def serve_layout():
+
+
+    list_group = [i for i in group_of_regims()]
+
+
+
+
+    # param_val = ddk.Card(style={'width': '100%', 'margin': '0', 'margin-top': '10px',
+    #                             'background-color': '#e4e7e7a6'},
+    #                      card_hover=True,
+    #                      children=ddk.Block(width=100,
+    #                                         style={'justify-content': 'center',
+    #                                                'vertical-align': '-webkit-baseline-middle',},
+    #                                         children=[ddk.Block(width=5,
+    #                                                             style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                             children=html.H2('Active', style={'margin': '0',
+    #                                                                                              'text-align': 'center',
+    #                                                                                              'vertical-align': '-webkit-baseline-middle',
+    #                                                                                              'justify-content': 'center'})),
+    #                                                   ddk.Block(width=45,
+    #                                                             style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                             children=[ddk.Block(width=100,
+    #                                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                 children=[ddk.Block(width=30,
+    #                                                                                                     style={'margin': '5px',},
+    #                                                                                                     children=dcc.Dropdown(style={'background-color': '#fff'},
+    #                                                                                         options=[
+    #                                                                                             {'label': 'BTC', 'value': 'BTC'},
+    #                                                                                             {'label': 'USD', 'value': 'USD'},
+    #                                                                                             {'label': 'USDt', 'value': 'USDt'},
+    #                                                                                             {'label': 'ETH', 'value': 'ETH'}
+    #                                                                                         ],
+    #                                                                                         value='')),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     style={'margin': '5px'},
+    #                                                                                                     children=dcc.Dropdown(style={'background-color': '#fff'},
+    #                                                                                         options=[
+    #                                                                                             {'label': 'BTC', 'value': 'BTC'},
+    #                                                                                             {'label': 'USD', 'value': 'USD'},
+    #                                                                                             {'label': 'USDt', 'value': 'USDt'},
+    #                                                                                             {'label': 'ETH', 'value': 'ETH'}
+    #                                                                                         ],
+    #                                                                                         value='')),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     style={'margin': '5px'},
+    #                                                                                                     children=dcc.Dropdown(style={'background-color': '#fff'},
+    #                                                                                         options=[
+    #                                                                                             {'label': 'BTC', 'value': 'BTC'},
+    #                                                                                             {'label': 'USD', 'value': 'USD'},
+    #                                                                                             {'label': 'USDt', 'value': 'USDt'},
+    #                                                                                             {'label': 'ETH', 'value': 'ETH'}
+    #                                                                                         ],
+    #                                                                                         value=''))
+    #
+    #                                                                                           ]),
+    #                                                                       ddk.Block(width=100,
+    #                                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                 children=[
+    #                                                                                     ddk.Block(width=40,
+    #                                                                                               style={'margin': '5px'},
+    #                                                                                               children=dcc.Dropdown(style={'background-color': '#fff'},
+    #                                                                                                                     placeholder="БИРЖА 1",
+    #                                                                                                       options=[
+    #                                                                                                           {
+    #                                                                                                               'label': 'alfa',
+    #                                                                                                               'value': 'alfa'},
+    #                                                                                                           {
+    #                                                                                                               'label': 'hot',
+    #                                                                                                               'value': 'hot'},
+    #                                                                                                           {
+    #                                                                                                               'label': 'live',
+    #                                                                                                               'value': 'live'},
+    #
+    #                                                                                                         ],
+    #                                                                                                       value='')),
+    #                                                                                           ddk.Block(width=40,
+    #                                                                                                     style={
+    #                                                                                                         'margin': '5px'},
+    #                                                                                                     children=dcc.Dropdown(
+    #                                                                                                         placeholder="БИРЖА 2",
+    #                                                                                                         style={
+    #                                                                                                             'background-color': '#fff'},
+    #                                                                                                         options=[
+    #                                                                                                             {
+    #                                                                                                                 'label': 'alfa',
+    #                                                                                                                 'value': 'alfa'},
+    #                                                                                                             {
+    #                                                                                                                 'label': 'hot',
+    #                                                                                                                 'value': 'hot'},
+    #                                                                                                             {
+    #                                                                                                                 'label': 'live',
+    #                                                                                                                 'value': 'live'},
+    #                                                                                                         ],
+    #                                                                                                         value=''))
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #                                                                                           ]),
+    #                                                                         ]),
+    #
+    #                                                   ddk.Block(width=50,
+    #                                                             style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                             children=[ddk.Block(width=100,
+    #                                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                 children=[ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     html.H5(
+    #                                                                                                                         '% profit',
+    #                                                                                                                         style={
+    #                                                                                                                             'text-align': 'right',
+    #                                                                                                                             'justify-content': 'center'})]),
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     dcc.Input(
+    #                                                                                                                         style={
+    #                                                                                                                             'border': 'double',
+    #                                                                                                                             'margin': '0','text-align': 'left',
+    #                                                                                                                             'background-color': 'ivory',
+    #                                                                                                                             'width': '-webkit-fill-available',
+    #                                                                                                                             'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         html.H5(
+    #                                                                                                                                             'V ордера',
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         dcc.Input(
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'border': 'double',
+    #                                                                                                                                                 'margin': '0','text-align': 'left',
+    #                                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         html.H5(
+    #                                                                                                                                             '% ордера',
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         dcc.Input(
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'border': 'double',
+    #                                                                                                                                                 'text-align': 'left',
+    #                                                                                                                                                 'margin': '0',
+    #                                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=10,
+    #                                                                                                     children=[dbc.Checklist(style={'text-align': 'center',
+    #                                                                                                               'border': '#333',
+    #                                                                                                               'vertical-align': '-webkit-baseline-middle',
+    #                                                                                                               'justify-content': 'center'},
+    #                                                                                                        options=[
+    #                                                                                                            {"label": "Off",
+    #                                                                                                             "value": 1}
+    #                                                                                                        ],
+    #                                                                                                        value=[],
+    #                                                                                                        id="checklist-inline-input",
+    #                                                                                                        inline=True)
+    #
+    #                                                                                                     ])]),
+    #                                                                       ddk.Block(width=100,
+    #                                                                                 style={'margin-top': '5px',
+    #                                                                                        'margin-bottom': '5px',
+    #                                                                                        'vertical-align': '-webkit-baseline-middle',
+    #                                                                                        'border-top-style': 'groove',
+    #                                                                                        'border-bottom-style': 'groove'},
+    #                                                                                 children=[
+    #                                                                                     ddk.Block(width=100,
+    #                                                                                               style={
+    #                                                                                                   'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                               children=[ddk.Block(
+    #                                                                                                   width=30,
+    #                                                                                                   children=[
+    #                                                                                                       ddk.Block(
+    #                                                                                                           width=50,
+    #                                                                                                           style={
+    #                                                                                                               'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                           children=[
+    #                                                                                                               html.H5(
+    #                                                                                                                   '% profit',
+    #                                                                                                                   style={
+    #                                                                                                                       'text-align': 'right',
+    #                                                                                                                       'justify-content': 'center'})]),
+    #                                                                                                       ddk.Block(
+    #                                                                                                           width=50,
+    #                                                                                                           style={
+    #                                                                                                               'text-align': 'left',
+    #                                                                                                               'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                           children=[
+    #                                                                                                               dcc.Input(
+    #                                                                                                                   style={
+    #                                                                                                                       'border': 'double',
+    #                                                                                                                       'margin': '0',
+    #                                                                                                                       'text-align': 'left',
+    #                                                                                                                       'background-color': 'ivory',
+    #                                                                                                                       'width': '-webkit-fill-available',
+    #                                                                                                                       'max-width': '60px'})])]),
+    #                                                                                                         ddk.Block(
+    #                                                                                                             width=30,
+    #                                                                                                             children=[
+    #                                                                                                                 ddk.Block(
+    #                                                                                                                     width=50,
+    #                                                                                                                     style={
+    #                                                                                                                         'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                     children=[
+    #                                                                                                                         html.H5(
+    #                                                                                                                             'V ордера',
+    #                                                                                                                             style={
+    #                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                 ddk.Block(
+    #                                                                                                                     width=50,
+    #                                                                                                                     style={
+    #                                                                                                                         'text-align': 'left',
+    #                                                                                                                         'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                     children=[
+    #                                                                                                                         dcc.Input(
+    #                                                                                                                             style={
+    #                                                                                                                                 'border': 'double',
+    #                                                                                                                                 'margin': '0',
+    #                                                                                                                                 'text-align': 'left',
+    #                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                                         ddk.Block(
+    #                                                                                                             width=30,
+    #                                                                                                             children=[
+    #                                                                                                                 ddk.Block(
+    #                                                                                                                     width=50,
+    #                                                                                                                     style={
+    #                                                                                                                         'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                     children=[
+    #                                                                                                                         html.H5(
+    #                                                                                                                             '% ордера',
+    #                                                                                                                             style={
+    #                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                 ddk.Block(
+    #                                                                                                                     width=50,
+    #                                                                                                                     style={
+    #                                                                                                                         'text-align': 'left',
+    #                                                                                                                         'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                     children=[
+    #                                                                                                                         dcc.Input(
+    #                                                                                                                             style={
+    #                                                                                                                                 'border': 'double',
+    #                                                                                                                                 'text-align': 'left',
+    #                                                                                                                                 'margin': '0',
+    #                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                                         ddk.Block(
+    #                                                                                                             width=10,
+    #                                                                                                             children=[])]),
+    #                                                                                     ddk.Block(width=100,
+    #                                                                                               style={
+    #                                                                                                   'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                               children=[ddk.Block(width=30,
+    #                                                                                                     style={'margin-top': '5px', 'margin-bottom': '5px'},
+    #                                                                                                     children=[
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     html.H5(
+    #                                                                                                                         'секунд',
+    #                                                                                                                         style={
+    #                                                                                                                             'text-align': 'right',
+    #                                                                                                                             'justify-content': 'center'})]),
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     dcc.Input(
+    #                                                                                                                         style={
+    #                                                                                                                             'border': 'double',
+    #                                                                                                                             'margin': '0','text-align': 'left',
+    #                                                                                                                             'background-color': 'ivory',
+    #                                                                                                                             'width': '-webkit-fill-available',
+    #                                                                                                                             'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     style={'margin-top': '5px', 'margin-bottom': '5px'},
+    #                                                                                                     children=[
+    #                                                                                                     ddk.Block(
+    #                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                         children=[
+    #                                                                                                             html.H5(
+    #                                                                                                                 '1я Ставка (%)',
+    #                                                                                                                 style={
+    #                                                                                                                     'text-align': 'right',
+    #                                                                                                                     'justify-content': 'center'})]),
+    #                                                                                                     ddk.Block(
+    #                                                                                                         width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                         children=[
+    #                                                                                                             dcc.Input(
+    #                                                                                                                 style={
+    #                                                                                                                     'border': 'double',
+    #                                                                                                                     'margin': '0','text-align': 'left',
+    #                                                                                                                     'background-color': 'ivory',
+    #                                                                                                                     'width': '-webkit-fill-available',
+    #                                                                                                                     'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     style={'margin-top': '5px', 'margin-bottom': '5px'},
+    #                                                                                                     children=[
+    #                                                                                                     ddk.Block(
+    #                                                                                                         width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                         children=[
+    #                                                                                                             html.H5(
+    #                                                                                                                 '2я Ставка (%)',
+    #                                                                                                                 style={
+    #                                                                                                                     'text-align': 'right',
+    #                                                                                                                     'justify-content': 'center'})]),
+    #                                                                                                     ddk.Block(
+    #                                                                                                         width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                         children=[
+    #                                                                                                             dcc.Input(
+    #                                                                                                                 style={
+    #                                                                                                                     'border': 'double',
+    #                                                                                                                     'text-align': 'left',
+    #                                                                                                                     'margin': '0',
+    #                                                                                                                     'background-color': 'ivory',
+    #                                                                                                                     'width': '-webkit-fill-available',
+    #                                                                                                                     'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=10,
+    #                                                                                                     style={'margin-top': '5px', 'margin-bottom': '5px'},
+    #                                                                                                     children=[dbc.Checklist(style={'text-align': 'center',
+    #                                                                                                               'border': '#333',
+    #                                                                                                               'vertical-align': '-webkit-baseline-middle',
+    #                                                                                                               'justify-content': 'center'},
+    #                                                                                                        options=[
+    #                                                                                                            {"label": "Off",
+    #                                                                                                             "value": 1}
+    #                                                                                                        ],
+    #                                                                                                        value=[],
+    #                                                                                                        id="checklist-inline-input",
+    #                                                                                                        inline=True)
+    #
+    #                                                                                                     ])])
+    #                                                                                 ]),
+    #                                                                       ddk.Block(width=100,
+    #                                                                                 style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                 children=[ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     html.H5(
+    #                                                                                                                         '% profit',
+    #                                                                                                                         style={
+    #                                                                                                                             'text-align': 'right',
+    #                                                                                                                             'justify-content': 'center'})]),
+    #                                                                                                             ddk.Block(
+    #                                                                                                                 width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                 children=[
+    #                                                                                                                     dcc.Input(
+    #                                                                                                                         style={
+    #                                                                                                                             'border': 'double',
+    #                                                                                                                             'margin': '0','text-align': 'left',
+    #                                                                                                                             'background-color': 'ivory',
+    #                                                                                                                             'width': '-webkit-fill-available',
+    #                                                                                                                             'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         html.H5(
+    #                                                                                                                                             'V ордера',
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'text-align': 'left','vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         dcc.Input(
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'border': 'double',
+    #                                                                                                                                                 'margin': '0','text-align': 'left',
+    #                                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=30,
+    #                                                                                                     children=[
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         html.H5(
+    #                                                                                                                                             '% ордера',
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'text-align': 'right',
+    #                                                                                                                                                 'justify-content': 'center'})]),
+    #                                                                                                                                 ddk.Block(
+    #                                                                                                                                     width=50,style={'text-align': 'left', 'vertical-align': '-webkit-baseline-middle'},
+    #                                                                                                                                     children=[
+    #                                                                                                                                         dcc.Input(
+    #                                                                                                                                             style={
+    #                                                                                                                                                 'border': 'double',
+    #                                                                                                                                                 'text-align': 'left',
+    #                                                                                                                                                 'margin': '0',
+    #                                                                                                                                                 'background-color': 'ivory',
+    #                                                                                                                                                 'width': '-webkit-fill-available',
+    #                                                                                                                                                 'max-width': '60px'})])]),
+    #                                                                                           ddk.Block(width=10,
+    #                                                                                                     children=[dbc.Checklist(style={'text-align': 'center',
+    #                                                                                                               'border': '#333',
+    #                                                                                                               'vertical-align': '-webkit-baseline-middle',
+    #                                                                                                               'justify-content': 'center'},
+    #                                                                                                        options=[
+    #                                                                                                            {"label": "Off",
+    #                                                                                                             "value": 1}
+    #                                                                                                        ],
+    #                                                                                                        value=[],
+    #                                                                                                        id="checklist-inline-input",
+    #                                                                                                        inline=True)
+    #
+    #                                                                                                     ])])
+    #
+    #
+    #
+    #                                                                       ]
+    #
+    #
+    #                                                             )]))
 
     # create a session id
     session_id = str(uuid.uuid1())
@@ -518,6 +1107,8 @@ def serve_layout():
                                      data=session_id)
 
     interval = dcc.Interval(id='interval', interval=10000, n_intervals=0)
+
+
 
 
 
@@ -1188,31 +1779,19 @@ def serve_layout():
     second_tab = dcc.Tab(label="Настройки",
                          style={'background-color': '#ebeded'},
                         selected_style={'border': '2px solid #1f78b4'},
-                         children=ddk.Card(shadow_weight='heavy',
-                                           children=
-                                        dbc.ListGroup([
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': '70px', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},
-                                                              children=param_head),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},
-                                                              children=param_val),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},
-                                                              children=param_val),
-                                                ])))
+                         children=ddk.Card(
+                             shadow_weight='heavy',
+                                           children=[
+                                        dbc.ListGroup(
+                                            id="listcardreg",
+                                            children=
+                                                list_group
+
+
+                                        ),
+                                               html.Button('Добавить Режим', id='New_Regim_btn'),
+
+                         ]))
 
 
     # create tab to retrieve the value entered in the other tab
