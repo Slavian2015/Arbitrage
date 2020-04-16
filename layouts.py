@@ -8,6 +8,7 @@ import dash_table
 import os
 from app import dash_app
 import os
+import Regim
 from VILKA import final
 import json
 
