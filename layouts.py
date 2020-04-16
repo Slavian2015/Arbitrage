@@ -11,9 +11,33 @@ import os
 from VILKA import final
 import json
 
-
-
 main_path_data = os.path.abspath("./data")
+
+
+#################################      REGIMS      ##########################################
+
+if os.path.isfile(main_path_data + "\\regim.json"):
+    f = open(main_path_data + "\\regim.json")
+    regim = json.load(f)
+    pass
+else:
+    dictionary = {"1": {"option": "off",
+                       "val1": "",
+                       "val2": "",
+                       "val3": "",
+                       "birga1": "",
+                       "birga2": "",
+                       "profit": "",
+                       "order": ""}}
+    regim = json.dumps(dictionary, indent=4)
+
+    # Writing to sample.json
+    with open(main_path_data + "\\regim.json", "w") as outfile:
+        outfile.write(regim)
+        outfile.close()
+        pass
+
+
 f = open(main_path_data + "\\commis.json")
 com = json.load(f)
 
