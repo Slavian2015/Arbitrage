@@ -28,7 +28,8 @@ else:
                        "birga1": "",
                        "birga2": "",
                        "profit": "",
-                       "order": ""}}
+                       "order": "",
+                        "per": ""}}
     regim = json.dumps(dictionary, indent=4)
 
     # Writing to sample.json
@@ -284,8 +285,7 @@ def group_of_regims():
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             dcc.Input(
-                                                                                                id="profit_r1_{}".format(
-                                                                                                    k),
+                                                                                                id="profit_r1_{}".format(k),
                                                                                                 placeholder=v[
                                                                                                     'profit'],
                                                                                                 style={
@@ -314,8 +314,7 @@ def group_of_regims():
                                                                                             dcc.Input(
                                                                                                 placeholder=v[
                                                                                                     'order'],
-                                                                                                id="order_r1_{}".format(
-                                                                                                    k),
+                                                                                                id="order_r1_{}".format(k),
                                                                                                 style={
                                                                                                     'border': 'double',
                                                                                                     'margin': '0',
@@ -340,10 +339,8 @@ def group_of_regims():
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             dcc.Input(
-                                                                                                placeholder=v[
-                                                                                                    'per'],
-                                                                                                id="perc_r1_{}".format(
-                                                                                                    k),
+                                                                                                placeholder=v['per'],
+                                                                                                id="perc_r1_{}".format(k),
                                                                                                 style={
                                                                                                     'border': 'double',
                                                                                                     'text-align': 'left',
@@ -362,8 +359,7 @@ def group_of_regims():
                                                                                          "value": 1}
                                                                                     ],
                                                                                     value=[],
-                                                                                    id="checklist_r1_{}".format(
-                                                                                        k),
+                                                                                    id="checklist_r1_{}".format(k),
                                                                                     inline=True)
 
                                                                                 ])]),
