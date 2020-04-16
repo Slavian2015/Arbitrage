@@ -183,26 +183,32 @@ def restart():
     var = {'var1': var1, 'var2': var2, 'var3': var3, 'var4': var4}
 
     def calc1(result):
+        f = open(main_path_data + "\\commis.json")
+        com = json.load(f)
         result['start'] = "100"
         result["start"] = result["start"].str.replace(",", "").astype(float)
         result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
         result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
-        result['step'] = (result['start']) / (result['rates_x'])
-        result['back'] = result['step'] * (result['rates_y'])
+        result['step'] = (result['start']) / ((result['rates_x'] * com['main'][result.iloc[0]['birga_x']]))
+        result['back'] = result['step'] * ((result['rates_y']) / com['main'][result.iloc[0]['birga_y']])
         result['profit'] = result['back'] - result['start']
         result['perc'] = (((result['profit']) / (result['start'])) * 100)
+        f.close()
         return result
     def calc2(result):
 
+        f = open(main_path_data + "\\commis.json")
+        com = json.load(f)
+
         result['start'] = "100"
         result["start"] = result["start"].str.replace(",", "").astype(float)
         result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
         result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
-        result['step'] = (result['start']) * (result['rates_x'])
-        result['back'] = result['step'] / (result['rates_y'])
+        result['step'] = (result['start']) * ((result['rates_x'] / com['main'][result.iloc[0]['birga_x']]))
+        result['back'] = result['step'] / ((result['rates_y']) * com['main'][result.iloc[0]['birga_y']])
         result['profit'] = result['back'] - result['start']
         result['perc'] = (((result['profit']) / (result['start'])) * 100)
-
+        f.close()
         return result
 
 
@@ -224,20 +230,11 @@ def restart():
     dft['profit'] = dft['profit'].map('{:,.5f}'.format)
     dft['perc'] = dft['perc'].map('{:,.2f}%'.format)
 
-
-
-    # print(dft)
-
-
-
-
-
-
-
-
-
     now = dt.datetime.now()
-    final.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
+    dft.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
+
+
+
     print("Restart :", '\n')
     # print(final)
     #
