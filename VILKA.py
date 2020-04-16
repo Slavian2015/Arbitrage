@@ -7,11 +7,11 @@ import A_parser
 import os
 import datetime as dt
 
-# ##################################   SHOW ALL ROWS & COLS   ####################################
-# pd.set_option('display.max_columns', None)
-# pd.set_option('display.max_rows', None)
-# pd.set_option('display.expand_frame_repr', False)
-# pd.set_option('max_colwidth', -1)
+##################################   SHOW ALL ROWS & COLS   ####################################
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.expand_frame_repr', False)
+pd.set_option('max_colwidth', -1)
 
 
 # alfa = {'BTC/USD': {'sell': [7000.122, 0.00058], 'buy': [6781.886, 0.03682]}, 'LTC/USD': {'sell': [41.2, 0.47692], 'buy': [41.16, 7.27098]}, 'ETH/USD': {'sell': [153.75, 0.7319055], 'buy': [153.5, 1.0121331]}, 'XRP/USD': {'sell': [0.18615, 38.82824326], 'buy': [0.185, 1.10438394]}, 'USD/USDT': {'sell': [0.998, 641.88], 'buy': [0.99, 204.0]}, 'BTC/USDT': {'sell': [6790.675, 0.012], 'buy': [6789.324, 0.0098]}, 'ETH/USDT': {'sell': [179.0, 0.05947], 'buy': [172.0, 5.859e-05]}, 'XRP/BTC': {'sell': [2.699e-05, 411.0], 'buy': [2.689e-05, 376.0]}, 'ETH/BTC': {'sell': [0.022632, 0.004], 'buy': [0.022603, 0.625]}, 'LTC/BTC': {'sell': [0.006067, 1.26], 'buy': [0.006055, 3.35]}, 'BCH/BTC': {'sell': [0.039, 0.001], 'buy': [0.03345002, 0.01913302]}, 'ZEC/BTC': {'sell': [0.006377, 0.48318062], 'buy': [0.004456, 2.7744614]}}
@@ -71,7 +71,7 @@ def restart():
 
             # print('TYPE :', type(rr))
             r3 = (float(r2) / float(rr))
-            rates.append(r3)
+            rates.append(r2)
 
             birga.append(value)
             valin.append(list[1])
@@ -81,7 +81,7 @@ def restart():
             t2 = t.replace(',', '')
 
             t3 = float(t2) * float(com['main'][value])
-            rates.append(t3)
+            rates.append(t2)
             # if value == "live" or value == "hot":
             #     list = k.split('/')
             #
@@ -142,39 +142,22 @@ def restart():
     dw = {'birga': birga, 'valin': valin, 'valout': valout, 'rates': rates}
     df = pd.DataFrame(data=dw)
 
-
-
     dfs = pd.merge(df, df, left_on=df['valin'], right_on=df['valout'], how='outer')
     dfs2 = pd.merge(df, df, left_on=df['valout'], right_on=df['valin'], how='outer')
 
     # print(dfs.dtypes)
-    # dfs['rates_x'] = dfs['rates_x'].apply(pd.to_numeric, errors='coerce')
-    # dfs['rates_y'] = dfs['rates_y'].apply(pd.to_numeric, errors='coerce')
-    #
-    # dfs['PROFIT'] = dfs['rates_y'] - dfs['rates_x']
-    # dfs['PROFIT'] = dfs['PROFIT'].apply(pd.to_numeric, errors='coerce')
+    dfs['rates_x'] = dfs['rates_x'].apply(pd.to_numeric, errors='coerce')
+    dfs['rates_y'] = dfs['rates_y'].apply(pd.to_numeric, errors='coerce')
 
-    # print(dfs2.dtypes)
     dfs2['rates_x'] = dfs2['rates_x'].apply(pd.to_numeric, errors='coerce')
     dfs2['rates_y'] = dfs2['rates_y'].apply(pd.to_numeric, errors='coerce')
     # print(dfs2.dtypes)
 
 
-    dfs2['PROFIT'] = dfs2['rates_y'] - dfs2['rates_x']
-    dfs2['PROFIT'] = dfs2['PROFIT'].apply(pd.to_numeric, errors='coerce')
-
-    dfs2['PERCENT'] = dfs2['PROFIT'] / dfs2['rates_y'] * 100
     dfs2.drop(['key_0'], axis = 1, inplace = True)
 
-
-    dfs2['PERCENT'] = dfs2['PERCENT'].map('{:,.2f}%'.format)
-    dfs2['PROFIT'] = dfs2['PROFIT'].map('{:,.2f}'.format)
-
-    dfs2['rates_y'] = dfs2['rates_y'].map('{:,.2f}'.format)
-    dfs2['rates_x'] = dfs2['rates_x'].map('{:,.2f}'.format)
-
-    # ttt = dfs['PROFIT'].idxmax()
-    # ddk = dfs.loc[[ttt]]
+    dfs2['rates_y'] = dfs2['rates_y'].map('{:,.10f}'.format)
+    dfs2['rates_x'] = dfs2['rates_x'].map('{:,.10f}'.format)
 
 
     result = dfs2[(dfs2['valin_x'] == dfs2['valout_y'])]
@@ -185,14 +168,80 @@ def restart():
     final = result.append([usdt, usd])
     final.reset_index(inplace=True, drop = True)
     final.reset_index(level=0, inplace=True)
-    filter = final[(final['birga_x'] == final['birga_y']) & (final['rates_x'] < final['rates_y'])]
+    filter = final[(final['birga_x'] == final['birga_y']) &
+                   (final['rates_x'] < final['rates_y']) &
+                   (final['valin_x'] == final['valout_y'])]
 
 
     final = final.drop(filter['index'], axis=0)
 
+    var1 = final[final["valin_x"].isin(["USD", "USDT"])]
+    var2 = final[final["valin_y"].isin(["USD", "USDT"])]
+    var3 = final[(final["valin_x"] == "BTC") & (~final["valin_y"].isin(["USD", "USDT"]))]
+    var4 = final[(final["valin_y"] == "BTC") & (~final["valin_x"].isin(["USD", "USDT"]))]
+
+    var = {'var1': var1, 'var2': var2, 'var3': var3, 'var4': var4}
+
+    def calc1(result):
+        result['start'] = "100"
+        result["start"] = result["start"].str.replace(",", "").astype(float)
+        result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
+        result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
+        result['step'] = (result['start']) / (result['rates_x'])
+        result['back'] = result['step'] * (result['rates_y'])
+        result['profit'] = result['back'] - result['start']
+        result['perc'] = (((result['profit']) / (result['start'])) * 100)
+        return result
+    def calc2(result):
+
+        result['start'] = "100"
+        result["start"] = result["start"].str.replace(",", "").astype(float)
+        result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
+        result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
+        result['step'] = (result['start']) * (result['rates_x'])
+        result['back'] = result['step'] / (result['rates_y'])
+        result['profit'] = result['back'] - result['start']
+        result['perc'] = (((result['profit']) / (result['start'])) * 100)
+
+        return result
+
+
+    dft = pd.DataFrame()
+    for i, v in var.items():
+        if v.shape[0] > 0:
+            if i == 'var1' or i == 'var3':
+                dft = dft.append(calc1(v))
+            else:
+                dft = dft.append(calc2(v))
+
+
+
+
+    dft['rates_y'] = dft['rates_y'].map('{:,.5f}'.format)
+    dft['rates_x'] = dft['rates_x'].map('{:,.5f}'.format)
+    dft['step'] = dft['step'].map('{:,.5f}'.format)
+    dft['back'] = dft['back'].map('{:,.5f}'.format)
+    dft['profit'] = dft['profit'].map('{:,.5f}'.format)
+    dft['perc'] = dft['perc'].map('{:,.2f}%'.format)
+
+
+
+    # print(dft)
+
+
+
+
+
+
+
+
+
     now = dt.datetime.now()
     final.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
-    print("Restart :", '\n' )
+    print("Restart :", '\n')
     # print(final)
-    return final
+    #
+    # final.to_csv(main_path_data + "\\final.csv", index=False, header=True)
+
+    return dft
 final = restart()
