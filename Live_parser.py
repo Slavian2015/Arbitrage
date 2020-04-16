@@ -17,8 +17,8 @@ def restart():
         for k,v in exam.items():
             if k == i:
                 del v['timestamp']
-                v['sell'] = v.pop('bids')
-                v['buy'] = v.pop('asks')
+                v['sell'] = v.pop('asks')
+                v['buy'] = v.pop('bids')
                 live.update({k: {'sell': [v['sell'][0][0], v['sell'][0][1]],
                           'buy': [v['buy'][0][0], v['buy'][0][1]]}})
 

@@ -98,8 +98,8 @@ def loadRSS():
                         resp = session.get(item)
                         v = resp.json()
 
-                        dbsell = sum_orders(v['buy'][:10])
-                        dbbuy = sum_orders(v['sell'][:10])
+                        dbsell = sum_orders(v['sell'][:10])
+                        dbbuy = sum_orders(v['buy'][:10])
 
                         alpha.update(
                             {k: {'sell': [float(dbsell[0]), float(dbsell[1])],
