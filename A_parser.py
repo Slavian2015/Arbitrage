@@ -8,22 +8,22 @@ from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from fake_useragent import UserAgent
 
 
-def sum_orders(data):
-    wer = {}
-
-    for i in data:
-        if i['price'] in wer:
-            wer[(i['price'])].append(i['amount'])
-        else:
-            wer[(i['price'])] = [i['amount']]
-
-    for k, v in wer.items():
-        wer[k] = sum(v)
-
-    # print(next(iter(wer.items()))[1])
-
-    result = next(iter(wer.items()))
-    return result
+# def sum_orders(data):
+#     wer = {}
+#
+#     for i in data:
+#         if i['price'] in wer:
+#             wer[(i['price'])].append(i['amount'])
+#         else:
+#             wer[(i['price'])] = [i['amount']]
+#
+#     for k, v in wer.items():
+#         wer[k] = sum(v)
+#
+#     # print(next(iter(wer.items()))[1])
+#
+#     result = next(iter(wer.items()))
+#     return result
 
 def proxies():
     if os.path.isfile('proxies.txt'):
@@ -98,12 +98,13 @@ def loadRSS():
                         resp = session.get(item)
                         v = resp.json()
 
-                        dbsell = sum_orders(v['sell'][:10])
-                        dbbuy = sum_orders(v['buy'][:10])
+                        # dbsell = sum_orders(v['sell'][:10])
+                        # dbbuy = sum_orders(v['buy'][:10])
 
                         alpha.update(
-                            {k: {'sell': [float(dbsell[0]), float(dbsell[1])],
-                                 'buy': [float(dbbuy[0]), float(dbbuy[1])]}})
+                            {k: {'sell': [[float(v['sell'][0]["price"]), float(v['sell'][0]["amount"])], [float(v['sell'][1]["price"]), float(v['sell'][1]["amount"])], [float(v['sell'][2]["price"]), float(v['sell'][2]["amount"])]],
+                    'buy': [[float(v['buy'][0]["price"]), float(v['buy'][0]["amount"])],[float(v['buy'][1]["price"]), float(v['buy'][1]["amount"])],[float(v['buy'][2]["price"]), float(v['buy'][2]["amount"])]]
+                    }})
 
                 break
             except Exception as e:

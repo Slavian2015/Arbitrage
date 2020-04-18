@@ -227,16 +227,16 @@ def loadRSS():
             '41.78.243.189:53281', '46.19.225.141:8888', '190.166.249.44:37359', '41.78.243.194:53281']
     pro = ['89.252.12.88:80']
 
-    url1 = {'BTC/USD':'https://api.hotbit.io/api/v1/order.depth?market=BTC/USD&limit=10&interval=1e-8'}
-    url2 = {'USDT/USD':'https://api.hotbit.io/api/v1/order.depth?market=USDT/USD&limit=10&interval=1e-8'}
-    url3 = {'ETH/USD':'https://api.hotbit.io/api/v1/order.depth?market=ETH/USD&limit=10&interval=1e-8'}
-    url4 = {'ETH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=ETH/BTC&limit=10&interval=1e-8'}
-    url5 = {'LTC/BTC':'https://api.hotbit.io/api/v1/order.depth?market=LTC/BTC&limit=10&interval=1e-8'}
-    url6 = {'BTC/USDT':'https://api.hotbit.io/api/v1/order.depth?market=BTC/USDT&limit=10&interval=1e-8'}
-    url7 = {'ETH/USDT':'https://api.hotbit.io/api/v1/order.depth?market=ETH/USDT&limit=10&interval=1e-8'}
-    url8 = {'XRP/BTC':'https://api.hotbit.io/api/v1/order.depth?market=XRP/BTC&limit=10&interval=1e-8'}
-    url9 = {'ETH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=ETH/BTC&limit=10&interval=1e-8'}
-    url10 = {'BCH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=BCH/BTC&limit=10&interval=1e-8'}
+    url1 = {'BTC/USD':'https://api.hotbit.io/api/v1/order.depth?market=BTC/USD&limit=3&interval=1e-8'}
+    url2 = {'USDT/USD':'https://api.hotbit.io/api/v1/order.depth?market=USDT/USD&limit=3&interval=1e-8'}
+    url3 = {'ETH/USD':'https://api.hotbit.io/api/v1/order.depth?market=ETH/USD&limit=3&interval=1e-8'}
+    url4 = {'ETH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=ETH/BTC&limit=3&interval=1e-8'}
+    url5 = {'LTC/BTC':'https://api.hotbit.io/api/v1/order.depth?market=LTC/BTC&limit=3&interval=1e-8'}
+    url6 = {'BTC/USDT':'https://api.hotbit.io/api/v1/order.depth?market=BTC/USDT&limit=3&interval=1e-8'}
+    url7 = {'ETH/USDT':'https://api.hotbit.io/api/v1/order.depth?market=ETH/USDT&limit=3&interval=1e-8'}
+    url8 = {'XRP/BTC':'https://api.hotbit.io/api/v1/order.depth?market=XRP/BTC&limit=3&interval=1e-8'}
+    url9 = {'ETH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=ETH/BTC&limit=3&interval=1e-8'}
+    url10 = {'BCH/BTC':'https://api.hotbit.io/api/v1/order.depth?market=BCH/BTC&limit=3&interval=1e-8'}
 
 
 
@@ -277,7 +277,7 @@ def loadRSS():
                         resp = session.get(item)
                         v = resp.json()
 
-                        hot.update({k: {'sell': [float(v['result']['asks'][0][0]), float(v['result']['asks'][0][1])], 'buy':[float(v['result']['bids'][0][0]), float(v['result']['bids'][0][1])]}})
+                        hot.update({k: {'sell': v['result']['asks'], 'buy':v['result']['bids']}})
 
 
                 break

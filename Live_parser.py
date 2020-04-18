@@ -19,8 +19,8 @@ def restart():
                 del v['timestamp']
                 v['sell'] = v.pop('asks')
                 v['buy'] = v.pop('bids')
-                live.update({k: {'sell': [v['sell'][0][0], v['sell'][0][1]],
-                          'buy': [v['buy'][0][0], v['buy'][0][1]]}})
+                live.update({k: {'sell': [[v['sell'][0][0], v['sell'][0][1]],[v['sell'][1][0], v['sell'][1][1]], [v['sell'][2][0], v['sell'][2][1]]],
+                             'buy': [[v['buy'][0][0], v['buy'][0][1]], [v['buy'][1][0], v['buy'][1][1]], [v['buy'][2][0], v['buy'][2][1]]]}})
 
     return live
 

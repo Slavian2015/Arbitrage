@@ -53,84 +53,34 @@ def restart():
     valin = []
     valout = []
     rates = []
+    volume = []
 
     def tab(item, value):
-        f = open(main_path_data + "\\commis.json")
-        com = json.load(f)
 
-        for k,v in item.items():
+        for k, v in item.items():
             list = k.split('/')
 
-            birga.append(value)
-            valin.append(list[0])
-            valout.append(list[1])
+            abc = [0, 1, 2]
+            for i in abc:
+                birga.append(value)
+                valin.append(list[0])
+                valout.append(list[1])
+                r = ("{0:,.10f}".format(float((item[k]['buy'][i][0]))))
+                r2 = r.replace(',', '')
+                v = ("{0:,.10f}".format(float((item[k]['buy'][i][1]))))
+                v2 = v.replace(',', '')
+                rates.append(r2)
+                volume.append(v2)
 
-            r = ("{0:,.10f}".format(float((item[k]['buy'][0]))))
-            r2 = r.replace(',', '')
-            rr = np.asarray(com['main'][value])
-
-            # print('TYPE :', type(rr))
-            r3 = (float(r2) / float(rr))
-            rates.append(r2)
-
-            birga.append(value)
-            valin.append(list[1])
-            valout.append(list[0])
-
-            t = ("{0:,.10f}".format(float((item[k]['sell'][0]))))
-            t2 = t.replace(',', '')
-
-            t3 = float(t2) * float(com['main'][value])
-            rates.append(t2)
-            # if value == "live" or value == "hot":
-            #     list = k.split('/')
-            #
-            #     birga.append(value)
-            #     valin.append(list[0])
-            #     valout.append(list[1])
-            #
-            #     r = ("{0:,.10f}".format(float((item[k]['buy'][0]))))
-            #     r2 = r.replace(',','')
-            #     rr = np.asarray(com['main'][value])
-            #
-            #     # print('TYPE :', type(rr))
-            #     r3 = (float(r2) * float(rr))
-            #     rates.append(r3)
-            #
-            #
-            #     birga.append(value)
-            #     valin.append(list[1])
-            #     valout.append(list[0])
-            #
-            #     t = ("{0:,.10f}".format(float((item[k]['sell'][0]))))
-            #     t2 = t.replace(',', '')
-            #
-            #     t3 = float(t2) * float(com['main'][value])
-            #     rates.append(t3)
-            # else:
-            #     list = k.split('/')
-            #
-            #     birga.append(value)
-            #     valin.append(list[0])
-            #     valout.append(list[1])
-            #
-            #     r = ("{0:,.10f}".format(float((item[k]['sell'][0]))))
-            #     r2 = r.replace(',', '')
-            #     rr = np.asarray(com['main'][value])
-            #
-            #     # print('TYPE :', type(rr))
-            #     r3 = (float(r2) * float(rr))
-            #     rates.append(r3)
-            #
-            #     birga.append(value)
-            #     valin.append(list[1])
-            #     valout.append(list[0])
-            #
-            #     t = ("{0:,.10f}".format(float((item[k]['buy'][0]))))
-            #     t2 = t.replace(',', '')
-            #
-            #     t3 = float(t2) * float(com['main'][value])
-            #     rates.append(t3)
+                birga.append(value)
+                valin.append(list[1])
+                valout.append(list[0])
+                r21 = ("{0:,.10f}".format(float((item[k]['sell'][i][0]))))
+                r22 = r21.replace(',', '')
+                v21 = ("{0:,.10f}".format(float((item[k]['sell'][i][1]))))
+                v22 = v21.replace(',', '')
+                rates.append(r22)
+                volume.append(v22)
 
         return
 
@@ -139,18 +89,22 @@ def restart():
         tab(item,value)
 
 
-    dw = {'birga': birga, 'valin': valin, 'valout': valout, 'rates': rates}
+    dw = {'birga': birga, 'valin': valin, 'valout': valout, 'rates': rates, 'volume': volume}
     df = pd.DataFrame(data=dw)
 
-    dfs = pd.merge(df, df, left_on=df['valin'], right_on=df['valout'], how='outer')
+    # dfs = pd.merge(df, df, left_on=df['valin'], right_on=df['valout'], how='outer')
     dfs2 = pd.merge(df, df, left_on=df['valout'], right_on=df['valin'], how='outer')
 
     # print(dfs.dtypes)
-    dfs['rates_x'] = dfs['rates_x'].apply(pd.to_numeric, errors='coerce')
-    dfs['rates_y'] = dfs['rates_y'].apply(pd.to_numeric, errors='coerce')
+    # dfs['rates_x'] = dfs['rates_x'].apply(pd.to_numeric, errors='coerce')
+    # dfs['rates_y'] = dfs['rates_y'].apply(pd.to_numeric, errors='coerce')
 
     dfs2['rates_x'] = dfs2['rates_x'].apply(pd.to_numeric, errors='coerce')
     dfs2['rates_y'] = dfs2['rates_y'].apply(pd.to_numeric, errors='coerce')
+
+
+    dfs2['volume_x'] = dfs2['volume_x'].apply(pd.to_numeric, errors='coerce')
+    dfs2['volume_y'] = dfs2['volume_y'].apply(pd.to_numeric, errors='coerce')
     # print(dfs2.dtypes)
 
 
@@ -223,17 +177,21 @@ def restart():
 
 
 
-    dft['rates_y'] = dft['rates_y'].map('{:,.5f}'.format)
-    dft['rates_x'] = dft['rates_x'].map('{:,.5f}'.format)
-    dft['step'] = dft['step'].map('{:,.5f}'.format)
-    dft['back'] = dft['back'].map('{:,.5f}'.format)
-    dft['profit'] = dft['profit'].map('{:,.5f}'.format)
+    dft['rates_y'] = dft['rates_y'].map('{:,.2f}'.format)
+    dft['rates_x'] = dft['rates_x'].map('{:,.2f}'.format)
+    dft['step'] = dft['step'].map('{:,.2f}'.format)
+    dft['back'] = dft['back'].map('{:,.2f}'.format)
+    dft['profit'] = dft['profit'].map('{:,.2f}'.format)
     dft['perc'] = dft['perc'].map('{:,.2f}%'.format)
+    dft['volume_x'] = dft['volume_x'].map('{:,.5f}'.format)
+    dft['volume_y'] = dft['volume_y'].map('{:,.5f}'.format)
 
     now = dt.datetime.now()
     dft.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
 
+    dft.drop(['index'], axis=1, inplace=True)
 
+    dft = dft[['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y','valin_x','valin_y','valout_y','volume_x','volume_y','start','step','back','profit','perc']]
 
     print("Restart :", '\n')
     # print(final)
