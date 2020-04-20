@@ -8,7 +8,7 @@ import dash_table
 import os
 from app import dash_app
 import os
-from VILKA import final
+from VILKA import final, valuta
 import json
 
 main_path_data = os.path.abspath("./data")
@@ -90,6 +90,9 @@ def group_of_regims():
     com2 = json.load(d)
     group_of_regims = []
 
+    html.Div(id='hidden-div')
+
+
     param_head = ddk.Card(style={'width': '100%', 'line-height': '1',
                                  'height': '70px', 'margin': '0', 'max-height': 'fit-content',
                                  'background-color': '#fff'},
@@ -155,12 +158,19 @@ def group_of_regims():
                            'vertical-align': '-webkit-baseline-middle'},
                     children=[ddk.Block(width=5,
                                         style={'vertical-align': '-webkit-baseline-middle'},
-                                        children=html.H2("{}".format(v['option']),
-                                                         id="option_{}".format(k),
-                                                         style={'margin': '0',
-                                                                'text-align': 'center',
-                                                                'vertical-align': '-webkit-baseline-middle',
-                                                                'justify-content': 'center'})),
+                                        children=[html.H2(
+                                            id={
+                                                 'type': 'option',
+                                                 'index': k
+                                             },
+                                            style={'margin': '0',
+                                                'text-align': 'center',
+                                                'vertical-align': '-webkit-baseline-middle',
+                                                'justify-content': 'center'},
+                                        children=[v['option']],),
+
+
+                                                  ]),
                               ddk.Block(width=45,
                                         style={'vertical-align': '-webkit-baseline-middle'},
                                         children=[ddk.Block(width=100,
@@ -169,7 +179,10 @@ def group_of_regims():
                                                                                 style={'margin': '5px'},
                                                                                 children=
                                                                                 dcc.Dropdown(
-                                                                                    id="val1_{}".format(k),
+                                                                                    id={
+                                                                                        'type': 'val1',
+                                                                                        'index': k
+                                                                                    },
                                                                                     style={
                                                                                         'background-color': '#fff'},
                                                                                     options=[
@@ -182,12 +195,15 @@ def group_of_regims():
                                                                                         {'label': 'ETH',
                                                                                          'value': 'ETH'}
                                                                                     ],
-                                                                                    value='')),
+                                                                                    value='{}'.format(v["val1"]))),
                                                                       ddk.Block(width=30,
                                                                                 style={'margin': '5px'},
                                                                                 children=
                                                                                 dcc.Dropdown(
-                                                                                    id="val2_{}".format(k),
+                                                                                    id={
+                                                                                        'type': 'val2',
+                                                                                        'index': k
+                                                                                    },
                                                                                     style={
                                                                                         'background-color': '#fff'},
                                                                                     options=[
@@ -200,11 +216,14 @@ def group_of_regims():
                                                                                         {'label': 'ETH',
                                                                                          'value': 'ETH'}
                                                                                     ],
-                                                                                    value='')),
+                                                                                    value='{}'.format(v["val2"]))),
                                                                       ddk.Block(width=30,
                                                                                 style={'margin': '5px'},
                                                                                 children=dcc.Dropdown(
-                                                                                    id="val3_{}".format(k),
+                                                                                    id={
+                                                                                        'type': 'val3',
+                                                                                        'index': k
+                                                                                    },
                                                                                     style={
                                                                                         'background-color': '#fff'},
                                                                                     options=[
@@ -217,7 +236,7 @@ def group_of_regims():
                                                                                         {'label': 'ETH',
                                                                                          'value': 'ETH'}
                                                                                     ],
-                                                                                    value=''))
+                                                                                    value='{}'.format(v["val3"])))
 
                                                                       ]),
                                                   ddk.Block(width=100,
@@ -226,7 +245,10 @@ def group_of_regims():
                                                                 ddk.Block(width=40,
                                                                           style={'margin': '5px'},
                                                                           children=dcc.Dropdown(
-                                                                              id="b1_{}".format(k),
+                                                                              id={
+                                                                                  'type': 'birga1',
+                                                                                  'index': k
+                                                                              },
                                                                               style={'background-color': '#fff'},
                                                                               placeholder="БИРЖА 1",
                                                                               options=[
@@ -241,12 +263,15 @@ def group_of_regims():
                                                                                       'value': 'live'},
 
                                                                               ],
-                                                                              value='')),
+                                                                              value='{}'.format(v["birga1"]))),
                                                                 ddk.Block(width=40,
                                                                           style={
                                                                               'margin': '5px'},
                                                                           children=dcc.Dropdown(
-                                                                              id="b2_{}".format(k),
+                                                                              id={
+                                                                                  'type': 'birga2',
+                                                                                  'index': k
+                                                                              },
                                                                               placeholder="БИРЖА 2",
                                                                               style={'background-color': '#fff'},
                                                                               options=[
@@ -260,7 +285,7 @@ def group_of_regims():
                                                                                       'label': 'live',
                                                                                       'value': 'live'},
                                                                               ],
-                                                                              value=''))
+                                                                              value='{}'.format(v["birga2"])))
                                                             ]),
                                                   ]),
 
@@ -285,7 +310,11 @@ def group_of_regims():
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             dcc.Input(
-                                                                                                id="profit_r1_{}".format(k),
+                                                                                                value='{}'.format(v["profit"]),
+                                                                                                id={
+                                                                                                    'type': 'profit',
+                                                                                                    'index': k
+                                                                                                },
                                                                                                 placeholder=v[
                                                                                                     'profit'],
                                                                                                 style={
@@ -312,9 +341,14 @@ def group_of_regims():
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             dcc.Input(
+                                                                                                value='{}'.format(
+                                                                                                    v["order"]),
                                                                                                 placeholder=v[
                                                                                                     'order'],
-                                                                                                id="order_r1_{}".format(k),
+                                                                                                id={
+                                                                                                    'type': 'order',
+                                                                                                    'index': k
+                                                                                                },
                                                                                                 style={
                                                                                                     'border': 'double',
                                                                                                     'margin': '0',
@@ -339,28 +373,41 @@ def group_of_regims():
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             dcc.Input(
+                                                                                                value='{}'.format(
+                                                                                                    v["per"]),
                                                                                                 placeholder=v['per'],
-                                                                                                id="perc_r1_{}".format(k),
+                                                                                                id={
+                                                                                                    'type': 'percent',
+                                                                                                    'index': k
+                                                                                                },
                                                                                                 style={
-                                                                                                    'border': 'double',
-                                                                                                    'text-align': 'left',
-                                                                                                    'margin': '0',
-                                                                                                    'background-color': 'ivory',
-                                                                                                    'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                'border': 'double',
+                                                                'text-align': 'left',
+                                                                'margin': '0',
+                                                                'background-color': 'ivory',
+                                                                'width': '-webkit-fill-available',
+                                                                'max-width': '60px'})])]),
                                                                       ddk.Block(width=10,
-                                                                                children=[dbc.Checklist(
-                                                                                    style={'text-align': 'center',
-                                                                                           'border': '#333',
-                                                                                           'vertical-align': '-webkit-baseline-middle',
-                                                                                           'justify-content': 'center'},
-                                                                                    options=[
-                                                                                        {"label": "Off",
-                                                                                         "value": 1}
-                                                                                    ],
-                                                                                    value=[],
-                                                                                    id="checklist_r1_{}".format(k),
-                                                                                    inline=True)
+                                                                                children=[
+
+                                                                dcc.Checklist(
+                                                                    id={
+                                                                    'type': 'checklist',
+                                                                    'index': k
+                                                                },
+                                                                # style={'text-align': 'center',
+                                                                #        'border': '#333',
+                                                                #        'vertical-align': '-webkit-baseline-middle',
+                                                                #        'justify-content': 'center'},
+                                                                options=[
+                                                                    {"label": "on/off",
+                                                                     "value": "active"},
+                                                                ],
+                                                                value=[],
+                                                                style={"display": "inline"},
+                                                                labelStyle={"display": "inline"}
+
+                                                                )
 
                                                                                 ])]),
                                                   ddk.Block(width=100,
@@ -1821,6 +1868,35 @@ def serve_layout():
                          children=[
                              ddk.Block(width=100, children=[alfa_card, live_card, hotbit_card]),
                              ddk.Card(children=[dash_table.DataTable(
+                                 id="valuta",
+                                 data=valuta.to_dict('records'),
+                                 columns=[{'id': c, 'name': c} for c in valuta.columns],
+                                 page_action='native',
+                                 filter_action='native',
+                                 filter_query='',
+                                 sort_action='native',
+                                 sort_mode='multi',
+                                 sort_by=[],
+                                 style_cell_conditional=[
+                                     {
+                                         'if': {'column_id': c},
+                                         # 'pd.options.display.float_format': '{:.5f}'.format,
+                                         'textAlign': 'center'
+                                     } for c in ['SUMMA']
+                                 ],
+                                 style_data_conditional=[
+                                     {
+                                         'if': {'row_index': 'odd'},
+                                         'backgroundColor': 'rgb(248, 248, 248)'
+                                     }
+                                 ],
+                                 style_header={
+                                     'backgroundColor': 'rgb(230, 230, 230)',
+                                     'fontWeight': 'bold'
+                                 }
+                             ),
+                             ]),
+                             ddk.Card(children=[dash_table.DataTable(
                                                             id="table",
                                                             data=final.to_dict('records'),
                                                             columns=[{'id': c, 'name': c} for c in final.columns],
@@ -1834,11 +1910,38 @@ def serve_layout():
                                                             export_headers='display',
                                                             merge_duplicate_headers=True,
                                                             style_cell_conditional=[
-                                                                {
-                                                                    'if': {'column_id': c},
-                                                                    'pd.options.display.float_format':"'${:.2f}'.format",
-                                                                    'textAlign': 'center'
-                                                                } for c in ['PROFIT', 'PERCENT']
+                                                                # {'if': {'column_id': 'PROFIT'},
+                                                                #  'pd.options.display.float_format': "'${:.2f}'.format",
+                                                                #  'textAlign': 'center'},
+                                                                # {'if': {'column_id': 'PERCENT'},
+                                                                #  'pd.options.display.float_format': "'${:.2f}'.format",
+                                                                #  'textAlign': 'center'},
+                                                                # {'if': {'column_id': 'volume_x'},
+                                                                #  'pd.options.display.float_format': "'${:.5f}'.format",
+                                                                #  'textAlign': 'center'},
+                                                                # {'if': {'column_id': 'volume_y'},
+                                                                #  'pd.options.display.float_format': "'${:.5f}'.format",
+                                                                #  'textAlign': 'center'},
+                                                                # {'if': {'column_id': 'volume'},
+                                                                #  'pd.options.display.float_format': "'${:.5f}'.format",
+                                                                #  'textAlign': 'center'},
+
+
+
+
+
+                                                                # [{
+                                                                #     'if': {'column_id': c},
+                                                                #     'pd.options.display.float_format':"'${:.2f}'.format",
+                                                                #     'textAlign': 'center'
+                                                                # } for c in ['PROFIT', 'PERCENT']],
+                                                                # [{
+                                                                #     'if': {'column_id': d},
+                                                                #     'pd.options.display.float_format': "'${:.5f}'.format",
+                                                                #     'textAlign': 'center'
+                                                                # } for d in ['volume_x', 'volume_x', 'volume']]
+
+
                                                             ],
                                                             style_data_conditional=[
                                                                 {

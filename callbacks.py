@@ -1,4 +1,4 @@
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State, ALL, MATCH
 from app import dash_app, dash_db
 import VILKA
 from dash.exceptions import PreventUpdate
@@ -13,12 +13,11 @@ import dash_design_kit as ddk
 import layouts
 
 dash_app.config['suppress_callback_exceptions'] = True
-
+main_path_data = os.path.abspath("./data")
 
 
 # putting your callbacks in functions is a nice trick to be able to move them in other modules and import them
-def create_callback_save_value(app: dash.Dash,
-                               dash_db: DashDatabase):
+def create_callback_save_value(app: dash.Dash, dash_db: DashDatabase):
     @app.callback(Output('success_value_saved', 'children'),
                   [Input('ok_button', 'n_clicks')],  # the button triggers the callback
                   [State('input_div', 'value'),  # additional info that does not trigger the callback
@@ -36,8 +35,8 @@ def create_callback_save_value(app: dash.Dash,
 
         # return success message
         return "Your value was sucessfully saved. Try to retrieve it in the other tab now :)!"
-def create_callback_retrieve_value(app: dash.Dash,
-                                   dash_db: DashDatabase):
+
+def create_callback_retrieve_value(app: dash.Dash, dash_db: DashDatabase):
     @app.callback(Output('show_value_div', 'children'),
                   [Input('show_value_button', 'n_clicks')],
                   [State('session_id_div_id', 'data')])
@@ -60,7 +59,8 @@ def refresh(app: dash.Dash):
     @app.callback(Output('table', 'data'), [Input('interval', 'n_intervals')])
     def trigger_by_modify(n):
         print ("###############  UPDATE   #########################")
-        df10 = VILKA.restart()
+        df = VILKA.restart()
+        df10 = df[0]
         df10['id'] = df10.index
         return df10.to_dict('records')
 
@@ -141,7 +141,7 @@ def creat_reg(app: dash.Dash):
         if n_clicks is None:
             raise PreventUpdate
 
-        main_path_data = os.path.abspath("./data")
+
         with open(main_path_data + "\\regim.json", "r") as file:
             param = []
             data = json.load(file)
@@ -162,6 +162,92 @@ def creat_reg(app: dash.Dash):
         return list_group
 
 
+def save_reg_data(app: dash.Dash):
+    @app.callback(
+        [Output({'type': 'option', 'index': MATCH}, 'children')],
+       [Input({'type': 'checklist', 'index': MATCH}, 'value')],
+        [State({'type': 'checklist', 'index': MATCH}, 'id'),
+
+         State({'type': 'val1', 'index': MATCH}, "value"),
+         State({'type': 'val2', 'index': MATCH}, "value"),
+         State({'type': 'val3', 'index': MATCH}, "value"),
+         State({'type': 'birga1', 'index': MATCH}, "value"),
+         State({'type': 'birga2', 'index': MATCH}, "value"),
+
+         State({'type': 'profit', 'index': MATCH}, "value"),
+         State({'type': 'order', 'index': MATCH}, "value"),
+         State({'type': 'percent', 'index': MATCH}, "value"),
+         ]
+    )
+    def display_output(value,id, val1, val2, val3, birga1, birga2, profit, order, percent):
+        ctx = dash.callback_context
+
+        if not ctx.triggered:
+            raise dash.exceptions.PreventUpdate
+        else:
+            pass
+
+        if order is None:
+            order = ""
+        else:
+            order = float(order)
+
+        if percent is None:
+            percent = ""
+        else:
+            percent = percent
+
+        print(id['index'])
+
+        print("value   : ",value)
+
+
+
+
+        if not value:
+            # Change "option" in Regim
+
+            print("#########     OFF    ##############")
+
+            a_file = open(main_path_data + "\\regim.json", "r")
+            json_object = json.load(a_file)
+            a_file.close()
+
+            json_object[id['index']]['option'] = "OFF"
+
+            a_file = open(main_path_data + "\\regim.json", "w")
+            json.dump(json_object, a_file)
+            a_file.close()
+
+            return ["{}".format(json_object[id['index']]['option'])]
+
+        else:
+
+            print ("#########     ON    ##############")
+
+            a_file = open(main_path_data + "\\regim.json", "r")
+            json_object = json.load(a_file)
+            a_file.close()
+
+            json_object[id['index']]['option'] = "active"
+            json_object[id['index']]['val1'] = val1
+            json_object[id['index']]['val2'] = val2
+            json_object[id['index']]['val3'] = val3
+            json_object[id['index']]['birga1'] = birga1
+            json_object[id['index']]['birga2'] = birga2
+            json_object[id['index']]['profit'] = float(profit)
+            json_object[id['index']]['order'] = order
+            json_object[id['index']]['per'] = percent
+
+            a_file = open(main_path_data + "\\regim.json", "w")
+            json.dump(json_object, a_file)
+            a_file.close()
+
+            return ["{}".format(json_object[id['index']]['option'])]
+
+
+
+
 
 
 
@@ -170,3 +256,4 @@ create_callback_retrieve_value(dash_app, dash_db)
 refresh(dash_app)
 commis(dash_app)
 creat_reg(dash_app)
+save_reg_data(dash_app)

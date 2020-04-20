@@ -102,9 +102,14 @@ def loadRSS():
                         # dbbuy = sum_orders(v['buy'][:10])
 
                         alpha.update(
-                            {k: {'sell': [[float(v['sell'][0]["price"]), float(v['sell'][0]["amount"])], [float(v['sell'][1]["price"]), float(v['sell'][1]["amount"])], [float(v['sell'][2]["price"]), float(v['sell'][2]["amount"])]],
-                    'buy': [[float(v['buy'][0]["price"]), float(v['buy'][0]["amount"])],[float(v['buy'][1]["price"]), float(v['buy'][1]["amount"])],[float(v['buy'][2]["price"]), float(v['buy'][2]["amount"])]]
-                    }})
+                            {k: {'sell':
+                                     [[float(v['sell'][0]["price"]), float(v['sell'][0]["amount"])],
+                                      [float(v['sell'][1]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]))],
+                                      [float(v['sell'][2]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]) + float(v['sell'][2]["amount"]))]],
+                                      'buy':
+                                      [[float(v['buy'][0]["price"]), float(v['buy'][0]["amount"])],
+                                      [float(v['buy'][1]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]))],
+                                      [float(v['buy'][2]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]) + float(v['buy'][2]["amount"]))]]}})
 
                 break
             except Exception as e:

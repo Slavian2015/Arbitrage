@@ -277,7 +277,17 @@ def loadRSS():
                         resp = session.get(item)
                         v = resp.json()
 
-                        hot.update({k: {'sell': v['result']['asks'], 'buy':v['result']['bids']}})
+                        hot.update({k: {
+                                'sell': [[v['result']['asks'][0][0], v['result']['asks'][0][1]],
+                                [v['result']['asks'][1][0], (float(v['result']['asks'][0][1]) + float(v['result']['asks'][1][1]))],
+                                [v['result']['asks'][2][0], (float(v['result']['asks'][0][1]) + float(v['result']['asks'][1][1]) + float(v['result']['asks'][2][1]))]],
+                                'buy':[[v['result']['bids'][0][0], v['result']['bids'][0][1]],
+                                       [v['result']['bids'][1][0], (float(v['result']['bids'][0][1]) + float(v['result']['bids'][1][1]))],
+                                       [v['result']['bids'][2][0], (float(v['result']['bids'][0][1]) + float(v['result']['bids'][1][1]) + float(v['result']['bids'][2][1]))]]
+
+
+
+}})
 
 
                 break
