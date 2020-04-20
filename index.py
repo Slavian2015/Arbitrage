@@ -7,6 +7,7 @@ import dash_design_kit as ddk
 
 # git push heroku master
 import callbacks
+#heroku logs --tail
 
 
 dash_app.layout = html.Div([

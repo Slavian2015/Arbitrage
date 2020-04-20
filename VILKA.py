@@ -298,6 +298,8 @@ def restart():
 
     fdf = regim_filter()
 
+    print("  FILTER df  :", '\n',  fdf)
+
     if fdf.shape[0] > 0:
         fdf['rates_y'] = fdf['rates_y'].map('{:,.2f}'.format)
         fdf['rates_x'] = fdf['rates_x'].map('{:,.2f}'.format)

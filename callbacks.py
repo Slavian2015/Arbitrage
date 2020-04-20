@@ -199,9 +199,6 @@ def save_reg_data(app: dash.Dash):
 
         print(id['index'])
 
-        print("value   : ",value)
-
-
 
 
         if not value:
@@ -209,9 +206,13 @@ def save_reg_data(app: dash.Dash):
 
             print("#########     OFF    ##############")
 
+
+
             a_file = open(main_path_data + "\\regim.json", "r")
             json_object = json.load(a_file)
             a_file.close()
+            print("  REGIM JSON :", '\n', json_object)
+
 
             json_object[id['index']]['option'] = "OFF"
 
@@ -228,6 +229,8 @@ def save_reg_data(app: dash.Dash):
             a_file = open(main_path_data + "\\regim.json", "r")
             json_object = json.load(a_file)
             a_file.close()
+            print("  REGIM JSON :", '\n', json_object)
+
 
             json_object[id['index']]['option'] = "active"
             json_object[id['index']]['val1'] = val1
