@@ -6,7 +6,7 @@ import Live_parser
 import A_parser
 import os
 import datetime as dt
-import Regim
+
 
 
 # ##################################   SHOW ALL ROWS & COLS   ####################################
@@ -16,8 +16,6 @@ import Regim
 # pd.set_option('max_colwidth', None)
 
 
-Regim.reg()
-Regim.com()
 
 # alfa = {'BTC/USD': {'sell': [7000.122, 0.00058], 'buy': [6781.886, 0.03682]}, 'LTC/USD': {'sell': [41.2, 0.47692], 'buy': [41.16, 7.27098]}, 'ETH/USD': {'sell': [153.75, 0.7319055], 'buy': [153.5, 1.0121331]}, 'XRP/USD': {'sell': [0.18615, 38.82824326], 'buy': [0.185, 1.10438394]}, 'USD/USDT': {'sell': [0.998, 641.88], 'buy': [0.99, 204.0]}, 'BTC/USDT': {'sell': [6790.675, 0.012], 'buy': [6789.324, 0.0098]}, 'ETH/USDT': {'sell': [179.0, 0.05947], 'buy': [172.0, 5.859e-05]}, 'XRP/BTC': {'sell': [2.699e-05, 411.0], 'buy': [2.689e-05, 376.0]}, 'ETH/BTC': {'sell': [0.022632, 0.004], 'buy': [0.022603, 0.625]}, 'LTC/BTC': {'sell': [0.006067, 1.26], 'buy': [0.006055, 3.35]}, 'BCH/BTC': {'sell': [0.039, 0.001], 'buy': [0.03345002, 0.01913302]}, 'ZEC/BTC': {'sell': [0.006377, 0.48318062], 'buy': [0.004456, 2.7744614]}}
 # live = {'BTC/USD': {'sell': ['7115.99365', '0.0126934'], 'buy': ['7079.001', '0.0035635']}, 'LTC/USD': {'sell': ['42.47', '0.1'], 'buy': ['42.24', '1.84']}, 'ETH/USD': {'sell': ['164.14', '0.23099188'], 'buy': ['162.48974', '0.6528']}, 'XRP/USD': {'sell': ['0.19385', '7.66806089'], 'buy': ['0.18956', '364.64975524']}, 'USDT/USD': {'sell': ['1.04398', '21.11918813'], 'buy': ['1.02501', '36']}, 'BTC/USDT': {'sell': ['6.95E+3', '0.03181925'], 'buy': ['6859.04578501', '0.01']}, 'ETH/USDT': {'sell': ['170.99999999', '0.02112591'], 'buy': ['149.1', '0.00466711']}, 'XRP/BTC': {'sell': ['0.00002715', '67.77328'], 'buy': ['0.00002699', '10.8185632']}, 'ETH/BTC': {'sell': ['0.02320816', '0.01679207'], 'buy': ['0.023064', '5.97']}, 'LTC/BTC': {'sell': ['0.006035', '0.0174'], 'buy': ['0.00597483', '10.1366']}, 'BCH/BTC': {'sell': ['0.03299954', '0.03407698'], 'buy': ['0.03220001', '0.07028846']}, 'ZEC/BTC': {'sell': ['0.00521679', '0.17689186'], 'buy': ['0.00520734', '0.01450943']}}
@@ -44,6 +42,36 @@ else:
         outfile.close()
         pass
 
+
+
+def reg():
+
+    #################################      REGIMS      ##########################################
+
+    if os.path.isfile(main_path_data + "\\regim.json"):
+        pass
+    else:
+        dictionary = {"1": {"option": "off",
+                           "val1": "",
+                           "val2": "",
+                           "val3": "",
+                           "birga1": "",
+                           "birga2": "",
+                           "profit": "",
+                           "order": "",
+                            "per": ""
+                            }}
+        regim = json.dumps(dictionary, indent=4)
+
+        # Writing to sample.json
+        with open(main_path_data + "\\regim.json", "w") as outfile:
+            outfile.write(regim)
+            outfile.close()
+            pass
+
+    return
+
+reg()
 
 def restart():
 
