@@ -6,6 +6,7 @@ import Live_parser
 import A_parser
 import os
 import datetime as dt
+import Regim
 
 
 ##################################   SHOW ALL ROWS & COLS   ####################################
