@@ -31,7 +31,6 @@ else:
                        "order": "",
                         "per": ""}}
     regim = json.dumps(dictionary, indent=4)
-
     # Writing to sample.json
     with open(main_path_data + "\\regim.json", "w") as outfile:
         outfile.write(regim)
