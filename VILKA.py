@@ -44,34 +44,34 @@ else:
 
 
 
-def reg():
-
-    #################################      REGIMS      ##########################################
-
-    if os.path.isfile(main_path_data + "\\regim.json"):
-        pass
-    else:
-        dictionary = {"1": {"option": "off",
-                           "val1": "",
-                           "val2": "",
-                           "val3": "",
-                           "birga1": "",
-                           "birga2": "",
-                           "profit": "",
-                           "order": "",
-                            "per": ""
-                            }}
-        regim = json.dumps(dictionary, indent=4)
-
-        # Writing to sample.json
-        with open(main_path_data + "\\regim.json", "w") as outfile:
-            outfile.write(regim)
-            outfile.close()
-            pass
-
-    return
-
-reg()
+# def reg():
+#
+#     #################################      REGIMS      ##########################################
+#
+#     if os.path.isfile(main_path_data + "\\regim.json"):
+#         pass
+#     else:
+#         dictionary = {"1": {"option": "off",
+#                            "val1": "",
+#                            "val2": "",
+#                            "val3": "",
+#                            "birga1": "",
+#                            "birga2": "",
+#                            "profit": "",
+#                            "order": "",
+#                             "per": ""
+#                             }}
+#         regim = json.dumps(dictionary, indent=4)
+#
+#         # Writing to sample.json
+#         with open(main_path_data + "\\regim.json", "w") as outfile:
+#             outfile.write(regim)
+#             outfile.close()
+#             pass
+#
+#     return
+#
+# reg()
 
 def restart():
 
@@ -187,14 +187,14 @@ def restart():
     def calc1(result):
         f = open(main_path_data + "\\commis.json")
         com = json.load(f)
-        result['start'] = "100"
-        result["start"] = result["start"].str.replace(",", "").astype(float)
-        result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
-        result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
-        result['step'] = (result['start']) / ((result['rates_x'] * com['main'][result.iloc[0]['birga_x']]))
-        result['back'] = result['step'] * ((result['rates_y']) / com['main'][result.iloc[0]['birga_y']])
-        result['profit'] = result['back'] - result['start']
-        result['perc'] = (((result['profit']) / (result['start'])) * 100)
+        result.loc[:, 'start'] = "100"
+        result.loc[:, "start"] = result["start"].str.replace(",", "").astype(float)
+        result.loc[:, "rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
+        result.loc[:, "rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
+        result.loc[:, 'step'] = (result['start']) / ((result['rates_x'] * com['main'][result.iloc[0]['birga_x']]))
+        result.loc[:, 'back'] = result['step'] * ((result['rates_y']) / com['main'][result.iloc[0]['birga_y']])
+        result.loc[:, 'profit'] = result['back'] - result['start']
+        result.loc[:, 'perc'] = (((result['profit']) / (result['start'])) * 100)
         f.close()
         return result
     def calc2(result):
@@ -202,14 +202,14 @@ def restart():
         f = open(main_path_data + "\\commis.json")
         com = json.load(f)
 
-        result['start'] = "100"
-        result["start"] = result["start"].str.replace(",", "").astype(float)
-        result["rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
-        result["rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
-        result['step'] = (result['start']) * ((result['rates_x'] / com['main'][result.iloc[0]['birga_x']]))
-        result['back'] = result['step'] / ((result['rates_y']) * com['main'][result.iloc[0]['birga_y']])
-        result['profit'] = result['back'] - result['start']
-        result['perc'] = (((result['profit']) / (result['start'])) * 100)
+        result.loc[:, 'start'] = "100"
+        result.loc[:, "start"] = result["start"].str.replace(",", "").astype(float)
+        result.loc[:, "rates_x"] = result["rates_x"].str.replace(",", "").astype(float)
+        result.loc[:, "rates_y"] = result["rates_y"].str.replace(",", "").astype(float)
+        result.loc[:, 'step'] = (result['start']) * ((result['rates_x'] / com['main'][result.iloc[0]['birga_x']]))
+        result.loc[:, 'back'] = result['step'] / ((result['rates_y']) * com['main'][result.iloc[0]['birga_y']])
+        result.loc[:, 'profit'] = result['back'] - result['start']
+        result.loc[:, 'perc'] = (((result['profit']) / (result['start'])) * 100)
         f.close()
         return result
 
@@ -243,8 +243,30 @@ def restart():
 
     def regim_filter():
         ids = pd.DataFrame()
-        f = open(main_path_data + "\\regim.json")
-        regim = json.load(f)
+
+        #################################      REGIMS      ##########################################
+
+        if os.path.isfile(main_path_data + "\\regim.json"):
+            f = open(main_path_data + "\\regim.json")
+            regim = json.load(f)
+            pass
+        else:
+            regim = {1: {"option": "off",
+                                "val1": "",
+                                "val2": "",
+                                "val3": "",
+                                "birga1": "",
+                                "birga2": "",
+                                "profit": "",
+                                "order": "",
+                                "per": ""}}
+            ooo = json.dumps(regim, indent=4)
+            # Writing to sample.json
+            with open(main_path_data + "\\regim.json", "w") as outfile:
+                outfile.write(ooo)
+                outfile.close()
+                pass
+
 
         dfs['volume_x'] = dfs['volume_x'].apply(pd.to_numeric, errors='coerce')
         dfs['volume_y'] = dfs['volume_y'].apply(pd.to_numeric, errors='coerce')
@@ -298,7 +320,7 @@ def restart():
 
     fdf = regim_filter()
 
-    print("  FILTER df  :", '\n',  fdf)
+    # print("  FILTER df  :", '\n',  fdf)
 
     if fdf.shape[0] > 0:
         fdf['rates_y'] = fdf['rates_y'].map('{:,.2f}'.format)
@@ -312,6 +334,8 @@ def restart():
         fdf['volume'] = fdf['volume'].map('{:,.5f}'.format)
     else:
         pass
+
+    print( "FDF   :",  fdf)
 
     return fdf, valuta
 fin = restart()

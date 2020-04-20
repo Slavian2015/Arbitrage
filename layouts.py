@@ -8,34 +8,16 @@ import dash_table
 import os
 from app import dash_app
 import os
-from VILKA import final, valuta
+from VILKA import valuta
 import json
+import pandas as pd
+
 
 main_path_data = os.path.abspath("./data")
 
-
-#################################      REGIMS      ##########################################
-
-if os.path.isfile(main_path_data + "\\regim.json"):
-    f = open(main_path_data + "\\regim.json")
-    regim = json.load(f)
-    pass
-else:
-    dictionary = {"1": {"option": "off",
-                       "val1": "",
-                       "val2": "",
-                       "val3": "",
-                       "birga1": "",
-                       "birga2": "",
-                       "profit": "",
-                       "order": "",
-                        "per": ""}}
-    regim = json.dumps(dictionary, indent=4)
-    # Writing to sample.json
-    with open(main_path_data + "\\regim.json", "w") as outfile:
-        outfile.write(regim)
-        outfile.close()
-        pass
+my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
+                 'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+final = pd.DataFrame(columns=my_col)
 
 
 f = open(main_path_data + "\\commis.json")
@@ -87,10 +69,9 @@ def group_of_regims():
     # main_path_data = os.path.abspath("./data")
     d = open(main_path_data + "\\regim.json")
     com2 = json.load(d)
+
     group_of_regims = []
-
     html.Div(id='hidden-div')
-
 
     param_head = ddk.Card(style={'width': '100%', 'line-height': '1',
                                  'height': '70px', 'margin': '0', 'max-height': 'fit-content',
@@ -166,7 +147,7 @@ def group_of_regims():
                                                 'text-align': 'center',
                                                 'vertical-align': '-webkit-baseline-middle',
                                                 'justify-content': 'center'},
-                                        children=[v['option']],),
+                                            children=[v['option']]),
 
 
                                                   ]),
@@ -722,7 +703,7 @@ def group_of_regims():
 def serve_layout():
 
 
-    list_group = [i for i in group_of_regims()]
+    # list_group = [i for i in group_of_regims()]
 
 
 
@@ -1184,59 +1165,50 @@ def serve_layout():
                          children=[ddk.Block(width=100,
                                              style={'margin':'0'},
                                              children=dbc.ListGroup([
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('BTC  : 0.15900124')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('ETH  : 84200')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USD  : 2000')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USDt  : 1000')),
-                                                ])),
-                                   ddk.Block(width=100,
-                                             style={'margin':'0'},
-                                             children=dbc.ListGroup([
-                                                 dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
+                                                 dbc.ListGroupItem(style={'line-height': '1',
+                                                                  'margin': '0', 'margin-right': '0',
+                                                                   'justify-content': 'center',
+                                                                   'vertical-align': '-webkit-baseline-middle',
+                                                                   'max-height': 'fit-content', 'padding': '0px',
+                                                                   'list-style': 'none',
+                                                                   'align-items': 'center'},
+                                                                   active=True,
+                                                                   action=True,
+                                                                   children= ddk.Block(width=100,
+                                                                   children=[ddk.Block(width=20,
+                                                                            children=[html.P('Время')]),
+                                                                  ddk.Block(width=20,
+                                                                            children=[html.P('ПАРА')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('Направление')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('Цена')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('Количество')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('Стоимость')])])),
+                             dbc.ListGroupItem(style={'line-height': '1',
+                                                      'margin': '0',
+                                                      'margin-right': '0',
                'justify-content': 'center',
                'vertical-align': '-webkit-baseline-middle',
                'max-height': 'fit-content', 'padding': '0px',
                'list-style': 'none',
                'align-items': 'center'},
-                                                                   active=True,
-                                                                   action=True,
-                                                                   children= ddk.Block(width=100,
-                                                                                       children=[ddk.Block(width=20,
-                                                                                                children=[html.P('Время')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('ПАРА')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('Направление')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('Цена')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('Количество')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('Стоимость')])])),
+                                               action=True,
+                                               children=ddk.Block(width=100,
+                                                                  children=[ddk.Block(width=20,
+                                                                children=[html.P('08:54:40')]),
+                                                      ddk.Block(width=20,
+                                                                children=[html.P('USD/USDT')]),
+                                                      ddk.Block(width=15,
+                                                                children=[html.P('sell')]),
+                                                      ddk.Block(width=15,
+                                                                children=[html.P('0,99400000')]),
+                                                      ddk.Block(width=15,
+                                                                children=[html.P('5,04100000')]),
+                                                      ddk.Block(width=15,
+                                                                children=[html.P('5,01075400')])])),
                                                  dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
                'justify-content': 'center',
                'vertical-align': '-webkit-baseline-middle',
@@ -1263,94 +1235,75 @@ def serve_layout():
                'list-style': 'none',
                'align-items': 'center'},action=True,
                                                                    children=ddk.Block(width=100,
-                                                                            children=[ddk.Block(width=20,
-                                                                                                children=[html.P('08:54:40')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('USD/USDT')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('sell')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('0,99400000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,04100000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,01075400')])])),
-                                                 dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                                   children=ddk.Block(width=100,
-                                                                            children=[ddk.Block(width=20,
-                                                                                                children=[html.P('08:54:40')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('USD/USDT')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('sell')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('0,99400000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,04100000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,01075400')])])),
-                                                 dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                                   children=ddk.Block(width=100,
-                                                                            children=[ddk.Block(width=20,
-                                                                                                children=[html.P('08:54:40')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('USD/USDT')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('sell')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('0,99400000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,04100000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,01075400')])])),
-                                                 dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                                   children=ddk.Block(width=100,
-                                                                            children=[ddk.Block(width=20,
-                                                                                                children=[html.P('08:54:40')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('USD/USDT')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('sell')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('0,99400000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,04100000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,01075400')])])),
-                                                 dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                                   children=ddk.Block(width=100,
-                                                                            children=[ddk.Block(width=20,
-                                                                                                children=[html.P('08:54:40')]),
-                                                                                      ddk.Block(width=20,
-                                                                                                children=[html.P('USD/USDT')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('sell')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('0,99400000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,04100000')]),
-                                                                                      ddk.Block(width=15,
-                                                                                                children=[html.P('5,01075400')])])),
+                                                        children=[ddk.Block(width=20,
+                                                                            children=[html.P('08:54:40')]),
+                                                                  ddk.Block(width=20,
+                                                                            children=[html.P('USD/USDT')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('sell')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('0,99400000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,04100000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,01075400')])])),
+                             dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
+'justify-content': 'center',
+'vertical-align': '-webkit-baseline-middle',
+'max-height': 'fit-content', 'padding': '0px',
+'list-style': 'none',
+'align-items': 'center'},action=True,
+                                               children=ddk.Block(width=100,
+                                                        children=[ddk.Block(width=20,
+                                                                            children=[html.P('08:54:40')]),
+                                                                  ddk.Block(width=20,
+                                                                            children=[html.P('USD/USDT')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('sell')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('0,99400000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,04100000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,01075400')])])),
+                             dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
+'justify-content': 'center',
+'vertical-align': '-webkit-baseline-middle',
+'max-height': 'fit-content', 'padding': '0px',
+'list-style': 'none',
+'align-items': 'center'},action=True,
+                                               children=ddk.Block(width=100,
+                                                        children=[ddk.Block(width=20,
+                                                                            children=[html.P('08:54:40')]),
+                                                                  ddk.Block(width=20,
+                                                                            children=[html.P('USD/USDT')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('sell')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('0,99400000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,04100000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,01075400')])])),
+                             dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
+'justify-content': 'center',
+'vertical-align': '-webkit-baseline-middle',
+'max-height': 'fit-content', 'padding': '0px',
+'list-style': 'none',
+'align-items': 'center'},action=True,
+                                               children=ddk.Block(width=100,
+                                                        children=[ddk.Block(width=20,
+                                                                            children=[html.P('08:54:40')]),
+                                                                  ddk.Block(width=20,
+                                                                            children=[html.P('USD/USDT')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('sell')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('0,99400000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,04100000')]),
+                                                                  ddk.Block(width=15,
+                                                                            children=[html.P('5,01075400')])])),
 
                                                 ]))
                                    ])
@@ -1358,40 +1311,6 @@ def serve_layout():
                          style={'background-color': '#fff', 'max-height': '30vh', 'overflowY':'scroll'},
                          shadow_weight='heavy',
                          children=[ddk.Block(width=100,
-                                             style={'margin': '0',},
-                                             children=dbc.ListGroup(style={'margin': '0', 'padding':'0', 'max-width': '-webkit-fill-available'},
-                                                                    children=[
-                                            dbc.ListGroupItem(style={'max-width': '-webkit-fill-available',
-                                                                     'line-height': '1', 'margin': '0', 'margin-right': '0',
-                                                                       'height': 'fit-content', 'justify-content': 'center',
-                                                                       'vertical-align': '-webkit-baseline-middle',
-                                                                       'max-height': 'fit-content', 'padding': '0px',
-                                                                       'list-style': 'none',
-                                                                       'align-items': 'center'},action=True,
-                                                              children=html.P('BTC  : 0.15900124')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center', 'max-width': '-webkit-fill-available',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('ETH  : 84200')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle', 'max-width': '-webkit-fill-available',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USD  : 2000')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle', 'max-width': '-webkit-fill-available',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USDt  : 1000')),
-                                                ])),
-                                   ddk.Block(width=100,
                                              style={'margin':'0px'},
                                              children=dbc.ListGroup([
                                                  dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
@@ -1536,40 +1455,6 @@ def serve_layout():
                          style={'background-color': '#fff', 'max-height': '30vh', 'overflowY':'scroll'},
                          shadow_weight='heavy',
                          children=[ddk.Block(width=100,
-                                             style={'margin': '0',},
-                                             children=dbc.ListGroup(style={'margin': '0', 'padding':'0', 'max-width': '-webkit-fill-available'},
-                                                                    children=[
-                                            dbc.ListGroupItem(style={'max-width': '-webkit-fill-available',
-                                                                     'line-height': '1', 'margin': '0', 'margin-right': '0',
-                                                                       'height': 'fit-content', 'justify-content': 'center',
-                                                                       'vertical-align': '-webkit-baseline-middle',
-                                                                       'max-height': 'fit-content', 'padding': '0px',
-                                                                       'list-style': 'none',
-                                                                       'align-items': 'center'},action=True,
-                                                              children=html.P('BTC  : 0.15900124')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center', 'max-width': '-webkit-fill-available',
-               'vertical-align': '-webkit-baseline-middle',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('ETH  : 84200')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle', 'max-width': '-webkit-fill-available',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USD  : 2000')),
-                                            dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
-               'height': 'fit-content', 'justify-content': 'center',
-               'vertical-align': '-webkit-baseline-middle', 'max-width': '-webkit-fill-available',
-               'max-height': 'fit-content', 'padding': '0px',
-               'list-style': 'none',
-               'align-items': 'center'},action=True,
-                                                              children=html.P('USDt  : 1000')),
-                                                ])),
-                                   ddk.Block(width=100,
                                              style={'margin':'0px'},
                                              children=dbc.ListGroup([
                                                  dbc.ListGroupItem(style={'line-height': '1', 'margin': '0', 'margin-right': '0',
@@ -1847,17 +1732,10 @@ def serve_layout():
                         selected_style={'border': '2px solid #1f78b4'},
                          children=ddk.Card(
                              shadow_weight='heavy',
-                                           children=[
-                                        dbc.ListGroup(
-                                            id="listcardreg",
-                                            children=
-                                                list_group
-
-
-                                        ),
-                                               html.Button('Добавить Режим', id='New_Regim_btn'),
-
-                         ]))
+                             children=[dbc.ListGroup(
+                                 id="listcardreg",
+                                 children=[i for i in group_of_regims()]),
+                                 html.Button('Добавить Режим', id='New_Regim_btn')]))
 
 
     # create tab to retrieve the value entered in the other tab
@@ -1963,6 +1841,8 @@ def serve_layout():
     layout = html.Div(children=[tabs, store_session_id_div, interval])
 
     return layout
+
+
 layout_main = serve_layout()
 
 

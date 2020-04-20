@@ -11,6 +11,7 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_design_kit as ddk
 import layouts
+import pandas as pd
 
 dash_app.config['suppress_callback_exceptions'] = True
 main_path_data = os.path.abspath("./data")
@@ -61,8 +62,14 @@ def refresh(app: dash.Dash):
         print ("###############  UPDATE   #########################")
         df = VILKA.restart()
         df10 = df[0]
-        df10['id'] = df10.index
-        return df10.to_dict('records')
+        print("DF10  SHAPE   :",  df10.shape[0])
+        if df10.shape[0]>0:
+            return df10.to_dict('records')
+        else:
+            my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
+                 'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+            df10 = pd.DataFrame(columns=my_col)
+            return df10.to_dict('records')
 
 
 def commis(app: dash.Dash):
@@ -135,31 +142,35 @@ def creat_reg(app: dash.Dash):
 
     @app.callback(
         dash.dependencies.Output('listcardreg', 'children'),
-        [dash.dependencies.Input('New_Regim_btn', 'n_clicks')])
+        [dash.dependencies.Input('New_Regim_btn', 'n_clicks'),
+         Input('interval', 'n_intervals')])
 
-    def create(n_clicks):
-        if n_clicks is None:
+    def create(n_clicks, n):
+
+        if n_clicks is None or n is None:
             raise PreventUpdate
 
+        elif n_clicks > 0:
+            with open(main_path_data + "\\regim.json", "r") as file:
+                param = []
+                data = json.load(file)
+                file.close()
+                for k, v in data.items():
+                    param.append(k)
+                next_id = str(int(param[-1]) + 1)
+                data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                                 "profit": "",
+                                 "order": "", "per": ""}
+                f = open(main_path_data + "\\regim.json", "w")
+                json.dump(data, f)
+                # print("BEFORE2 :", data)
+                f.close()
+            list_group = [i for i in layouts.group_of_regims()]
+            return list_group
 
-        with open(main_path_data + "\\regim.json", "r") as file:
-            param = []
-            data = json.load(file)
-            file.close()
-            for k, v in data.items():
-                param.append(k)
-            next_id = str(int(param[-1]) + 1)
-            data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
-                             "profit": "",
-                             "order": "", "per": ""}
-            f = open(main_path_data + "\\regim.json", "w")
-            json.dump(data, f)
-            # print("BEFORE2 :", data)
-            f.close()
-
-        list_group = [i for i in layouts.group_of_regims()]
-
-        return list_group
+        else:
+            list_group = [i for i in layouts.group_of_regims()]
+            return list_group
 
 
 def save_reg_data(app: dash.Dash):
