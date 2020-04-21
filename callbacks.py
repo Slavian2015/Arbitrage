@@ -143,14 +143,14 @@ def creat_reg(app: dash.Dash):
     @app.callback(
         dash.dependencies.Output('listcardreg', 'children'),
         [dash.dependencies.Input('New_Regim_btn', 'n_clicks'),
-         Input('interval', 'n_intervals')])
+         dash.dependencies.Input('ref_Regim_btn', 'n_clicks')])
 
     def create(n_clicks, n):
 
-        if n_clicks is None or n is None:
-            raise PreventUpdate
+        # if n_clicks is None and n is None:
+        #     raise PreventUpdate
 
-        elif n_clicks > 0:
+        if n_clicks > 0:
             with open(main_path_data + "\\regim.json", "r") as file:
                 param = []
                 data = json.load(file)
@@ -168,7 +168,7 @@ def creat_reg(app: dash.Dash):
             list_group = [i for i in layouts.group_of_regims()]
             return list_group
 
-        else:
+        elif n > 0:
             list_group = [i for i in layouts.group_of_regims()]
             return list_group
 
