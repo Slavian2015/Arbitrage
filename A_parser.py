@@ -26,6 +26,29 @@ main_path_data = os.path.abspath("./data")
 #     result = next(iter(wer.items()))
 #     return result
 
+def keys():
+    if os.path.isfile(main_path_data + "\\keys.json"):
+        pass
+    else:
+
+        dictionary = {"1": {"key": "BtuWYH7DbtNLREeRUdfjfAxEiS71Lq6Wn2kyyoxS9zkiiVo2HtvZUg1CaMdJiuRHDUum9HutR",
+                            "api": "4Bmhw5cz4f5QzoXt8XbnEMwoapYFirS6ozkD11Q7RiuYg7DidgTdnJLf8MUU8Bb6YAL5D5m65uvBR4JTavip5uA6"},
+                      "2": {"key": "gT5fA5uh2f3vbkYxprGU6UYmQxD7uQA4",
+                            "api": "dV3dGBU6zC85WE53ezNBZSKRVTkA8hxG"},
+                      "3": {"key": "7df7baa8-ae73-ddd1-2e8f6968ed3d5a89",
+                            "api": "37dfc47b7ef13b296f7011dad71a5775"},
+                      "4": {"key": "Chat id", "api": "Token"}}
+
+        keys1 = json.dumps(dictionary, indent=4)
+        print(' JSON DOESNT EXIST :', keys1)
+        # Writing to sample.json
+        with open(main_path_data + "\\keys.json", "w") as outfile:
+            outfile.write(keys1)
+            outfile.close()
+            pass
+
+
+
 def proxies():
     if os.path.isfile('proxies.txt'):
         pass
@@ -192,6 +215,7 @@ def wallet_a():
 
 
 if __name__ == "__main__":
+    keys()
     start = time.process_time()
     start11 = time.process_time()
     proxies()
