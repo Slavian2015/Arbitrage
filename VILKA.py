@@ -6,6 +6,7 @@ import Live_parser
 import A_parser
 import os
 import datetime as dt
+from functools import reduce
 
 
 
@@ -140,24 +141,12 @@ def restart():
     dw = {'birga': birga, 'valin': valin, 'valout': valout, 'rates': rates, 'volume': volume}
     df = pd.DataFrame(data=dw)
 
-    # dfs = pd.merge(df, df, left_on=df['valin'], right_on=df['valout'], how='outer')
     dfs2 = pd.merge(df, df, left_on=df['valout'], right_on=df['valin'], how='outer')
-
-    # print(dfs.dtypes)
-    # dfs['rates_x'] = dfs['rates_x'].apply(pd.to_numeric, errors='coerce')
-    # dfs['rates_y'] = dfs['rates_y'].apply(pd.to_numeric, errors='coerce')
-
     dfs2['rates_x'] = dfs2['rates_x'].apply(pd.to_numeric, errors='coerce')
     dfs2['rates_y'] = dfs2['rates_y'].apply(pd.to_numeric, errors='coerce')
-
-
     dfs2['volume_x'] = dfs2['volume_x'].apply(pd.to_numeric, errors='coerce')
     dfs2['volume_y'] = dfs2['volume_y'].apply(pd.to_numeric, errors='coerce')
-    # print(dfs2.dtypes)
-
-
     dfs2.drop(['key_0'], axis = 1, inplace = True)
-
     dfs2['rates_y'] = dfs2['rates_y'].map('{:,.10f}'.format)
     dfs2['rates_x'] = dfs2['rates_x'].map('{:,.10f}'.format)
 
@@ -233,12 +222,19 @@ def restart():
     print("Restart :", '\n')
     # print(final)
 
-    dict = {'VALUTA': ["USD", "BTC", "ETH", "LTC"],
-            'Alpha': [5000, 0.1, 50, 65],
-            'Live': [5000, 0.1, 50, 65],
-            'Hot': [5000, 0.1, 50, 65]}
-    valuta = pd.DataFrame(dict)
-    valuta["SUMMA"] = valuta["Alpha"] + valuta["Live"] + valuta["Hot"]
+    Alfa = A_parser.wallet_a()
+    Hot = Hot_parser.wallet_h()
+    Live = Live_parser.wallet_l()
+
+    dfa = pd.DataFrame(Alfa.items(), columns=['Valuta', 'Alfa'])
+    dfh = pd.DataFrame(Hot.items(), columns=['Valuta', 'Hot'])
+    dfl = pd.DataFrame(Live.items(), columns=['Valuta', 'Live'])
+
+    data_frames = [dfa, dfh, dfl]
+    valuta = reduce(lambda left, right: pd.merge(left, right, on=['Valuta'],
+                                                    how='outer'), data_frames).fillna('0')
+
+    valuta["SUMMA"] = valuta["Alfa"] + valuta["Live"] + valuta["Hot"]
     dfs = dft
 
     def regim_filter():
@@ -283,7 +279,7 @@ def restart():
                     filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
                     dfs.loc[filterx, "volume"] = dfs.loc[filterx, "volume_x"] * float(regim[i]["per"]) / 100
                     filtery = dfs[dfs["volume_x"] > dfs["volume_y"]].index
-                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_x"] * float(regim[i]["per"]) / 100
+                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_y"] * float(regim[i]["per"]) / 100
                     dfs["volume"] = dfs["volume"].astype(float)
                     dft = dfs[(dfs["birga_x"] == regim[i]["birga1"]) &
                               (dfs["birga_y"] == regim[i]["birga2"]) &
@@ -293,6 +289,11 @@ def restart():
                               (dfs["perc"] > regim[i]["profit"])
                               ]
                     ids = pd.concat([dft, ids], ignore_index=False, join='outer')
+                    ids = ids[ids['volume'] == ids['volume'].max()]
+
+                    ids = ids[:1]
+
+                    ids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
 
                 else:
 
@@ -302,7 +303,7 @@ def restart():
                     filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
                     dfs.loc[filterx, "volume"] = dfs.loc[filterx, "volume_x"] / 2
                     filtery = dfs[dfs["volume_x"] > dfs["volume_y"]].index
-                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_x"] / 2
+                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_y"] / 2
                     dfs["volume"] = dfs["volume"].astype(float)
                     dft = dfs[(dfs["birga_x"] == regim[i]["birga1"]) &
                               (dfs["birga_y"] == regim[i]["birga2"]) &
@@ -312,6 +313,10 @@ def restart():
                               (dfs["perc"] > regim[i]["profit"]) &
                               (dfs["volume"] > float(regim[i]["order"]))]
                     ids = pd.concat([dft, ids], ignore_index=False, join='outer')
+
+                    ids = ids[ids['volume'] == ids['volume'].max()]
+                    ids = ids[:1]
+                    ids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
 
             else:
                 pass
@@ -332,12 +337,16 @@ def restart():
         fdf['volume_x'] = fdf['volume_x'].map('{:,.5f}'.format)
         fdf['volume_y'] = fdf['volume_y'].map('{:,.5f}'.format)
         fdf['volume'] = fdf['volume'].map('{:,.5f}'.format)
+
+
     else:
         pass
 
-    # print( "FDF   :",  fdf)
+    df_all = pd.read_csv(main_path_data + "\\all_data.csv")
 
-    return fdf, valuta
+
+
+    return fdf, valuta, df_all
 fin = restart()
 final = fin[0]
 valuta = fin[1]

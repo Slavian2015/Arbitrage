@@ -6,7 +6,8 @@ import time
 from urllib.parse import urlparse
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from fake_useragent import UserAgent
-
+import json
+main_path_data = os.path.abspath("./data")
 
 # def sum_orders(data):
 #     wer = {}
@@ -119,6 +120,75 @@ def loadRSS():
 
     scrape_page()
     return alpha
+
+
+#################  Get Currency Balance   ###################
+
+def wallet_a():
+    import hmac
+    from time import time
+    a_file = open(main_path_data + "\\keys.json", "r")
+    json_object = json.load(a_file)
+    a_file.close()
+
+    input1 = json_object["1"]['key']
+    input2 = json_object["1"]['api']
+
+    if input1 != "Api key" and input2 != "Api secret":
+        # Свой класс исключений
+        class ScriptError(Exception):
+            pass
+
+        class ScriptQuitCondition(Exception):
+            pass
+
+        def get_auth_headers(self):
+            # print('input 1  :', input1)
+            # print('input 2  :', input2)
+
+            msg = input1
+            sign = hmac.new(input2.encode(), msg.encode(), digestmod='sha256').hexdigest()
+
+            return {
+                'X-KEY': input1,
+                'X-SIGN': sign,
+                'X-NONCE': str(int(time() * 1000)),
+            }
+
+        response = requests.get('https://btc-alpha.com/api/v1/wallets/', headers=get_auth_headers({}))
+
+        def resm():
+            try:
+                # Полученный ответ переводим в строку UTF, и пытаемся преобразовать из текста в объект Python
+                obj = json.loads(response.text)
+                # Смотрим, есть ли в полученном объекте ключ "error"
+                if 'error' in obj and obj['error']:
+                    # Если есть, выдать ошибку, код дальше выполняться не будет
+                    raise ScriptError(obj['error'])
+                # Вернуть полученный объект как результат работы ф-ции
+
+
+                wallet_a = {}
+                # print(obj)
+                for i in obj:
+                    # print(i)
+                    wallet_a.update({i['currency']: i['balance']})
+
+                # print(wallet_a['USDT'])
+
+                return wallet_a
+            except ValueError:
+                # Если не удалось перевести полученный ответ (вернулся не JSON)
+                raise ScriptError('Ошибка анализа возвращаемых данных, получена строка', response)
+
+        return resm()
+
+    else:
+        return {}
+
+
+
+
 
 
 if __name__ == "__main__":

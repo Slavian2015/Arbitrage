@@ -57,19 +57,44 @@ def create_callback_retrieve_value(app: dash.Dash, dash_db: DashDatabase):
 def refresh(app: dash.Dash):
 
     ###############################    RESTART ALL FUNCTIONS     ########################################
-    @app.callback(Output('table', 'data'), [Input('interval', 'n_intervals')])
+    @app.callback([Output('table', 'data'), Output('valuta', 'data'), Output('table_all', 'data')], [Input('interval', 'n_intervals')])
     def trigger_by_modify(n):
         print ("###############  UPDATE   #########################")
         df = VILKA.restart()
         df10 = df[0]
-        print("DF10  SHAPE   :",  df10.shape[0])
+        valuta = df[1]
+        df_all = df[2]
+
+
+        # print("DF10  SHAPE   :",  df10.shape[0])
+
         if df10.shape[0]>0:
-            return df10.to_dict('records')
+            if valuta.shape[0] > 0:
+                return df10.to_dict('records'), valuta.to_dict('records'), df_all.to_dict('records')
+            else:
+                my_col = ['Valuta', 'Alfa', 'Hot', 'Live', 'Summa']
+                valuta = pd.DataFrame(columns=my_col)
+                return df10.to_dict('records'), valuta.to_dict('records'), df_all.to_dict('records')
+
         else:
-            my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
-                 'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
-            df10 = pd.DataFrame(columns=my_col)
-            return df10.to_dict('records')
+            if valuta.shape[0] > 0:
+                my_col = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y',
+                          'volume_x',
+                          'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+                df10 = pd.DataFrame(columns=my_col)
+
+                return df10.to_dict('records'), valuta.to_dict('records'), df_all.to_dict('records')
+
+            else:
+                my_col1 = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y',
+                          'volume_x',
+                          'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+                df10 = pd.DataFrame(columns=my_col1)
+
+
+                my_col = ['Valuta', 'Alfa', 'Hot', 'Live', 'Summa']
+                valuta = pd.DataFrame(columns=my_col)
+                return df10.to_dict('records'), valuta.to_dict('records'), df_all.to_dict('records')
 
 
 def commis(app: dash.Dash):
@@ -274,8 +299,6 @@ def save_key_data(app: dash.Dash):
         if n_clicks is None:
             raise PreventUpdate
 
-
-        # if n_clicks>0:
         else:
 
             a_file = open(main_path_data + "\\keys.json", "r")

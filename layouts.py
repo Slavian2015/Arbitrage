@@ -19,6 +19,13 @@ my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y'
                  'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
 final = pd.DataFrame(columns=my_col)
 
+if os.path.isfile(main_path_data + "\\all_data.csv"):
+    final2 = pd.read_csv(main_path_data + "\\all_data.csv")
+    pass
+else:
+    final2 = pd.DataFrame(columns=my_col)
+    final2.to_csv(main_path_data + "\\all_data.csv", header=True)
+    pass
 
 f = open(main_path_data + "\\commis.json")
 com = json.load(f)
@@ -70,19 +77,13 @@ def keys():
         pass
     else:
 
-        dictionary = {'1':
-                          {"key": 'Api key',
-                           "api": 'Api secret'},
-                      '2':
-                          {"key": 'Api key',
-                           "api": 'Api secret'},
-                      '3':
-                          {"key": 'Api key',
-                           "api": 'Api secret'},
-                      '4':
-                          {"key": 'Chat id',
-                           "api": 'Token'}
-                      }
+        dictionary = {"1": {"key": "BtuWYH7DbtNLREeRUdfjfAxEiS71Lq6Wn2kyyoxS9zkiiVo2HtvZUg1CaMdJiuRHDUum9HutR",
+                            "api": "4Bmhw5cz4f5QzoXt8XbnEMwoapYFirS6ozkD11Q7RiuYg7DidgTdnJLf8MUU8Bb6YAL5D5m65uvBR4JTavip5uA6"},
+                      "2": {"key": "gT5fA5uh2f3vbkYxprGU6UYmQxD7uQA4",
+                            "api": "dV3dGBU6zC85WE53ezNBZSKRVTkA8hxG"},
+                      "3": {"key": "7df7baa8-ae73-ddd1-2e8f6968ed3d5a89",
+                            "api": "37dfc47b7ef13b296f7011dad71a5775"},
+                      "4": {"key": "Chat id", "api": "Token"}}
 
         keys1 = json.dumps(dictionary, indent=4)
         print(' JSON DOESNT EXIST :', keys1)
@@ -1804,7 +1805,40 @@ def serve_layout():
                                                                 'fontWeight': 'bold'
                                                             }
                                                             ),
-                             ])]
+                             ]),
+                             ddk.Card(children=[dash_table.DataTable(
+                                 id="table_all",
+                                 data=final2.to_dict('records'),
+                                 columns=[{'id': c, 'name': c} for c in final2.columns],
+                                 page_action='native',
+                                 filter_action='native',
+                                 filter_query='',
+                                 sort_action='native',
+                                 sort_mode='multi',
+                                 sort_by=[],
+                                 export_format='xlsx',
+                                 export_headers='display',
+                                 # pagination_mode='fe',
+                                 # pagination_settings={
+                                 #     'displayed_pages': 1,
+                                 #     'current_page': 0,
+                                 #     'page_size': 50,
+                                 # },
+                                 merge_duplicate_headers=True,
+                                 style_cell_conditional=[],
+                                 style_data_conditional=[
+                                     {
+                                         'if': {'row_index': 'odd'},
+                                         'backgroundColor': 'rgb(248, 248, 248)'
+                                     }
+                                 ],
+                                 style_header={
+                                     'backgroundColor': 'rgb(230, 230, 230)',
+                                     'fontWeight': 'bold'
+                                 }
+                             ),
+                             ])
+                         ]
                         )
 
 
