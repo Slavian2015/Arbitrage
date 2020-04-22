@@ -208,10 +208,6 @@ def save_reg_data(app: dash.Dash):
         else:
             percent = percent
 
-        print(id['index'])
-
-
-
         if not value:
             # Change "option" in Regim
 
@@ -259,6 +255,64 @@ def save_reg_data(app: dash.Dash):
 
             return ["{}".format(json_object[id['index']]['option'])]
 
+def save_key_data(app: dash.Dash):
+    @app.callback(
+
+        [Output({'type': 'key', 'index': MATCH}, 'placeholder'),
+        Output({'type': 'api', 'index': MATCH}, 'placeholder')],
+       [Input({'type': 'save_btn', 'index': MATCH}, 'n_clicks')],
+        [State({'type': 'save_btn', 'index': MATCH}, 'id'),
+         State({'type': 'key', 'index': MATCH}, 'value'),
+         State({'type': 'api', 'index': MATCH}, 'value'),
+         ])
+
+
+    def display_output(n_clicks, id, key, api):
+
+
+
+        if n_clicks is None:
+            raise PreventUpdate
+
+
+        # if n_clicks>0:
+        else:
+
+            a_file = open(main_path_data + "\\keys.json", "r")
+            json_object = json.load(a_file)
+            a_file.close()
+
+
+            json_object[str(id['index'])]['key'] = key
+            json_object[str(id['index'])]['api'] = api
+
+            print("###################################  keys JSON NEW:", '\n', json_object)
+            a_file = open(main_path_data + "\\keys.json", "w")
+            json.dump(json_object, a_file)
+            a_file.close()
+
+
+            return "{}".format(key), "{}".format(api)
+
+def ref_key_data(app: dash.Dash):
+    @app.callback(
+
+        [Output('tab_keys88', 'children')],
+        [Input('ref_keys_btn', 'n_clicks')])
+    def display_output(n_clicks):
+
+        if n_clicks is None:
+            raise PreventUpdate
+
+        else:
+            tab = layouts.tab_keys()
+            return [tab]
+
+
+
+
+
+
 
 
 
@@ -271,3 +325,5 @@ refresh(dash_app)
 commis(dash_app)
 creat_reg(dash_app)
 save_reg_data(dash_app)
+save_key_data(dash_app)
+ref_key_data(dash_app)

@@ -18,7 +18,8 @@ dash_app.layout = html.Div([
                                    style={'height': '100vh', 'width': '100%', 'text-align':'center', 'padding':'0'},
                                    children=ddk.Block(width=100,
                                                       style={'margin': '0', 'width':'100%'},
-                                                      children=html.Div(id='page-content')))
+                                                      children=html.Div(id='page-content'))),
+    html.Div(id='hidden-div')
 
 ])])
 

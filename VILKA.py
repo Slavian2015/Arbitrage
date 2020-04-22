@@ -335,7 +335,7 @@ def restart():
     else:
         pass
 
-    print( "FDF   :",  fdf)
+    # print( "FDF   :",  fdf)
 
     return fdf, valuta
 fin = restart()
