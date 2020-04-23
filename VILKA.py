@@ -240,7 +240,7 @@ def restart():
     dfh = pd.DataFrame(Hot.items(), columns=['Valuta', 'Hot'])
     dfl = pd.DataFrame(Live.items(), columns=['Valuta', 'Live'])
 
-    data_frames = [dfh, dfa, dfl]
+    data_frames = [dfl, dfh, dfa]
     valuta = reduce(lambda left, right: pd.merge(left, right, on=['Valuta'],
                                                     how='outer'), data_frames).fillna('0')
 

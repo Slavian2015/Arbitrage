@@ -191,14 +191,26 @@ def creat_reg(app: dash.Dash):
                 file.close()
                 for k, v in data.items():
                     param.append(k)
-                next_id = str(int(param[-1]) + 1)
-                data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
-                                 "profit": "",
-                                 "order": "", "per": ""}
-                f = open(main_path_data + "\\regim.json", "w")
-                json.dump(data, f)
-                # print("BEFORE2 :", data)
-                f.close()
+
+                if not param:
+                    next_id = 1
+                    data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                                     "profit": "",
+                                     "order": "", "per": ""}
+                    f = open(main_path_data + "\\regim.json", "w")
+                    json.dump(data, f)
+                    # print("BEFORE2 :", data)
+                    f.close()
+                else:
+                    next_id = str(int(param[-1]) + 1)
+                    data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                                     "profit": "",
+                                     "order": "", "per": ""}
+                    f = open(main_path_data + "\\regim.json", "w")
+                    json.dump(data, f)
+                    # print("BEFORE2 :", data)
+                    f.close()
+
 
             list_group = [i for i in layouts.group_of_regims()]
             return list_group
