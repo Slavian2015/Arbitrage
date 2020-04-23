@@ -347,6 +347,7 @@
 # # }
 import os
 main_path_data = os.path.abspath("./data")
+import json
 # import A_parser
 # import Hot_parser
 # import Live_parser
@@ -390,6 +391,17 @@ pd.set_option('max_colwidth', None)
 #
 # print(df_merged)
 
-df_all = pd.read_csv(main_path_data + "\\all_data.csv")
+# df_all = pd.read_csv(main_path_data + "\\all_data.csv")
+#
+# print(df_all.loc[0])
 
-print(df_all.loc[0])
+
+a_file = open(main_path_data + "\\regim.json", "r")
+json_object = json.load(a_file)
+a_file.close()
+print("  REGIM BEFORE :", '\n', json_object)
+
+
+for i in json_object:
+    print(i)
+# json_object[['index']])

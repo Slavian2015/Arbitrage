@@ -76,6 +76,16 @@ else:
 
 def restart():
 
+    my_col = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
+              'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+
+    if os.path.isfile(main_path_data + "\\all_data.csv"):
+        pass
+    else:
+        final2 = pd.DataFrame(columns=my_col)
+        final2.to_csv(main_path_data + "\\all_data.csv", header=True)
+        pass
+
     hot = Hot_parser.loadRSS()
     live = Live_parser.restart()
     alfa = A_parser.loadRSS()
@@ -238,7 +248,7 @@ def restart():
     dfs = dft
 
     def regim_filter():
-        ids = pd.DataFrame()
+        fids = pd.DataFrame()
 
         #################################      REGIMS      ##########################################
 
@@ -288,12 +298,12 @@ def restart():
                               (dfs["valout_y"] == regim[i]["val3"]) &
                               (dfs["perc"] > regim[i]["profit"])
                               ]
-                    ids = pd.concat([dft, ids], ignore_index=False, join='outer')
-                    ids = ids[ids['volume'] == ids['volume'].max()]
+                    fids = pd.concat([dft, fids], ignore_index=False, join='outer')
+                    fids = fids[fids['volume'] == fids['volume'].max()]
 
-                    ids = ids[:1]
+                    fids = fids[:1]
 
-                    ids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
+                    fids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
 
                 else:
 
@@ -312,16 +322,16 @@ def restart():
                               (dfs["valout_y"] == regim[i]["val3"]) &
                               (dfs["perc"] > regim[i]["profit"]) &
                               (dfs["volume"] > float(regim[i]["order"]))]
-                    ids = pd.concat([dft, ids], ignore_index=False, join='outer')
+                    fids = pd.concat([dft, fids], ignore_index=False, join='outer')
 
-                    ids = ids[ids['volume'] == ids['volume'].max()]
-                    ids = ids[:1]
-                    ids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
+                    fids = fids[fids['volume'] == fids['volume'].max()]
+                    fids = fids[:1]
+                    fids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
 
             else:
                 pass
 
-        return ids
+        return fids
 
     fdf = regim_filter()
 

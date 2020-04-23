@@ -198,7 +198,7 @@ def wallet_a():
 
 
                 wallet_a = {}
-                # print(obj)
+                print("APARSER   Wallet    :", '\n', obj)
                 for i in obj:
                     # print(i)
                     wallet_a.update({i['currency']: i['balance']})

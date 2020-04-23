@@ -441,6 +441,10 @@ def group_of_regims():
                        'background-color': '#e4e7e7a6'},
                 card_hover=True,
                 children=ddk.Block(
+                    id={
+                        'type': 'rgm_block',
+                        'index': k
+                    },
                     width=100,
                     style={'justify-content': 'center',
                            'vertical-align': '-webkit-baseline-middle'},
@@ -456,6 +460,17 @@ def group_of_regims():
                                                 'vertical-align': '-webkit-baseline-middle',
                                                 'justify-content': 'center'},
                                             children=[v['option']]),
+
+                                            html.Button('Удалить',
+                                                        style={'font-size':"8px", "max-width":"50px",
+                                                               'padding': '1px',
+                                                                'color': 'white',
+                                                                'background-color': 'orangered',
+                                                                'max-height': '30px',
+                                                                'cursor': 'grab',
+                                                               'border-radius': '10px'
+                                                                },
+                                                        id={'type': 'delet_rgm_btn', 'index': k}),
 
 
                                                   ]),

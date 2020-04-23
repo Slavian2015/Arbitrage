@@ -17,6 +17,8 @@ dash_app.config['suppress_callback_exceptions'] = True
 main_path_data = os.path.abspath("./data")
 
 
+
+
 # putting your callbacks in functions is a nice trick to be able to move them in other modules and import them
 def create_callback_save_value(app: dash.Dash, dash_db: DashDatabase):
     @app.callback(Output('success_value_saved', 'children'),
@@ -172,7 +174,14 @@ def creat_reg(app: dash.Dash):
 
     def create(n_clicks, n):
 
-        # if n_clicks is None and n is None:
+        # ctx = dash.callback_context
+        #
+        # if not ctx.triggered:
+        #     raise dash.exceptions.PreventUpdate
+        # else:
+        #     pass
+
+        # if n_clicks and n is None:
         #     raise PreventUpdate
 
         if n_clicks > 0:
@@ -190,6 +199,7 @@ def creat_reg(app: dash.Dash):
                 json.dump(data, f)
                 # print("BEFORE2 :", data)
                 f.close()
+
             list_group = [i for i in layouts.group_of_regims()]
             return list_group
 
@@ -331,6 +341,42 @@ def ref_key_data(app: dash.Dash):
             tab = layouts.tab_keys()
             return [tab]
 
+def del_rgm_data(app: dash.Dash):
+    @app.callback(
+
+        [Output({'type': 'rgm_block', 'index': MATCH}, 'children')],
+        [Input({'type': 'delet_rgm_btn', 'index': MATCH}, 'n_clicks')],
+        [State({'type': 'delet_rgm_btn', 'index': MATCH}, 'id')])
+
+    def display_output(n_clicks, id):
+
+        ctx = dash.callback_context
+
+        if not ctx.triggered:
+            raise dash.exceptions.PreventUpdate
+        else:
+            pass
+
+        if n_clicks > 0:
+
+            print("DELETE BTN #########################", id['index'])
+
+            a_file = open(main_path_data + "\\regim.json", "r")
+            json_object = json.load(a_file)
+            a_file.close()
+            print("  REGIM BEFORE :", '\n', json_object)
+
+            json_object.pop(id['index'])
+
+            print("  REGIM AFTER :", '\n', json_object)
+
+            a_file = open(main_path_data + "\\regim.json", "w")
+            json.dump(json_object, a_file)
+            a_file.close()
+
+
+            return [ddk.Block('ПУСТО')]
+
 
 
 
@@ -350,3 +396,4 @@ creat_reg(dash_app)
 save_reg_data(dash_app)
 save_key_data(dash_app)
 ref_key_data(dash_app)
+del_rgm_data(dash_app)
