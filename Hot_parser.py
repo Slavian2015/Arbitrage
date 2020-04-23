@@ -326,6 +326,8 @@ def wallet_h():
         res = requests.request("GET", url)
         exam = res.json()
 
+        print(exam)
+
         wallet_h = {}
 
         for i in exam['result']:
