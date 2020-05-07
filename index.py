@@ -10,7 +10,8 @@ import callbacks
 #heroku logs --tail
 
 
-dash_app.layout = html.Div([
+def serv_layout():
+    return html.Div([
     dcc.Location(id='url', refresh=False),
     ddk.App(style={'background-color': 'transparent'},
                      children=[
@@ -22,6 +23,8 @@ dash_app.layout = html.Div([
     html.Div(id='hidden-div')
 
 ])])
+
+dash_app.layout = serv_layout
 
 
 
@@ -36,4 +39,4 @@ def display_page(pathname):
 
 if __name__ == "__main__":
     # app.run_server(debug=True)
-    app.run(debug=False)
+    app.run(debug=True)

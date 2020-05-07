@@ -16,6 +16,7 @@ import Orders
 import datetime as dt
 import requests
 import base64
+from decimal import ROUND_UP,Context
 
 dash_app.config['suppress_callback_exceptions'] = True
 main_path_data = os.path.abspath("./data")
@@ -114,6 +115,7 @@ def refresh(app: dash.Dash):
         dict_ = {'alfa': alf['sell'][0]['timestamp'], 'hot': hott['result'], 'live': livev['BTC/USD']['timestamp']}
         working = pd.DataFrame([dict_])
         working.to_csv(main_path_data + "\\working.csv", index=False)
+        now = dt.datetime.now()
 
 
         if df10.shape[0]>0:
@@ -123,12 +125,12 @@ def refresh(app: dash.Dash):
                           )
 
             if valuta.shape[0] > 0:
-                return [ddk.Block(width=100, children="СКОРОСТЬ : {}".format(done)), my_signal,
+                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)), my_signal,
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
             else:
                 my_col = ['Valuta', 'alfa', 'hot', 'live', 'Summa']
                 valuta = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="СКОРОСТЬ : {}".format(done)),my_signal,
+                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),my_signal,
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
         else:
             if valuta.shape[0] > 0:
@@ -136,7 +138,7 @@ def refresh(app: dash.Dash):
                           'volume_x',
                           'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
                 df10 = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="СКОРОСТЬ : {}, ALFA: {},  HOT:  {},  LIVE: {}".format(done,activ_alfa,activ_hot,activ_live)),
+                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
             else:
                 my_col1 = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y',
@@ -145,7 +147,7 @@ def refresh(app: dash.Dash):
                 df10 = pd.DataFrame(columns=my_col1)
                 my_col = ['Valuta', 'alfa', 'hot', 'live', 'Summa']
                 valuta = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="СКОРОСТЬ : {}".format(done)),
+                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
 
 def commis(app: dash.Dash):
@@ -1162,7 +1164,10 @@ def new_order(app: dash.Dash):
                     # myparam = (((float(val1_vol) / float(rate1)) - float(val2_vol)) / float(val2_vol)) * 100
                     # minOrder1 = float(filter1.iloc[0][birga_1] / float(rate1))
                     # minOrder2 = float(filter3.iloc[0][birga_2]) + (float(filter3.iloc[0][birga_2]) * myparam / 100)
-                    minbeta = round((((float(val1_vol) - float(val2_vol) * float(rate1)) / (float(val2_vol) * float(rate1))) * 100), 1)
+                    minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (
+                                float(val2_vol) * float(rate1))) * 100)
+                    minbeta = Context(prec=2, rounding=ROUND_UP).create_decimal(minbeta)
+
                     min1 = (float(filter1.iloc[0][birga_1]) - (float(filter1.iloc[0][birga_1]) * minbeta / 100)) / float(rate1)
                     min2 = float(filter3.iloc[0][birga_2])
 

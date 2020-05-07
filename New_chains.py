@@ -59,10 +59,10 @@ def film_list(db):
     BTC_fil_main2 = all_cardsBD[(all_cardsBD['valin_y'] == "BTC") & (~all_cardsBD['valin_x'].isin(["USD", "USDT"]))]
 
 
-    print('###########    USD_fil  :', '\n',USD_fil)
-    print('###########    BTC_fil  :', '\n',BTC_fil)
-    print('###########    BTC_fil_main  :', '\n',BTC_fil_main)
-    print('###########    BTC_fil_main2  :', '\n',BTC_fil_main2)
+    # print('###########    USD_fil  :', '\n',USD_fil)
+    # print('###########    BTC_fil  :', '\n',BTC_fil)
+    # print('###########    BTC_fil_main  :', '\n',BTC_fil_main)
+    # print('###########    BTC_fil_main2  :', '\n',BTC_fil_main2)
 
 
 

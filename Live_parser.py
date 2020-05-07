@@ -3,11 +3,8 @@ import hmac
 import json
 import os
 
-
 main_path_data = os.path.abspath("./data")
 
-# Ваш API-ключ: gT5fA5uh2f3vbkYxprGU6UYmQxD7uQA4
-# Новый секретный ключ: dV3dGBU6zC85WE53ezNBZSKRVTkA8hxG
 
 
 def restart():
@@ -34,7 +31,6 @@ def restart():
 
     return live
 
-
 def wallet_l():
 
 
@@ -47,16 +43,9 @@ def wallet_l():
 
     if input1 != "Api key" and input2 != "Api secret":
 
-        # api_key = "gT5fA5uh2f3vbkYxprGU6UYmQxD7uQA4"
-        # secret_key = "dV3dGBU6zC85WE53ezNBZSKRVTkA8hxG"
-        #
-        # input1 = api_key
-        # input2 = secret_key
-
         # Свой класс исключений
         class ScriptError(Exception):
             pass
-
         class ScriptQuitCondition(Exception):
             pass
 

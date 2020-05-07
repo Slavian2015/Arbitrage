@@ -198,23 +198,3 @@ def order_card():
             ]
 
     return card
-
-
-# //{
-# //    "1": {
-# //        "key": "BtuWYH7DbtNLREeRUdfjfAxEiS71Lq6Wn2kyyoxS9zkiiVo2HtvZUg1CaMdJiuRHDUum9HutR",
-# //        "api": "4Bmhw5cz4f5QzoXt8XbnEMwoapYFirS6ozkD11Q7RiuYg7DidgTdnJLf8MUU8Bb6YAL5D5m65uvBR4JTavip5uA6"
-# //    },
-# //    "2": {
-# //        "key": "gT5fA5uh2f3vbkYxprGU6UYmQxD7uQA4",
-# //        "api": "dV3dGBU6zC85WE53ezNBZSKRVTkA8hxG"
-# //    },
-# //    "3": {
-# //        "key": "7df7baa8-ae73-ddd1-2e8f6968ed3d5a89",
-# //        "api": "37dfc47b7ef13b296f7011dad71a5775"
-# //    },
-# //    "4": {
-# //        "key": "Chat id",
-# //        "api": "Token"
-# //    }
-# //}

@@ -37,7 +37,6 @@ else:
         outfile.close()
         pass
 
-
 def restart():
 
     my_col = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
@@ -185,17 +184,11 @@ def restart():
                 dft = dft.append(calc2(v))
 
 
-
-
-
-
     now = dt.datetime.now()
     dft.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
     dft.drop(['index'], axis=1, inplace=True)
     dft = dft[['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y','valin_x','valin_y','valout_y','volume_x','volume_y','start','step','back','profit','perc']]
-    print("Restart :", '\n')
     dfs = dft
-
 
     def regim_filter():
         fids = pd.DataFrame()
@@ -275,8 +268,6 @@ def restart():
             else:
                 pass
         return fids
-
-
     fdf = regim_filter()
 
     if fdf.shape[0] > 0:
@@ -298,9 +289,6 @@ def restart():
     else:
         pass
 
-    # print('###########    fdf  :', '\n',fdf)
-
-
 
     df_all = pd.read_csv(main_path_data + "\\all_data.csv")
 
@@ -314,15 +302,7 @@ def restart():
         df_all['perc'] = df_all['perc'].map('{:,.3f}%'.format)
     else:
         pass
-
-
     valuta = Balance.balance()
     return fdf, valuta, df_all
 
-
-fin = restart()
-final = fin[0]
-#
-# print(final)
-valuta = fin[1]
 

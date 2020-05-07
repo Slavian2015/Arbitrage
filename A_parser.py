@@ -9,26 +9,6 @@ from fake_useragent import UserAgent
 import json
 main_path_data = os.path.abspath("./data")
 
-# def sum_orders(data):
-#     wer = {}
-#
-#     for i in data:
-#         if i['price'] in wer:
-#             wer[(i['price'])].append(i['amount'])
-#         else:
-#             wer[(i['price'])] = [i['amount']]
-#
-#     for k, v in wer.items():
-#         wer[k] = sum(v)
-#
-#     # print(next(iter(wer.items()))[1])
-#
-#     result = next(iter(wer.items()))
-#     return result
-
-
-
-
 
 def proxies():
     if os.path.isfile('proxies.txt'):
@@ -84,7 +64,7 @@ def loadRSS():
         while True:
             proxy = choice(proxy_candidates)
 
-            print("NEW   PROXY  ALFA:", proxy)
+            # print('NEW PROXY  :', proxy)
             session.proxies = {urlparse(proxy).scheme: proxy}
             if not verify:
                 return
@@ -132,7 +112,6 @@ def loadRSS():
             #     session.headers = {'User-Agent': ua.random}
             #     set_proxy(session, verify=True)
             #     sleep(0.1)
-
     scrape_page()
     return alpha
 
@@ -225,18 +204,4 @@ def wallet_a():
 
     else:
         return {}
-
-
-
-
-
-
-if __name__ == "__main__":
-
-    start = time.process_time()
-    start11 = time.process_time()
-    proxies()
-    print('Proxies TIME :', (time.process_time() - start11))
-    print(loadRSS())
-    print('ALPHA start TIME : ',(time.process_time() - start))
 

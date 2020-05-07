@@ -53,7 +53,9 @@ def alfa(val1, val2, price, amount):
 
     for i in examm:
         if i['currency2'] == dec_val[1] and i['currency1'] == dec_val[0]:
-            amount = round(float(amount), int(i['price_precision']))
+            # amount = round(float(amount), int(i['price_precision']))
+            amount = Context(prec=(i['price_precision'] + 2), rounding=ROUND_DOWN).create_decimal(amount)
+            amount = float(amount)
             pass
         else:
             pass
@@ -184,8 +186,11 @@ def hot(val1, val2, price, amount):
 
   for i in examm['result']:
       if i['name'] == dec_val:
-          amount = Context(prec=(i['stock_prec'] + 2), rounding=ROUND_DOWN).create_decimal(amount)
+          # print(i['stock_prec']+2)
+          # print(type(i['stock_prec']))
+          amount = Context(prec=(i['stock_prec']+2), rounding=ROUND_DOWN).create_decimal(amount)
           amount = float(amount)
+          # print(amount)
           # amount = round(float(amount), int(i['stock_prec']))
           pass
       else:
@@ -302,7 +307,9 @@ def live(val1, val2, price, amount):
 
     for i in examm['restrictions']:
         if i['currencyPair'] == para:
-            amount = round(float(amount), int(i['priceScale']))
+            # amount = round(float(amount), int(i['priceScale']))
+            amount = Context(prec=(i['priceScale'] + 2), rounding=ROUND_DOWN).create_decimal(amount)
+            amount = float(amount)
             pass
         else:
             pass
@@ -347,10 +354,10 @@ def live(val1, val2, price, amount):
 
 
 
-        # print('direction  :', direction)
-        # print('para  :', para)
-        # print('amount  :', amount)
-        # print('price  :', price)
+        print('direction  :', direction)
+        print('para  :', para)
+        print('amount  :', amount)
+        print('price  :', price)
 
         order = {
             'currencyPair': para,
@@ -406,5 +413,5 @@ def live(val1, val2, price, amount):
         return ["ОШИБКА"]
 
 
-# print(hot('PZM', 'USDT', '0.0336', '1611.9229'))
+# print(hot('PZM', 'USDT', '0.03293215', '600.355276494'))
 # print(hot('ETH', 'BTC', '9000', '0.03'))

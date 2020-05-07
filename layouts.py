@@ -8,7 +8,6 @@ import dash_table
 import os
 from app import dash_app
 import os
-from VILKA import valuta
 import json
 import test_order
 import New_chains
@@ -18,8 +17,6 @@ main_path_data = os.path.abspath("./data")
 
 my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
                  'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
-# final = pd.DataFrame(columns=my_col)
-
 if os.path.isfile(main_path_data + "\\all_data.csv"):
     final2 = pd.read_csv(main_path_data + "\\all_data.csv")
     if final2.shape[0] > 0:
@@ -43,45 +40,6 @@ else:
 f = open(main_path_data + "\\commis.json")
 com = json.load(f)
 
-###########  Main Page   ################
-
-# def serve_layout():
-#     """Creates the layout for each user of the app.
-#     This function is executed each time a session is created for the app.
-#     It creates a new session id (a uuid.uuid1 as string) each time.
-#
-#     This session id will be used in combination with a DashDatabase instance to manage user values.
-#     It will be fetched via the property data of a dcc.Store component.
-#     """
-#
-#     # create a session id
-#     session_id = str(uuid.uuid1())
-#     # store the session id in a dcc.Store component (invisible component for storing data)
-#     store_session_id_div = dcc.Store(id='session_id_div_id',
-#                                      storage_type='session',  # IMPORTANT! see docstring of dcc.Store
-#                                      data=session_id)
-#
-#     # create tab to enter a value
-#     first_tab = dcc.Tab(label="Enter a value",
-#                         children=[dcc.Input(placeholder="Enter value here", id="input_div"),
-#                                   html.Button(children="OK", id="ok_button"),
-#                                   dcc.Markdown(id="success_value_saved")])
-#
-#     # create tab to retrieve the value entered in the other tab
-#     second_tab = dcc.Tab(label="Retrieve the value",
-#                          children=[html.Button(children="Show me the value", id="show_value_button"),
-#                                    dcc.Markdown(id="show_value_div")])
-#
-#     # assemble tabs in dcc.Tabs object
-#     tabs = dcc.Tabs(children=[first_tab, second_tab])
-#
-#     # create layout
-#     layout = html.Div(children=[tabs, store_session_id_div])
-#
-#     return layout
-# layout_main = serve_layout()
-
-
 
 ########  MAIN PAGE MY  ##############
 
@@ -99,14 +57,12 @@ def keys():
                       "4": {"key": "Chat id", "api": "Token"}}
 
         keys1 = json.dumps(dictionary, indent=4)
-        print(' JSON DOESNT EXIST :', keys1)
+        # print(' JSON DOESNT EXIST :', keys1)
         # Writing to sample.json
         with open(main_path_data + "\\keys.json", "w") as outfile:
             outfile.write(keys1)
             outfile.close()
             pass
-
-keys()
 
 def tab_keys():
 
@@ -115,7 +71,7 @@ def tab_keys():
     keys8 = json.load(a_file)
     a_file.close()
 
-    print(' JSON EXISTS :', keys8)
+    # print(' JSON EXISTS :', keys8)
 
     tab_keys = [ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
                          card_hover=True,
@@ -1043,7 +999,9 @@ def serve_layout():
                                      storage_type='session',  # IMPORTANT! see docstring of dcc.Store
                                      data=session_id)
 
-    interval = dcc.Interval(id='interval', interval=11000, n_intervals=0)
+    interval = dcc.Interval(id='interval', interval=12000, n_intervals=0)
+
+    valuta = pd.read_csv(main_path_data + "\\balance.csv")
 
 
     alfa_card = ddk.Card(width=30,
@@ -1543,7 +1501,9 @@ def serve_layout():
                                  }
                              ),
                              ]),
+
                              ddk.Card(id="table", style={'text-align': 'center'}, children=[New_chains.film_start()]),
+
                              ddk.Card(id="test_order_card",
                                       style={'text-align': 'center'},
                                       children=test_order.order_card()),
@@ -1559,12 +1519,6 @@ def serve_layout():
                                  sort_by=[],
                                  export_format='xlsx',
                                  export_headers='display',
-                                 # pagination_mode='fe',
-                                 # pagination_settings={
-                                 #     'displayed_pages': 1,
-                                 #     'current_page': 0,
-                                 #     'page_size': 50,
-                                 # },
                                  merge_duplicate_headers=True,
                                  style_cell_conditional=[],
                                  style_data_conditional=[
