@@ -15,7 +15,7 @@ def restart():
     res = requests.request("GET", url)
     exam = res.json()
 
-    valuta = ['BTC/USD','LTC/USD','ETH/USD','XRP/USD','USDT/USD','BTC/USDT','ETH/USDT','XRP/BTC','ETH/BTC','LTC/BTC','BCH/BTC','ZEC/BTC',]
+    valuta = ['BTC/USD','LTC/USD','ETH/USD','XRP/USD','USDT/USD','BTC/USDT','ETH/USDT','XRP/BTC','ETH/BTC','LTC/BTC','BCH/BTC','ZEC/BTC', 'PZM/USD', 'PZM/USDT', 'PZM/BTC',]
     live = {}
 
     for i in valuta:
@@ -86,7 +86,7 @@ def wallet_l():
         wallet_l = {}
 
         for i in resm:
-            if i['type'] == "trade" and i['value'] > 0:
+            if i['type'] == "available" and i['value'] > 0:
                 wallet_l.update({i['currency']: i['value']})
 
         return wallet_l

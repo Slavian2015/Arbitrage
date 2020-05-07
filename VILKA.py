@@ -1,29 +1,23 @@
 import pandas as pd
 import json
 import numpy as np
+import Balance
+import os
+import datetime as dt
 import Hot_parser
 import Live_parser
 import A_parser
-import os
-import datetime as dt
-from functools import reduce
+import requests
 
 
 
-# ##################################   SHOW ALL ROWS & COLS   ####################################
-# pd.set_option('display.max_columns', None)
-# pd.set_option('display.max_rows', None)
-# pd.set_option('display.expand_frame_repr', False)
-# pd.set_option('max_colwidth', None)
-
-
-
-# alfa = {'BTC/USD': {'sell': [7000.122, 0.00058], 'buy': [6781.886, 0.03682]}, 'LTC/USD': {'sell': [41.2, 0.47692], 'buy': [41.16, 7.27098]}, 'ETH/USD': {'sell': [153.75, 0.7319055], 'buy': [153.5, 1.0121331]}, 'XRP/USD': {'sell': [0.18615, 38.82824326], 'buy': [0.185, 1.10438394]}, 'USD/USDT': {'sell': [0.998, 641.88], 'buy': [0.99, 204.0]}, 'BTC/USDT': {'sell': [6790.675, 0.012], 'buy': [6789.324, 0.0098]}, 'ETH/USDT': {'sell': [179.0, 0.05947], 'buy': [172.0, 5.859e-05]}, 'XRP/BTC': {'sell': [2.699e-05, 411.0], 'buy': [2.689e-05, 376.0]}, 'ETH/BTC': {'sell': [0.022632, 0.004], 'buy': [0.022603, 0.625]}, 'LTC/BTC': {'sell': [0.006067, 1.26], 'buy': [0.006055, 3.35]}, 'BCH/BTC': {'sell': [0.039, 0.001], 'buy': [0.03345002, 0.01913302]}, 'ZEC/BTC': {'sell': [0.006377, 0.48318062], 'buy': [0.004456, 2.7744614]}}
-# live = {'BTC/USD': {'sell': ['7115.99365', '0.0126934'], 'buy': ['7079.001', '0.0035635']}, 'LTC/USD': {'sell': ['42.47', '0.1'], 'buy': ['42.24', '1.84']}, 'ETH/USD': {'sell': ['164.14', '0.23099188'], 'buy': ['162.48974', '0.6528']}, 'XRP/USD': {'sell': ['0.19385', '7.66806089'], 'buy': ['0.18956', '364.64975524']}, 'USDT/USD': {'sell': ['1.04398', '21.11918813'], 'buy': ['1.02501', '36']}, 'BTC/USDT': {'sell': ['6.95E+3', '0.03181925'], 'buy': ['6859.04578501', '0.01']}, 'ETH/USDT': {'sell': ['170.99999999', '0.02112591'], 'buy': ['149.1', '0.00466711']}, 'XRP/BTC': {'sell': ['0.00002715', '67.77328'], 'buy': ['0.00002699', '10.8185632']}, 'ETH/BTC': {'sell': ['0.02320816', '0.01679207'], 'buy': ['0.023064', '5.97']}, 'LTC/BTC': {'sell': ['0.006035', '0.0174'], 'buy': ['0.00597483', '10.1366']}, 'BCH/BTC': {'sell': ['0.03299954', '0.03407698'], 'buy': ['0.03220001', '0.07028846']}, 'ZEC/BTC': {'sell': ['0.00521679', '0.17689186'], 'buy': ['0.00520734', '0.01450943']}}
-# hot = {'BTC/USD': {'sell': [7009.46, 0.002446], 'buy': [6538.48, 0.003686]}, 'USDT/USD': {'sell': [1.0126, 0.01], 'buy': [1.0123, 569.79]}, 'ETH/USD': {'sell': [160.67, 0.000261], 'buy': [154.4, 0.001049]}, 'ETH/BTC': {'sell': [0.02321272, 2.5], 'buy': [0.02318881, 2.5]}, 'LTC/BTC': {'sell': [0.005996, 7.1374], 'buy': [0.005992, 11.2239]}, 'BTC/USDT': {'sell': [6930.99, 0.14], 'buy': [6930.73, 0.14]}, 'ETH/USDT': {'sell': [160.91, 2.8], 'buy': [160.89, 2e-05]}, 'XRP/BTC': {'sell': [2.729e-05, 923.1], 'buy': [2.704e-05, 2.1]}, 'BCH/BTC': {'sell': [0.032866, 0.3191], 'buy': [0.03222, 0.2939]}}
+##################################   SHOW ALL ROWS & COLS   ####################################
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.expand_frame_repr', False)
+pd.set_option('max_colwidth', None)
 
 main_path_data = os.path.abspath("./data")
-
 #################################   COMMISSIONS   ##########################################
 if os.path.isfile(main_path_data + "\\commis.json"):
     f = open(main_path_data + "\\commis.json")
@@ -43,36 +37,6 @@ else:
         outfile.close()
         pass
 
-
-
-# def reg():
-#
-#     #################################      REGIMS      ##########################################
-#
-#     if os.path.isfile(main_path_data + "\\regim.json"):
-#         pass
-#     else:
-#         dictionary = {"1": {"option": "off",
-#                            "val1": "",
-#                            "val2": "",
-#                            "val3": "",
-#                            "birga1": "",
-#                            "birga2": "",
-#                            "profit": "",
-#                            "order": "",
-#                             "per": ""
-#                             }}
-#         regim = json.dumps(dictionary, indent=4)
-#
-#         # Writing to sample.json
-#         with open(main_path_data + "\\regim.json", "w") as outfile:
-#             outfile.write(regim)
-#             outfile.close()
-#             pass
-#
-#     return
-#
-# reg()
 
 def restart():
 
@@ -98,6 +62,8 @@ def restart():
     rates = []
     volume = []
 
+
+    ###########   Collected all kurses  ############
     def tab(item, value):
 
         for k, v in item.items():
@@ -113,20 +79,8 @@ def restart():
 
                 r = ("{0:,.10f}".format(float((item[k]['buy'][i][0]))))
                 r2 = r.replace(',', '')
-                # r = item[k]['buy'][i][0]
-                # r3 = r.replace(',', '')
-                # r2 = ("{0:,.10f}".format(float((r3))))
-
-
-
                 v = ("{0:,.10f}".format(float((item[k]['buy'][i][1]))))
                 v2 = v.replace(',', '')
-                # v = item[k]['buy'][i][1]
-                # v3 = v.replace(',', '')
-                # v2 = ("{0:,.10f}".format(float((v3))))
-
-
-
 
                 rates.append(r2)
                 volume.append(v2)
@@ -161,20 +115,24 @@ def restart():
     dfs2['rates_x'] = dfs2['rates_x'].map('{:,.10f}'.format)
 
 
+
+    ###############       Main dataframe with all data      ####################
     result = dfs2[(dfs2['valin_x'] == dfs2['valout_y'])]
     usdt = dfs2[(dfs2['valin_x'] == 'USD') & (dfs2['valout_y'] == 'USDT')]
     usd = dfs2[(dfs2['valin_x'] == 'USDT') & (dfs2['valout_y'] == 'USD')]
-
-
     final = result.append([usdt, usd])
     final.reset_index(inplace=True, drop = True)
     final.reset_index(level=0, inplace=True)
     filter = final[(final['birga_x'] == final['birga_y']) &
                    (final['rates_x'] < final['rates_y']) &
                    (final['valin_x'] == final['valout_y'])]
-
-
     final = final.drop(filter['index'], axis=0)
+
+
+
+
+
+    ########################      ADD  COMMISSION       ##############################
 
     var1 = final[final["valin_x"].isin(["USD", "USDT"])]
     var2 = final[final["valin_y"].isin(["USD", "USDT"])]
@@ -182,6 +140,8 @@ def restart():
     var4 = final[(final["valin_y"] == "BTC") & (~final["valin_x"].isin(["USD", "USDT"]))]
 
     var = {'var1': var1, 'var2': var2, 'var3': var3, 'var4': var4}
+
+
 
     def calc1(result):
         f = open(main_path_data + "\\commis.json")
@@ -213,6 +173,9 @@ def restart():
         return result
 
 
+
+
+
     dft = pd.DataFrame()
     for i, v in var.items():
         if v.shape[0] > 0:
@@ -222,30 +185,17 @@ def restart():
                 dft = dft.append(calc2(v))
 
 
+
+
+
+
     now = dt.datetime.now()
     dft.loc[:, 'TIME'] = now.strftime("%H:%M:%S")
-
     dft.drop(['index'], axis=1, inplace=True)
-
     dft = dft[['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y','valin_x','valin_y','valout_y','volume_x','volume_y','start','step','back','profit','perc']]
-
     print("Restart :", '\n')
-    # print(final)
-
-    Alfa = A_parser.wallet_a()
-    Hot = Hot_parser.wallet_h()
-    Live = Live_parser.wallet_l()
-
-    dfa = pd.DataFrame(Alfa.items(), columns=['Valuta', 'Alfa'])
-    dfh = pd.DataFrame(Hot.items(), columns=['Valuta', 'Hot'])
-    dfl = pd.DataFrame(Live.items(), columns=['Valuta', 'Live'])
-
-    data_frames = [dfl, dfh, dfa]
-    valuta = reduce(lambda left, right: pd.merge(left, right, on=['Valuta'],
-                                                    how='outer'), data_frames).fillna('0')
-
-    valuta["SUMMA"] = valuta["Alfa"] + valuta["Live"] + valuta["Hot"]
     dfs = dft
+
 
     def regim_filter():
         fids = pd.DataFrame()
@@ -258,14 +208,14 @@ def restart():
             pass
         else:
             regim = {1: {"option": "off",
-                                "val1": "",
-                                "val2": "",
-                                "val3": "",
-                                "birga1": "",
-                                "birga2": "",
-                                "profit": "",
-                                "order": "",
-                                "per": ""}}
+                         "val1": "",
+                         "val2": "",
+                         "val3": "",
+                         "birga1": "",
+                         "birga2": "",
+                         "profit": "",
+                         "order": "",
+                         "per": ""}}
             ooo = json.dumps(regim, indent=4)
             # Writing to sample.json
             with open(main_path_data + "\\regim.json", "w") as outfile:
@@ -273,17 +223,35 @@ def restart():
                 outfile.close()
                 pass
 
-
         dfs['volume_x'] = dfs['volume_x'].apply(pd.to_numeric, errors='coerce')
         dfs['volume_y'] = dfs['volume_y'].apply(pd.to_numeric, errors='coerce')
-        # dfs["perc"] = dfs["perc"].str.replace("%", "").astype(float)
-        dfs['volume_y'] = dfs['volume_y'].apply(pd.to_numeric, errors='coerce')
-        # print(dfs["perc"])
 
         for i in regim:
 
             if regim[i]["option"] == 'active':
-                if not regim[i]["order"]:
+                if not regim[i]["per"]:
+
+                    dfs["volume_x"] = dfs["volume_x"].astype(float)
+                    dfs["volume_y"] = dfs["volume_y"].astype(float)
+                    filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
+                    dfs.loc[filterx, "volume"] = dfs.loc[filterx, "volume_x"]
+                    filtery = dfs[dfs["volume_x"] > dfs["volume_y"]].index
+                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_y"]
+                    dfs["volume"] = dfs["volume"].astype(float)
+                    dft = dfs[(dfs["birga_x"] == regim[i]["birga1"]) &
+                              (dfs["birga_y"] == regim[i]["birga2"]) &
+                              (dfs["valin_x"] == regim[i]["val1"]) &
+                              (dfs["valin_y"] == regim[i]["val2"]) &
+                              (dfs["valout_y"] == regim[i]["val3"]) &
+                              (dfs["perc"] > regim[i]["profit"]) &
+                              (dfs["volume"] > float(regim[i]["order"]))]
+                    dft = dft[dft['volume'] == dft['volume'].max()]
+                    dft = dft[:1]
+                    dft["regim"] = i
+                    fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+
+
+                else:
                     dfs["volume_x"] = dfs["volume_x"].astype(float)
                     dfs["volume_y"] = dfs["volume_y"].astype(float)
                     filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
@@ -296,68 +264,65 @@ def restart():
                               (dfs["valin_x"] == regim[i]["val1"]) &
                               (dfs["valin_y"] == regim[i]["val2"]) &
                               (dfs["valout_y"] == regim[i]["val3"]) &
-                              (dfs["perc"] > regim[i]["profit"])
-                              ]
-                    fids = pd.concat([dft, fids], ignore_index=False, join='outer')
-                    fids = fids[fids['volume'] == fids['volume'].max()]
-
-                    fids = fids[:1]
-
-                    fids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
-
-                else:
-
-
-                    dfs["volume_x"] = dfs["volume_x"].astype(float)
-                    dfs["volume_y"] = dfs["volume_y"].astype(float)
-                    filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
-                    dfs.loc[filterx, "volume"] = dfs.loc[filterx, "volume_x"] / 2
-                    filtery = dfs[dfs["volume_x"] > dfs["volume_y"]].index
-                    dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_y"] / 2
-                    dfs["volume"] = dfs["volume"].astype(float)
-                    dft = dfs[(dfs["birga_x"] == regim[i]["birga1"]) &
-                              (dfs["birga_y"] == regim[i]["birga2"]) &
-                              (dfs["valin_x"] == regim[i]["val1"]) &
-                              (dfs["valin_y"] == regim[i]["val2"]) &
-                              (dfs["valout_y"] == regim[i]["val3"]) &
                               (dfs["perc"] > regim[i]["profit"]) &
-                              (dfs["volume"] > float(regim[i]["order"]))]
-                    fids = pd.concat([dft, fids], ignore_index=False, join='outer')
-
-                    fids = fids[fids['volume'] == fids['volume'].max()]
-                    fids = fids[:1]
-                    fids.to_csv(main_path_data + "\\all_data.csv", mode='a', header=False)
+                              (dfs["volume"] > float(regim[i]["order"]))
+                              ]
+                    dft = dft[dft['volume'] == dft['volume'].max()]
+                    dft = dft[:1]
+                    dft["regim"] = i
+                    fids = pd.concat([dft, fids], ignore_index=True, join='outer')
 
             else:
                 pass
-
         return fids
+
 
     fdf = regim_filter()
 
-    # print("  FILTER df  :", '\n',  fdf)
-
     if fdf.shape[0] > 0:
-        fdf['rates_y'] = fdf['rates_y'].map('{:,.2f}'.format)
-        fdf['rates_x'] = fdf['rates_x'].map('{:,.2f}'.format)
-        fdf['step'] = fdf['step'].map('{:,.2f}'.format)
-        fdf['back'] = fdf['back'].map('{:,.2f}'.format)
-        fdf['profit'] = fdf['profit'].map('{:,.2f}'.format)
-        fdf['perc'] = fdf['perc'].map('{:,.2f}%'.format)
-        fdf['volume_x'] = fdf['volume_x'].map('{:,.5f}'.format)
-        fdf['volume_y'] = fdf['volume_y'].map('{:,.5f}'.format)
-        fdf['volume'] = fdf['volume'].map('{:,.5f}'.format)
-
-
+        ad = open(main_path_data + "\\keys.json", "r")
+        js_object = json.load(ad)
+        ad.close()
+        input1 = js_object["4"]['key']
+        input2 = js_object["4"]['api']
+        if input1 != "Chat id" and input2 != "Token":
+            def bot_sendtext(bot_message):
+                ### Send text message
+                bot_token = input1
+                bot_chatID = input2
+                send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+                requests.get(send_text)
+            bot_sendtext("ЕСТЬ ВИЛКА:  Режим № {}".format(fdf.iloc[0]['regim']))
+        else:
+            pass
     else:
         pass
 
+    # print('###########    fdf  :', '\n',fdf)
+
+
+
     df_all = pd.read_csv(main_path_data + "\\all_data.csv")
 
+    if df_all.shape[0] > 0:
+        df_all['rates_y'] = df_all['rates_y'].map('{:,.2f}'.format)
+        df_all['rates_x'] = df_all['rates_x'].map('{:,.2f}'.format)
+        df_all['start'] = df_all['start'].map('{:,.6f}'.format)
+        df_all['step'] = df_all['step'].map('{:,.6f}'.format)
+        df_all['back'] = df_all['back'].map('{:,.6f}'.format)
+        df_all['profit'] = df_all['profit'].map('{:,.6f}'.format)
+        df_all['perc'] = df_all['perc'].map('{:,.3f}%'.format)
+    else:
+        pass
 
 
+    valuta = Balance.balance()
     return fdf, valuta, df_all
+
+
 fin = restart()
 final = fin[0]
+#
+# print(final)
 valuta = fin[1]
 

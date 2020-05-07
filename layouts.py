@@ -10,17 +10,30 @@ from app import dash_app
 import os
 from VILKA import valuta
 import json
-
+import test_order
+import New_chains
 
 
 main_path_data = os.path.abspath("./data")
 
 my_col=['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
                  'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
-final = pd.DataFrame(columns=my_col)
+# final = pd.DataFrame(columns=my_col)
 
 if os.path.isfile(main_path_data + "\\all_data.csv"):
     final2 = pd.read_csv(main_path_data + "\\all_data.csv")
+    if final2.shape[0] > 0:
+        final2['rates_y'] = final2['rates_y'].map('{:,.2f}'.format)
+        final2['rates_x'] = final2['rates_x'].map('{:,.2f}'.format)
+        final2['start'] = final2['start'].map('{:,.6f}'.format)
+        final2['step'] = final2['step'].map('{:,.6f}'.format)
+        final2['back'] = final2['back'].map('{:,.6f}'.format)
+        final2['profit'] = final2['profit'].map('{:,.6f}'.format)
+        final2['perc'] = final2['perc'].map('{:,.3f}%'.format)
+    else:
+        pass
+
+
     pass
 else:
     final2 = pd.DataFrame(columns=my_col)
@@ -370,9 +383,6 @@ def tab_keys():
 
     return tab_keys
 
-
-
-
 def group_of_regims():
     # main_path_data = os.path.abspath("./data")
     d = open(main_path_data + "\\regim.json")
@@ -474,7 +484,7 @@ def group_of_regims():
 
 
                                                   ]),
-                              ddk.Block(width=45,
+                              ddk.Block(width=40,
                                         style={'vertical-align': '-webkit-baseline-middle'},
                                         children=[ddk.Block(width=100,
                                                             style={'vertical-align': '-webkit-baseline-middle'},
@@ -493,10 +503,13 @@ def group_of_regims():
                                                                                          'value': 'BTC'},
                                                                                         {'label': 'USD',
                                                                                          'value': 'USD'},
-                                                                                        {'label': 'USDt',
-                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'USDT',
+                                                                                         'value': 'USDT'},
                                                                                         {'label': 'ETH',
-                                                                                         'value': 'ETH'}
+                                                                                         'value': 'ETH'},
+                                                                                        {'label': 'PZM',
+                                                                                         'value': 'PZM'},
+
                                                                                     ],
                                                                                     value='{}'.format(v["val1"]))),
                                                                       ddk.Block(width=30,
@@ -514,10 +527,12 @@ def group_of_regims():
                                                                                          'value': 'BTC'},
                                                                                         {'label': 'USD',
                                                                                          'value': 'USD'},
-                                                                                        {'label': 'USDt',
-                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'USDT',
+                                                                                         'value': 'USDT'},
                                                                                         {'label': 'ETH',
-                                                                                         'value': 'ETH'}
+                                                                                         'value': 'ETH'},
+                                                                                        {'label': 'PZM',
+                                                                                         'value': 'PZM'},
                                                                                     ],
                                                                                     value='{}'.format(v["val2"]))),
                                                                       ddk.Block(width=30,
@@ -534,10 +549,12 @@ def group_of_regims():
                                                                                          'value': 'BTC'},
                                                                                         {'label': 'USD',
                                                                                          'value': 'USD'},
-                                                                                        {'label': 'USDt',
-                                                                                         'value': 'USDt'},
+                                                                                        {'label': 'USDT',
+                                                                                         'value': 'USDT'},
                                                                                         {'label': 'ETH',
-                                                                                         'value': 'ETH'}
+                                                                                         'value': 'ETH'},
+                                                                                        {'label': 'PZM',
+                                                                                         'value': 'PZM'},
                                                                                     ],
                                                                                     value='{}'.format(v["val3"])))
 
@@ -592,14 +609,14 @@ def group_of_regims():
                                                             ]),
                                                   ]),
 
-                              ddk.Block(width=50,
+                              ddk.Block(width=55,
                                         style={'vertical-align': '-webkit-baseline-middle'},
                                         children=[ddk.Block(width=100,
                                                             style={'vertical-align': '-webkit-baseline-middle'},
                                                             children=[ddk.Block(width=30,
                                                                                 children=[
                                                                                     ddk.Block(
-                                                                                        width=50,
+                                                                                        width=35,
                                                                                         style={
                                                                                             'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
@@ -608,7 +625,7 @@ def group_of_regims():
                                                                                                         'text-align': 'right',
                                                                                                         'justify-content': 'center'})]),
                                                                                     ddk.Block(
-                                                                                        width=50,
+                                                                                        width=65,
                                                                                         style={'text-align': 'left',
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
@@ -626,11 +643,11 @@ def group_of_regims():
                                                                                                     'text-align': 'left',
                                                                                                     'background-color': 'ivory',
                                                                                                     'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                                                    })])]),
                                                                       ddk.Block(width=30,
                                                                                 children=[
                                                                                     ddk.Block(
-                                                                                        width=50, style={
+                                                                                        width=35, style={
                                                                                             'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             html.H5(
@@ -639,7 +656,7 @@ def group_of_regims():
                                                                                                     'text-align': 'right',
                                                                                                     'justify-content': 'center'})]),
                                                                                     ddk.Block(
-                                                                                        width=50,
+                                                                                        width=65,
                                                                                         style={'text-align': 'left',
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
@@ -658,11 +675,11 @@ def group_of_regims():
                                                                                                     'text-align': 'left',
                                                                                                     'background-color': 'ivory',
                                                                                                     'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                                                    })])]),
                                                                       ddk.Block(width=30,
                                                                                 children=[
                                                                                     ddk.Block(
-                                                                                        width=50, style={
+                                                                                        width=35, style={
                                                                                             'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
                                                                                             html.H5(
@@ -671,7 +688,7 @@ def group_of_regims():
                                                                                                     'text-align': 'right',
                                                                                                     'justify-content': 'center'})]),
                                                                                     ddk.Block(
-                                                                                        width=50,
+                                                                                        width=65,
                                                                                         style={'text-align': 'left',
                                                                                                'vertical-align': '-webkit-baseline-middle'},
                                                                                         children=[
@@ -689,7 +706,7 @@ def group_of_regims():
                                                                 'margin': '0',
                                                                 'background-color': 'ivory',
                                                                 'width': '-webkit-fill-available',
-                                                                'max-width': '60px'})])]),
+                                                                })])]),
                                                                       ddk.Block(width=10,
                                                                                 children=[
 
@@ -749,7 +766,7 @@ def group_of_regims():
                                                                                                   'text-align': 'left',
                                                                                                   'background-color': 'ivory',
                                                                                                   'width': '-webkit-fill-available',
-                                                                                                  'max-width': '60px'})])]),
+                                                                                                  })])]),
                                                                               ddk.Block(
                                                                                   width=30,
                                                                                   children=[
@@ -776,7 +793,7 @@ def group_of_regims():
                                                                                                       'text-align': 'left',
                                                                                                       'background-color': 'ivory',
                                                                                                       'width': '-webkit-fill-available',
-                                                                                                      'max-width': '60px'})])]),
+                                                                                                      })])]),
                                                                               ddk.Block(
                                                                                   width=30,
                                                                                   children=[
@@ -803,7 +820,7 @@ def group_of_regims():
                                                                                                       'margin': '0',
                                                                                                       'background-color': 'ivory',
                                                                                                       'width': '-webkit-fill-available',
-                                                                                                      'max-width': '60px'})])]),
+                                                                                                      })])]),
                                                                               ddk.Block(
                                                                                   width=10,
                                                                                   children=[])]),
@@ -839,7 +856,7 @@ def group_of_regims():
                                                                                                                   'text-align': 'left',
                                                                                                                   'background-color': 'ivory',
                                                                                                                   'width': '-webkit-fill-available',
-                                                                                                                  'max-width': '60px'})])]),
+                                                                                                                  })])]),
                                                                                     ddk.Block(width=30,
                                                                                               style={
                                                                                                   'margin-top': '5px',
@@ -868,7 +885,7 @@ def group_of_regims():
                                                                                                                   'text-align': 'left',
                                                                                                                   'background-color': 'ivory',
                                                                                                                   'width': '-webkit-fill-available',
-                                                                                                                  'max-width': '60px'})])]),
+                                                                                                                  })])]),
                                                                                     ddk.Block(width=30,
                                                                                               style={
                                                                                                   'margin-top': '5px',
@@ -897,7 +914,7 @@ def group_of_regims():
                                                                                                                   'margin': '0',
                                                                                                                   'background-color': 'ivory',
                                                                                                                   'width': '-webkit-fill-available',
-                                                                                                                  'max-width': '60px'})])]),
+                                                                                                                  })])]),
                                                                                     ddk.Block(width=10,
                                                                                               style={
                                                                                                   'margin-top': '5px',
@@ -946,7 +963,7 @@ def group_of_regims():
                                                                                                     'text-align': 'left',
                                                                                                     'background-color': 'ivory',
                                                                                                     'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                                                    })])]),
                                                                       ddk.Block(width=30,
                                                                                 children=[
                                                                                     ddk.Block(
@@ -970,7 +987,7 @@ def group_of_regims():
                                                                                                     'text-align': 'left',
                                                                                                     'background-color': 'ivory',
                                                                                                     'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                                                    })])]),
                                                                       ddk.Block(width=30,
                                                                                 children=[
                                                                                     ddk.Block(
@@ -994,7 +1011,7 @@ def group_of_regims():
                                                                                                     'margin': '0',
                                                                                                     'background-color': 'ivory',
                                                                                                     'width': '-webkit-fill-available',
-                                                                                                    'max-width': '60px'})])]),
+                                                                                                    })])]),
                                                                       ddk.Block(width=10,
                                                                                 children=[dbc.Checklist(
                                                                                     style={'text-align': 'center',
@@ -1016,7 +1033,6 @@ def group_of_regims():
         group_of_regims.append(list_item)
     return group_of_regims
 
-
 def serve_layout():
 
     # print(tab_keys())
@@ -1027,10 +1043,7 @@ def serve_layout():
                                      storage_type='session',  # IMPORTANT! see docstring of dcc.Store
                                      data=session_id)
 
-    interval = dcc.Interval(id='interval', interval=10000, n_intervals=0)
-
-
-
+    interval = dcc.Interval(id='interval', interval=11000, n_intervals=0)
 
 
     alfa_card = ddk.Card(width=30,
@@ -1478,272 +1491,7 @@ def serve_layout():
                             html.Button('Refresh-keys', id='ref_keys_btn'),
                             ddk.Block(id='tab_keys88',
                                       children=
-
                                       tab_keys()
-
-                #                       [ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
-                #          card_hover=True,
-                #          children=ddk.Block(width=100,
-                #                             style={'justify-content': 'center'},
-                #                             children=[
-                #                                 ddk.Block(width=20,
-                #                                           children=html.H2('btc-Alpha',
-                #                                                            style={
-                #                                                                'text-align': 'center',
-                #                                                                'justify': 'center'})),
-                #                                 ddk.Block(width=50,
-                #                                           children=[ddk.Block(width=100,
-                #                                                               children=dcc.Input(
-                #                                                                   placeholder=keys8["1"]['key'],
-                #                                                                   id={
-                #                                                                       'type': 'key',
-                #                                                                       'index': '1'
-                #                                                                   },
-                #                                                                   style={
-                #                                                                       'border': 'double',
-                #                                                                       'margin': '0',
-                #                                                                       'background-color': 'ivory',
-                #                                                                       'width': '-webkit-fill-available'})),
-                #                                                     ddk.Block(width=100,
-                #                                                               children=dcc.Input(
-                #                                                                   placeholder=keys8["1"]['api'],
-                #                                                                   id={
-                #                                                                       'type': 'api',
-                #                                                                       'index': '1'
-                #                                                                   },
-                #                                                                   style={
-                #                                                                       'border': 'double',
-                #                                                                       'margin': '0',
-                #                                                                       'background-color': 'ivory',
-                #                                                                       'width': '-webkit-fill-available'}))]),
-                #                                 ddk.Block(width=30,
-                #                                           children=html.Button('Сохранить',
-                #                                                                id={
-                #                                                                    'type': 'save_btn',
-                #                                                                    'index': '1'
-                #                                                                },
-                #                                                                style={
-                #                                                                    'text-align': 'center',
-                #                                                                    'justify': 'center'})),
-                #                             ])),
-                #
-                # ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
-                #          card_hover=True,
-                #          children=ddk.Block(width=100,
-                #                             style={'justify-content': 'center'},
-                #                             children=[ddk.Block(width=20, children=html.H2('Livecoin',
-                #                                                                            style={
-                #                                                                                'text-align': 'center',
-                #                                                                                'justify': 'center'})),
-                #                                       ddk.Block(width=50,
-                #                                                 children=[ddk.Block(width=100,
-                #                                                                     children=dcc.Input(
-                #                                                                         placeholder=keys8["2"]['key'],
-                #                                                                         id={
-                #                                                                             'type': 'key',
-                #                                                                             'index': '2'
-                #                                                                         },
-                #                                                                         style={
-                #                                                                             'border': 'double',
-                #                                                                             'margin': '0',
-                #                                                                             'background-color': 'ivory',
-                #                                                                             'width': '-webkit-fill-available'})),
-                #                                                           ddk.Block(width=100,
-                #                                                                     children=dcc.Input(
-                #                                                                         placeholder=keys8["2"]['api'],
-                #                                                                         id={
-                #                                                                             'type': 'api',
-                #                                                                             'index': '2'
-                #                                                                         },
-                #                                                                         style={
-                #                                                                             'border': 'double',
-                #                                                                             'margin': '0',
-                #                                                                             'background-color': 'ivory',
-                #                                                                             'width': '-webkit-fill-available'}))]),
-                #                                       ddk.Block(width=30,
-                #                                                 children=html.Button('Сохранить',
-                #                                                                      id={
-                #                                                                          'type': 'save_btn',
-                #                                                                          'index': '2'
-                #                                                                      },
-                #                                                                      style={
-                #                                                                          'text-align': 'center',
-                #                                                                          'justify': 'center'})),
-                #                                       ])),
-                # ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
-                #          card_hover=True,
-                #          children=ddk.Block(width=100,
-                #                             style={'justify-content': 'center'},
-                #                             children=[ddk.Block(width=20, children=html.H2('Hotbit',
-                #                                                                            style={
-                #                                                                                'text-align': 'center',
-                #                                                                                'justify': 'center'})),
-                #                                       ddk.Block(width=50,
-                #                                                 children=[ddk.Block(width=100,
-                #                                                                     children=dcc.Input(
-                #                                                                         placeholder=keys8["3"]['key'],
-                #                                                                         id={
-                #                                                                             'type': 'key',
-                #                                                                             'index': '3'
-                #                                                                         },
-                #                                                                         style={
-                #                                                                             'border': 'double',
-                #                                                                             'margin': '0',
-                #                                                                             'background-color': 'ivory',
-                #                                                                             'width': '-webkit-fill-available'})),
-                #                                                           ddk.Block(width=100,
-                #                                                                     children=dcc.Input(
-                #                                                                         placeholder=keys8["3"]['api'],
-                #                                                                         id={
-                #                                                                             'type': 'api',
-                #                                                                             'index': '3'
-                #                                                                         },
-                #                                                                         style={
-                #                                                                             'border': 'double',
-                #                                                                             'margin': '0',
-                #                                                                             'background-color': 'ivory',
-                #                                                                             'width': '-webkit-fill-available'}))]),
-                #                                       ddk.Block(width=30,
-                #                                                 children=html.Button('Сохранить',
-                #                                                                      id={
-                #                                                                          'type': 'save_btn',
-                #                                                                          'index': '3'
-                #                                                                      },
-                #                                                                      style={
-                #                                                                          'text-align': 'center',
-                #                                                                          'justify': 'center'})),
-                #                                       ])),
-                # ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
-                #          card_hover=True, children=ddk.Block(width=100,
-                #                                              style={'justify-content': 'center'},
-                #                                              children=[ddk.Block(width=20,
-                #                                                                  children=html.H2(
-                #                                                                      'TELEGRAM')),
-                #                                                        ddk.Block(width=50, children=[
-                #                                                            ddk.Block(width=100,
-                #                                                                      children=dcc.Input(
-                #                                                                          placeholder=keys8["4"]['key'],
-                #                                                                          id={
-                #                                                                              'type': 'key',
-                #                                                                              'index': '4'
-                #                                                                          },
-                #                                                                          style={
-                #                                                                              'border': 'double',
-                #                                                                              'margin': '0',
-                #                                                                              'background-color': 'ivory',
-                #                                                                              'width': '-webkit-fill-available'})),
-                #                                                            ddk.Block(width=100,
-                #                                                                      children=dcc.Input(
-                #                                                                          placeholder=keys8["4"]['api'],
-                #                                                                          id={
-                #                                                                              'type': 'api',
-                #                                                                              'index': '4'
-                #                                                                          },
-                #                                                                          style={
-                #                                                                              'border': 'double',
-                #                                                                              'margin': '0',
-                #                                                                              'background-color': 'ivory',
-                #                                                                              'width': '-webkit-fill-available'}))]),
-                #                                                        ddk.Block(width=30,
-                #                                                                  children=html.Button(
-                #                                                                      'Сохранить',
-                #                                                                      id={
-                #                                                                          'type': 'save_btn',
-                #                                                                          'index': '4'
-                #                                                                      },
-                #                                                                      style={
-                #                                                                          'text-align': 'center',
-                #                                                                          'justify': 'center'})),
-                #                                                        ])),
-                # ddk.Card(style={'width': '50%', 'margin': '5px', 'background-color': '#e4e7e7a6'},
-                #          card_hover=True, children=ddk.Block(width=100,
-                #                                              style={'justify-content': 'center'},
-                #                                              children=[
-                #                                                  ddk.Block(width=100,
-                #                                                            children=[
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=html.H2(
-                #                                                                              'Alpha Комиссия')),
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=[
-                #                                                                              dcc.Input(
-                #                                                                                  id='Alpha_com',
-                #                                                                                  placeholder="1,002 = 0.2%",
-                #                                                                                  style={
-                #                                                                                      'border': 'double',
-                #                                                                                      'margin': '0',
-                #                                                                                      'background-color': 'ivory',
-                #                                                                                      'width': '-webkit-fill-available'})]),
-                #                                                                ddk.Block(width=25,
-                #                                                                          children=html.Button(
-                #                                                                              'Сохранить',
-                #                                                                              id='Alpha_btn')),
-                #                                                                ddk.Block(width=35,
-                #                                                                          children=html.Div(
-                #                                                                              id='output-alpha',
-                #                                                                              children=float(
-                #                                                                                  com[
-                #                                                                                      'main'][
-                #                                                                                      'alfa'])))
-                #                                                            ]),
-                #                                                  ddk.Block(width=100,
-                #                                                            children=[
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=html.H2(
-                #                                                                              'LiveCoin Комиссия')),
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=[
-                #                                                                              dcc.Input(
-                #                                                                                  id='Live_com',
-                #                                                                                  placeholder=" 1,002 = 0.2% ",
-                #                                                                                  style={
-                #                                                                                      'border': 'double',
-                #                                                                                      'margin': '0',
-                #                                                                                      'background-color': 'ivory',
-                #                                                                                      'width': '-webkit-fill-available'})]),
-                #                                                                ddk.Block(width=25,
-                #                                                                          children=html.Button(
-                #                                                                              'Сохранить',
-                #                                                                              id='LiveCoin_btn'),
-                #                                                                          ),
-                #                                                                ddk.Block(width=35,
-                #                                                                          children=html.Div(
-                #                                                                              id='output-live',
-                #                                                                              children=float(
-                #                                                                                  com[
-                #                                                                                      'main'][
-                #                                                                                      'live'])))
-                #                                                            ]),
-                #                                                  ddk.Block(width=100,
-                #                                                            children=[
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=html.H2(
-                #                                                                              'HOTBIT Комиссия')),
-                #                                                                ddk.Block(width=20,
-                #                                                                          children=[
-                #                                                                              dcc.Input(
-                #                                                                                  id='Hot_com',
-                #                                                                                  placeholder="1,002 = 0.2%",
-                #                                                                                  style={
-                #                                                                                      'border': 'double',
-                #                                                                                      'margin': '0',
-                #                                                                                      'background-color': 'ivory',
-                #                                                                                      'width': '-webkit-fill-available'})]),
-                #                                                                ddk.Block(width=25,
-                #                                                                          children=html.Button(
-                #                                                                              'Сохранить',
-                #                                                                              id='Hot_btn')),
-                #                                                                ddk.Block(width=35,
-                #                                                                          children=html.Div(
-                #                                                                              id='output-hot',
-                #                                                                              children=float(
-                #                                                                                  com[
-                #                                                                                      'main'][
-                #                                                                                      'hot'])))
-                #                                                            ]),
-                #
-                #                                              ]))]
-
                         )])
 
     # print("Я тут   SECOND TAB")
@@ -1795,32 +1543,10 @@ def serve_layout():
                                  }
                              ),
                              ]),
-                             ddk.Card(children=[dash_table.DataTable(
-                                                            id="table",
-                                                            data=final.to_dict('records'),
-                                                            columns=[{'id': c, 'name': c} for c in final.columns],
-                                                            page_action='native',
-                                                            filter_action='native',
-                                                            filter_query='',
-                                                            sort_action='native',
-                                                            sort_mode='multi',
-                                                            sort_by=[],
-                                                            export_format='xlsx',
-                                                            export_headers='display',
-                                                            merge_duplicate_headers=True,
-                                                            style_cell_conditional=[],
-                                                            style_data_conditional=[
-                                                                {
-                                                                    'if': {'row_index': 'odd'},
-                                                                    'backgroundColor': 'rgb(248, 248, 248)'
-                                                                }
-                                                            ],
-                                                            style_header={
-                                                                'backgroundColor': 'rgb(230, 230, 230)',
-                                                                'fontWeight': 'bold'
-                                                            }
-                                                            ),
-                             ]),
+                             ddk.Card(id="table", style={'text-align': 'center'}, children=[New_chains.film_start()]),
+                             ddk.Card(id="test_order_card",
+                                      style={'text-align': 'center'},
+                                      children=test_order.order_card()),
                              ddk.Card(children=[dash_table.DataTable(
                                  id="table_all",
                                  data=final2.to_dict('records'),
