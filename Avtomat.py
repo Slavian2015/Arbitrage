@@ -30,6 +30,20 @@ def avtomat(dft, valuta, start11):
 
 
     def all_csv(birga_1, birga_2, rate1, rate2, val1, val2, val4, val1_vol, val2_vol, val4_vol, reponse_b1, reponse_b2):
+        ##########           Change CSV BALANCE        ###################
+
+        valuta = pd.read_csv(main_path_data + "\\balance.csv")
+        valuta[birga_1] = valuta[birga_1].apply(pd.to_numeric, errors='coerce')
+        valuta[birga_2] = valuta[birga_2].apply(pd.to_numeric, errors='coerce')
+
+        filter1 = valuta[valuta['Valuta'] == val1].index
+        filter3 = valuta[valuta['Valuta'] == val2].index
+        valuta.loc[filter1, birga_1] = valuta.loc[filter1, birga_1] - float(val1_vol) - ((float(val1_vol) * 1) / 100)
+        valuta.loc[filter3, birga_2] = valuta.loc[filter3, birga_2] - float(val2_vol) - ((float(val2_vol) * 1) / 100)
+        valuta.loc[:, "Summa"] = (valuta.loc[:, "alfa"] + valuta.loc[:, "live"] + valuta.loc[:, "hot"])
+        valuta.to_csv(main_path_data + "\\balance.csv", index=False)
+
+
 
         ###################    APPEND to CSV   all_data    #####################
 
@@ -67,6 +81,9 @@ def avtomat(dft, valuta, start11):
         bot_sendtext(f" ЕСТЬ ВИЛКА: {nl} {birga_1} / {birga_2} {nl} {val1} -> {val2} -> {val4} {nl} {val1_vol} -> {val2_vol} -> {val4_vol} {nl} {profit} {nl} {perc} {nl} ")
         return
 
+
+
+
     all_cardsBD = dft
     all_cardsBD.index += 1
     all_cardsBD['start'] = all_cardsBD['start'].apply(pd.to_numeric, errors='coerce')
@@ -81,15 +98,7 @@ def avtomat(dft, valuta, start11):
     BTC_fil_main2 = all_cardsBD[(all_cardsBD['valin_y'] == "BTC") & (~all_cardsBD['valin_x'].isin(["USD", "USDT"]))]
 
 
-    # print( 'BTC_fil', BTC_fil )
-
-
     def order(regims, birga_1, birga_2, val1_vol, val1, rate1, val2_vol, val2, val3_vol, val3, rate2, val4_vol, val4):
-
-        # print('val1', val1)
-        # print('val3', val3)
-        # print('val2', val2)
-        # print('val4', val4)
 
         filter1 = valuta[valuta['Valuta'] == val1]
         filter3 = valuta[valuta['Valuta'] == val3]
@@ -122,11 +131,6 @@ def avtomat(dft, valuta, start11):
             else:
                 parad = "no"
                 pass
-
-        # print('regim', regim)
-        # print('regims', regims)
-        # print('regims type', type(regims))
-
 
         # print('regim[regims]["order"]',  regim[str(regims)]["order"])
 

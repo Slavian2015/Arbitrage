@@ -191,7 +191,8 @@ def restart():
     dfs = dft
 
 
-    valuta = Balance.balance()
+    valuta_main = Balance.balance()
+    valuta_main.to_csv(main_path_data + "\\balance.csv", index=False)
 
     def regim_filter():
         fids = pd.DataFrame()
@@ -246,14 +247,15 @@ def restart():
                     if regim[i]["avtomat"] == 'on':
                         done = (time.process_time() - start11)
                         dft["timer"] = done
-                        Avtomat.avtomat(dft, valuta, start11)
+                        valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                        Avtomat.avtomat(dft, valuta_new, start11)
                         fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        pass
+                        continue
                     else:
                         done = (time.process_time() - start11)
                         dft["timer"] = done
                         fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        pass
+                        continue
                 else:
                     dfs["volume_x"] = dfs["volume_x"].astype(float)
                     dfs["volume_y"] = dfs["volume_y"].astype(float)
@@ -274,16 +276,17 @@ def restart():
                     dft = dft[:1]
                     dft["regim"] = i
                     if regim[i]["avtomat"] == 'on':
-                        Avtomat.avtomat(dft, valuta, start11)
+                        valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                        Avtomat.avtomat(dft, valuta_new, start11)
                         done = (time.process_time() - start11)
                         dft["timer"] = done
                         fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        pass
+                        continue
                     else:
                         done = (time.process_time() - start11)
                         dft["timer"] = done
                         fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        pass
+                        continue
 
             else:
                 pass
@@ -293,6 +296,7 @@ def restart():
 
 
     df_all = pd.read_csv(main_path_data + "\\all_data.csv")
+    valuta = pd.read_csv(main_path_data + "\\balance.csv")
 
     if df_all.shape[0] > 0:
         df_all['rates_y'] = df_all['rates_y'].map('{:,.2f}'.format)

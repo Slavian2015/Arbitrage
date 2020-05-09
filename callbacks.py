@@ -105,7 +105,7 @@ def refresh(app: dash.Dash):
         df10 = df[0]
         valuta = df[1]
         df_all = df[2]
-        valuta.to_csv(main_path_data + "\\balance.csv", index=False)
+
 
         # valuta = valuta.dropna(how='all')
         print("###############      4    #########################")
