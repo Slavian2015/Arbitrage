@@ -63,6 +63,7 @@ def create_callback_retrieve_value(app: dash.Dash, dash_db: DashDatabase):
         # return success message
         return f"Your value is {value}"
 
+
 def refresh(app: dash.Dash):
 
     ###############################    RESTART ALL FUNCTIONS     ########################################
@@ -71,59 +72,91 @@ def refresh(app: dash.Dash):
                    Output('table_all', 'data')],
                   [Input('interval', 'n_intervals')])
     def trigger_by_modify(n):
-        print ("###############  UPDATE   #########################")
-
+        if n is None:
+            raise PreventUpdate
         start11 = time.process_time()
-        df = VILKA.restart()
-        done = (time.process_time() - start11)
-        print ("\n", done, '\n')
+        print ("###############  UPDATE   #########################")
+        def start_vilka():
+            df = VILKA.restart()
+            return df
+        # def working():
+        #     params = {
+        #         'limit_bids': 1,
+        #         'limit_asks': 1,
+        #     }
+        #     start_bal = time.process_time()
+        #     res_alfa = requests.get('https://btc-alpha.com/api/v1/orderbook/BTC_USD/', params=params)
+        #     # print("###############      3    #########################")
+        #     res_hot = requests.get('https://api.hotbit.io/api/v1/server.time')
+        #     # print("###############      4    #########################")
+        #     res_live = requests.get("https://api.livecoin.net/exchange/all/order_book")
+        #     # print("###############      5    #########################")
+        #
+        #     alf = json.loads(res_alfa.text)
+        #     hott = json.loads(res_hot.text)
+        #     livev = json.loads(res_live.text)
+        #
+        #     return alf, hott, livev
+        print("###############      1     #########################")
+        df = start_vilka()
+        print("###############      2    #########################")
+        # working = working()
+        print("###############      3    #########################")
         df10 = df[0]
         valuta = df[1]
         df_all = df[2]
+        valuta.to_csv(main_path_data + "\\balance.csv", index=False)
 
-        valuta.to_csv(main_path_data + "\\balance.csv")
+        # valuta = valuta.dropna(how='all')
+        print("###############      4    #########################")
+        # done_vilka = (time.process_time() - start11)
+        # print ('done_vilka', "\n", done_vilka, '\n')
+        # alf = working[0]
+        # hott = working[1]
+        # livev = working[2]
 
-        params = {
-            'limit_bids': 1,
-            'limit_asks': 1,
-        }
+        print("###############      5    #########################")
+        # working_last = pd.read_csv(main_path_data + "\\working.csv")
+        # if alf['sell'][0]['timestamp'] > working_last.iloc[0]['alfa']:
+        #     activ_alfa = "ОК"
+        # else:
+        #     activ_alfa = "НЕ РАБОТАЕТ"
+        # if hott['result'] > working_last.iloc[0]['hot']:
+        #     activ_hot = "ОК"
+        # else:
+        #     activ_hot = "НЕ РАБОТАЕТ"
+        # if livev['BTC/USD']['timestamp'] > working_last.iloc[0]['live']:
+        #     activ_live = "ОК"
+        # else:
+        #     activ_live = "НЕ РАБОТАЕТ"
 
-        res_alfa = requests.get('https://btc-alpha.com/api/v1/orderbook/BTC_USD/', params=params)
-        res_hot = requests.get('https://api.hotbit.io/api/v1/server.time')
-        res_live = requests.get("https://api.livecoin.net/exchange/all/order_book")
+        activ_alfa = "OK"
+        activ_hot = "OK"
+        activ_live = "OK"
 
-        alf = json.loads(res_alfa.text)
-        hott = json.loads(res_hot.text)
-        livev = json.loads(res_live.text)
-        working_last = pd.read_csv(main_path_data + "\\working.csv")
+        print("###############      6    #########################")
 
-        if alf['sell'][0]['timestamp'] > working_last.iloc[0]['alfa']:
-            activ_alfa = "ОК"
-        else:
-            activ_alfa = "НЕ РАБОТАЕТ"
+        # dict_ = {'alfa': alf['sell'][0]['timestamp'], 'hot': hott['result'], 'live': livev['BTC/USD']['timestamp']}
+        # working = pd.DataFrame([dict_])
+        # working.to_csv(main_path_data + "\\working.csv", index=False)
 
-        if hott['result'] > working_last.iloc[0]['hot']:
-            activ_hot = "ОК"
-        else:
-            activ_hot = "НЕ РАБОТАЕТ"
+        print("###############      7    #########################")
 
-        if livev['BTC/USD']['timestamp'] > working_last.iloc[0]['live']:
-            activ_live = "ОК"
-        else:
-            activ_live = "НЕ РАБОТАЕТ"
+        # done_bal = (time.process_time() - start_bal)
+        # print ('done_bal', "\n", done_bal, '\n')
 
-        dict_ = {'alfa': alf['sell'][0]['timestamp'], 'hot': hott['result'], 'live': livev['BTC/USD']['timestamp']}
-        working = pd.DataFrame([dict_])
-        working.to_csv(main_path_data + "\\working.csv", index=False)
         now = dt.datetime.now()
 
-
+        print("###############      8    #########################")
+        done = (time.process_time() - start11)
+        #
+        # print ('ALL done', "\n", done, '\n')
         if df10.shape[0]>0:
             my_signal = html.Audio(src='data:audio/mpeg;base64,{}'.format(encoded_sound.decode()),
                           controls=False,
                           autoPlay=True,
                           )
-
+            print("###############      df10  BIGGER    #########################")
             if valuta.shape[0] > 0:
                 return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)), my_signal,
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
@@ -133,6 +166,8 @@ def refresh(app: dash.Dash):
                 return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),my_signal,
                         ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
         else:
+
+            print("###############      df10  SMALLER    #########################")
             if valuta.shape[0] > 0:
                 my_col = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y',
                           'volume_x',
@@ -285,9 +320,10 @@ def save_reg_data(app: dash.Dash):
          State({'type': 'profit', 'index': MATCH}, "value"),
          State({'type': 'order', 'index': MATCH}, "value"),
          State({'type': 'percent', 'index': MATCH}, "value"),
+         State({'type': 'avtomat', 'index': MATCH}, "value"),
          ]
     )
-    def display_output(value,id, val1, val2, val3, birga1, birga2, profit, order, percent):
+    def display_output(value,id, val1, val2, val3, birga1, birga2, profit, order, percent, avtomat):
         ctx = dash.callback_context
 
         if not ctx.triggered:
@@ -336,7 +372,7 @@ def save_reg_data(app: dash.Dash):
             a_file.close()
 
 
-
+            json_object[id['index']]['avtomat'] = avtomat
             json_object[id['index']]['option'] = "active"
             json_object[id['index']]['val1'] = val1
             json_object[id['index']]['val2'] = val2
@@ -519,9 +555,17 @@ def new_order(app: dash.Dash):
                 minA = regim[regims]["order"]
                 minB = minA * kurs0
                 if filter1.iloc[0][birga_1] > val1_vol and filter3.iloc[0][birga_2] > val3_vol:
+
+                    minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (
+                                float(val2_vol) * float(rate1))) * 100)
+                    minbeta = Context(prec=2, rounding=ROUND_UP).create_decimal(minbeta)
+                    minbeta = float(minbeta)
+
+
                     if val1 == 'USD' or val1 == 'USDT' or val2 == 'USD' or val2 == 'USDT':
                         if birga_1 == 'alfa' and birga_2 == 'live':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.alfa(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.live(val3, val4, rate2, val3_vol)
                                 return [
@@ -533,6 +577,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'live' and birga_2 == 'alfa':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
                                 return [
@@ -544,6 +589,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'alfa' and birga_2 == 'hot':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.alfa(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.hot(val3, val4, rate2, val3_vol)
                                 return [
@@ -555,8 +601,11 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'hot' and birga_2 == 'alfa':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                return [
+                                    "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                             else:
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -564,6 +613,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'hot' and birga_2 == 'live':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.live(val3, val4, rate2, val3_vol)
                                 return [
@@ -575,6 +625,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'live' and birga_2 == 'hot':
                             if val2 != 'USD' or val2 != 'USDT':
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.hot(val3, val4, rate2, val3_vol)
                                 return [
@@ -589,6 +640,7 @@ def new_order(app: dash.Dash):
                     elif val1 != 'USD' or val1 != 'USDT' or val2 != 'USD' or val2 != 'USDT':
                         if birga_1 == 'alfa' and birga_2 == 'live':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.alfa(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.live(val3, val4, rate2, val3_vol)
                                 return [
@@ -600,6 +652,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'live' and birga_2 == 'alfa':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
                                 return [
@@ -611,6 +664,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'alfa' and birga_2 == 'hot':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.alfa(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.hot(val3, val4, rate2, val3_vol)
                                 return [
@@ -622,8 +676,10 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'hot' and birga_2 == 'alfa':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                return ["{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                             else:
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -631,6 +687,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'hot' and birga_2 == 'live':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.live(val3, val4, rate2, val3_vol)
                                 return [
@@ -642,6 +699,7 @@ def new_order(app: dash.Dash):
                                     "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                         elif birga_1 == 'live' and birga_2 == 'hot':
                             if val2 != "BTC":
+                                val2_vol = val2_vol + (val2_vol * minbeta / 100)
                                 reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.hot(val3, val4, rate2, val3_vol)
                                 return [
@@ -721,6 +779,8 @@ def new_order(app: dash.Dash):
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -799,6 +859,8 @@ def new_order(app: dash.Dash):
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -898,6 +960,8 @@ def new_order(app: dash.Dash):
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -976,6 +1040,8 @@ def new_order(app: dash.Dash):
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1063,6 +1129,8 @@ def new_order(app: dash.Dash):
                             if val2 != 'USD' or val2 != 'USDT':
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                return [
+                                    "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                             else:
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1130,6 +1198,8 @@ def new_order(app: dash.Dash):
                             if val2 != "BTC":
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                return [
+                                    "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                             else:
                                 reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                 reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1167,7 +1237,7 @@ def new_order(app: dash.Dash):
                     minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (
                                 float(val2_vol) * float(rate1))) * 100)
                     minbeta = Context(prec=2, rounding=ROUND_UP).create_decimal(minbeta)
-
+                    minbeta = float(minbeta)
                     min1 = (float(filter1.iloc[0][birga_1]) - (float(filter1.iloc[0][birga_1]) * minbeta / 100)) / float(rate1)
                     min2 = float(filter3.iloc[0][birga_2])
 
@@ -1222,6 +1292,8 @@ def new_order(app: dash.Dash):
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1300,6 +1372,8 @@ def new_order(app: dash.Dash):
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1384,6 +1458,8 @@ def new_order(app: dash.Dash):
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)
@@ -1462,6 +1538,8 @@ def new_order(app: dash.Dash):
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
+                                    return [
+                                        "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2, reponse_b2)]
                                 else:
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val1_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val4_vol)

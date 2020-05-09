@@ -1,6 +1,5 @@
 import pandas as pd
 import json
-import numpy as np
 import Balance
 import os
 import datetime as dt
@@ -8,7 +7,8 @@ import Hot_parser
 import Live_parser
 import A_parser
 import requests
-
+import Avtomat
+import time
 
 
 ##################################   SHOW ALL ROWS & COLS   ####################################
@@ -38,7 +38,7 @@ else:
         pass
 
 def restart():
-
+    start11 = time.process_time()
     my_col = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y', 'volume_x',
               'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
 
@@ -190,6 +190,9 @@ def restart():
     dft = dft[['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y','valin_x','valin_y','valout_y','volume_x','volume_y','start','step','back','profit','perc']]
     dfs = dft
 
+
+    valuta = Balance.balance()
+
     def regim_filter():
         fids = pd.DataFrame()
 
@@ -201,6 +204,7 @@ def restart():
             pass
         else:
             regim = {1: {"option": "off",
+                         "avtomat": "off",
                          "val1": "",
                          "val2": "",
                          "val3": "",
@@ -220,10 +224,8 @@ def restart():
         dfs['volume_y'] = dfs['volume_y'].apply(pd.to_numeric, errors='coerce')
 
         for i in regim:
-
             if regim[i]["option"] == 'active':
                 if not regim[i]["per"]:
-
                     dfs["volume_x"] = dfs["volume_x"].astype(float)
                     dfs["volume_y"] = dfs["volume_y"].astype(float)
                     filterx = dfs[dfs["volume_x"] < dfs["volume_y"]].index
@@ -241,9 +243,17 @@ def restart():
                     dft = dft[dft['volume'] == dft['volume'].max()]
                     dft = dft[:1]
                     dft["regim"] = i
-                    fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-
-
+                    if regim[i]["avtomat"] == 'on':
+                        done = (time.process_time() - start11)
+                        dft["timer"] = done
+                        Avtomat.avtomat(dft, valuta, start11)
+                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                        pass
+                    else:
+                        done = (time.process_time() - start11)
+                        dft["timer"] = done
+                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                        pass
                 else:
                     dfs["volume_x"] = dfs["volume_x"].astype(float)
                     dfs["volume_y"] = dfs["volume_y"].astype(float)
@@ -263,31 +273,23 @@ def restart():
                     dft = dft[dft['volume'] == dft['volume'].max()]
                     dft = dft[:1]
                     dft["regim"] = i
-                    fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                    if regim[i]["avtomat"] == 'on':
+                        Avtomat.avtomat(dft, valuta, start11)
+                        done = (time.process_time() - start11)
+                        dft["timer"] = done
+                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                        pass
+                    else:
+                        done = (time.process_time() - start11)
+                        dft["timer"] = done
+                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                        pass
 
             else:
                 pass
         return fids
-    fdf = regim_filter()
 
-    if fdf.shape[0] > 0:
-        ad = open(main_path_data + "\\keys.json", "r")
-        js_object = json.load(ad)
-        ad.close()
-        input1 = js_object["4"]['key']
-        input2 = js_object["4"]['api']
-        if input1 != "Chat id" and input2 != "Token":
-            def bot_sendtext(bot_message):
-                ### Send text message
-                bot_token = input1
-                bot_chatID = input2
-                send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
-                requests.get(send_text)
-            bot_sendtext("ЕСТЬ ВИЛКА:  Режим № {}".format(fdf.iloc[0]['regim']))
-        else:
-            pass
-    else:
-        pass
+    fdf = regim_filter()
 
 
     df_all = pd.read_csv(main_path_data + "\\all_data.csv")
@@ -302,7 +304,7 @@ def restart():
         df_all['perc'] = df_all['perc'].map('{:,.3f}%'.format)
     else:
         pass
-    valuta = Balance.balance()
+
     return fdf, valuta, df_all
 
 

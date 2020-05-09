@@ -27,7 +27,7 @@ def balance():
     valuta.loc[:,"Summa"] = (valuta.loc[:,"alfa"] + valuta.loc[:,"live"] + valuta.loc[:,"hot"])
 
     valuta = valuta[['Valuta', 'alfa', 'live', 'hot', 'Summa']]
-
+    valuta = valuta[(valuta['Summa'] != 0)]
 
 
     return valuta

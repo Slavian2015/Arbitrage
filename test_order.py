@@ -1,7 +1,6 @@
 import dash_html_components as html
 import dash_design_kit as ddk
 import pandas as pd
-import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 
 ##################################   SHOW ALL ROWS & COLS   ####################################

@@ -75,6 +75,7 @@ def film_list(db):
             rows.append(html.Tr([
                 html.Td(style={'text-align': 'center'},
                         children=[ddk.Block(USD_fil['TIME'][ind]),
+                                  ddk.Block(USD_fil['timer'][ind]),
                                   ddk.Block(id={'type': "uregim",'index': ind},
                                             children=USD_fil['regim'][ind])]),
 
@@ -175,6 +176,7 @@ def film_list(db):
             step2 =(step / rate2)
             rows.append(html.Tr([
                 html.Td(style={'text-align': 'center'}, children=[ddk.Block(BTC_fil['TIME'][ind]),
+                                                                  ddk.Block(BTC_fil['timer'][ind]),
                                   ddk.Block(id={'type': "uregim",'index': ind},
                                             children=BTC_fil['regim'][ind])]),
                 html.Td([
@@ -262,7 +264,7 @@ def film_list(db):
             step2 = (rate2 * BTC_fil_main['volume'][ind])
             rows.append(html.Tr([
                 html.Td(style={'text-align': 'center'},
-                        children=[ddk.Block(BTC_fil_main['TIME'][ind]),
+                        children=[ddk.Block(BTC_fil_main['TIME'][ind]),ddk.Block(BTC_fil_main['timer'][ind]),
                                   ddk.Block(id={'type': "uregim",'index': ind},
                                             children=BTC_fil_main['regim'][ind])]),
 
@@ -362,7 +364,7 @@ def film_list(db):
             step = (BTC_fil_main2['volume'][ind] * rate1)
             step2 =(step / rate2)
             rows.append(html.Tr([
-                html.Td(style={'text-align': 'center'}, children=[ddk.Block(BTC_fil_main2['TIME'][ind]),
+                html.Td(style={'text-align': 'center'}, children=[ddk.Block(BTC_fil_main2['TIME'][ind]),ddk.Block(BTC_fil_main2['timer'][ind]),
                                   ddk.Block(id={'type': "uregim",'index': ind},
                                             children=BTC_fil_main2['regim'][ind])]),
                 html.Td([
