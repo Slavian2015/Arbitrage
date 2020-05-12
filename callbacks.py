@@ -1236,7 +1236,7 @@ def new_order(app: dash.Dash):
                     # minOrder2 = float(filter3.iloc[0][birga_2]) + (float(filter3.iloc[0][birga_2]) * myparam / 100)
                     minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (
                                 float(val2_vol) * float(rate1))) * 100)
-                    minbeta = Context(prec=2, rounding=ROUND_UP).create_decimal(minbeta)
+                    minbeta = Context(prec=3, rounding=ROUND_UP).create_decimal(minbeta)
                     minbeta = float(minbeta)
                     min1 = (float(filter1.iloc[0][birga_1]) - (float(filter1.iloc[0][birga_1]) * minbeta / 100)) / float(rate1)
                     min2 = float(filter3.iloc[0][birga_2])
@@ -1245,7 +1245,7 @@ def new_order(app: dash.Dash):
                     if min2 > min1:
                         val1_vol = filter1.iloc[0][birga_1]
                         val2_vol = min1
-                        val3_vol = min1 - (min1 * minbeta / 100)
+                        val3_vol = min1
                         val4_vol = min1 * kurs2
 
                         if val1 == 'USD' or val1 == 'USDT' or val2 == 'USD' or val2 == 'USDT':
@@ -1263,6 +1263,7 @@ def new_order(app: dash.Dash):
                                         "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2,
                                                                            reponse_b2)]
                             elif birga_1 == 'live' and birga_2 == 'alfa':
+                                val3_vol = min1 - (min1 * minbeta / 100)
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
@@ -1289,6 +1290,7 @@ def new_order(app: dash.Dash):
                                         "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2,
                                                                            reponse_b2)]
                             elif birga_1 == 'hot' and birga_2 == 'alfa':
+                                val3_vol = min1 - (min1 * minbeta / 100)
                                 if val2 != 'USD' or val2 != 'USDT':
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
@@ -1343,6 +1345,7 @@ def new_order(app: dash.Dash):
                                         "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2,
                                                                            reponse_b2)]
                             elif birga_1 == 'live' and birga_2 == 'alfa':
+                                val3_vol = min1 - (min1 * minbeta / 100)
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.live(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)
@@ -1369,6 +1372,7 @@ def new_order(app: dash.Dash):
                                         "{}  :  {}, '\n', {}  : {}".format(birga_1, reponse_b1, birga_2,
                                                                            reponse_b2)]
                             elif birga_1 == 'hot' and birga_2 == 'alfa':
+                                val3_vol = min1 - (min1 * minbeta / 100)
                                 if val2 != "BTC":
                                     reponse_b1 = Orders.hot(val1, val2, rate1, val2_vol)
                                     reponse_b2 = Orders.alfa(val3, val4, rate2, val3_vol)

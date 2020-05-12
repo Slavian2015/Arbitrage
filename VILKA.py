@@ -234,6 +234,7 @@ def restart():
                     filtery = dfs[dfs["volume_x"] > dfs["volume_y"]].index
                     dfs.loc[filtery, "volume"] = dfs.loc[filtery, "volume_y"]
                     dfs["volume"] = dfs["volume"].astype(float)
+
                     dft = dfs[(dfs["birga_x"] == regim[i]["birga1"]) &
                               (dfs["birga_y"] == regim[i]["birga2"]) &
                               (dfs["valin_x"] == regim[i]["val1"]) &
@@ -244,13 +245,53 @@ def restart():
                     dft = dft[dft['volume'] == dft['volume'].max()]
                     dft = dft[:1]
                     dft["regim"] = i
+
                     if regim[i]["avtomat"] == 'on':
-                        done = (time.process_time() - start11)
-                        dft["timer"] = done
-                        valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
-                        Avtomat.avtomat(dft, valuta_new, start11)
-                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        continue
+                        if fids.shape[0] > 0:
+                            done = (time.process_time() - start11)
+                            dft["timer"] = done
+
+                            fids_b1 = fids[(fids['birga_x'] == dft['birga_x']) & (fids['valin_x'] == dft['valin_x']) & (
+                                    fids['valin_y'] == dft['valin_y'])]
+                            fids_b11 = fids[
+                                (fids['birga_x'] == dft['birga_y']) & (fids['valin_x'] == dft['valin_y']) & (
+                                        fids['valin_y'] == dft['valout_y'])]
+                            fids_b2 = fids[(fids['birga_y'] == dft['birga_y']) & (fids['valin_x'] == dft['valin_x']) & (
+                                    fids['valin_y'] == dft['valin_y'])]
+                            fids_b22 = fids[
+                                (fids['birga_y'] == dft['birga_x']) & (fids['valin_y'] == dft['valin_x']) & (
+                                        fids['valout_y'] == dft['valin_y'])]
+
+                            if fids_b1.shape[0] > 0:
+                                add_vol1 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol1 = 0
+                            if fids_b11.shape[0] > 0:
+                                add_vol11 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol11 = 0
+                            if fids_b2.shape[0] > 0:
+                                add_vol2 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol2 = 0
+                            if fids_b22.shape[0] > 0:
+                                add_vol22 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol22 = 0
+
+                            dft['volume'] = float(dft['volume']) - add_vol1 - add_vol11 - add_vol2 - add_vol22
+
+                            valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                            Avtomat.avtomat(dft, valuta_new, start11)
+                            fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                            continue
+                        else:
+                            done = (time.process_time() - start11)
+                            dft["timer"] = done
+                            valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                            Avtomat.avtomat(dft, valuta_new, start11)
+                            fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                            continue
                     else:
                         done = (time.process_time() - start11)
                         dft["timer"] = done
@@ -276,20 +317,58 @@ def restart():
                     dft = dft[:1]
                     dft["regim"] = i
                     if regim[i]["avtomat"] == 'on':
-                        valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
-                        Avtomat.avtomat(dft, valuta_new, start11)
-                        done = (time.process_time() - start11)
-                        dft["timer"] = done
-                        fids = pd.concat([dft, fids], ignore_index=True, join='outer')
-                        continue
+                        if fids.shape[0] > 0:
+                            done = (time.process_time() - start11)
+                            dft["timer"] = done
+
+                            fids_b1 = fids[(fids['birga_x'] == dft['birga_x']) & (fids['valin_x'] == dft['valin_x']) & (
+                                    fids['valin_y'] == dft['valin_y'])]
+                            fids_b11 = fids[
+                                (fids['birga_x'] == dft['birga_y']) & (fids['valin_x'] == dft['valin_y']) & (
+                                        fids['valin_y'] == dft['valout_y'])]
+                            fids_b2 = fids[(fids['birga_y'] == dft['birga_y']) & (fids['valin_x'] == dft['valin_x']) & (
+                                    fids['valin_y'] == dft['valin_y'])]
+                            fids_b22 = fids[
+                                (fids['birga_y'] == dft['birga_x']) & (fids['valin_y'] == dft['valin_x']) & (
+                                        fids['valout_y'] == dft['valin_y'])]
+
+                            if fids_b1.shape[0] > 0:
+                                add_vol1 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol1 = 0
+                            if fids_b11.shape[0] > 0:
+                                add_vol11 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol11 = 0
+                            if fids_b2.shape[0] > 0:
+                                add_vol2 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol2 = 0
+                            if fids_b22.shape[0] > 0:
+                                add_vol22 = float(fids_b1.iloc[0]['volume'])
+                            else:
+                                add_vol22 = 0
+
+                            dft['volume'] = float(dft['volume']) - add_vol1 - add_vol11 - add_vol2 - add_vol22
+
+                            valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                            Avtomat.avtomat(dft, valuta_new, start11)
+                            fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                            continue
+                        else:
+                            done = (time.process_time() - start11)
+                            dft["timer"] = done
+                            valuta_new = pd.read_csv(main_path_data + "\\balance.csv")
+                            Avtomat.avtomat(dft, valuta_new, start11)
+                            fids = pd.concat([dft, fids], ignore_index=True, join='outer')
+                            continue
                     else:
                         done = (time.process_time() - start11)
                         dft["timer"] = done
                         fids = pd.concat([dft, fids], ignore_index=True, join='outer')
                         continue
-
             else:
-                pass
+                continue
         return fids
 
     fdf = regim_filter()
@@ -299,8 +378,8 @@ def restart():
     valuta = pd.read_csv(main_path_data + "\\balance.csv")
 
     if df_all.shape[0] > 0:
-        df_all['rates_y'] = df_all['rates_y'].map('{:,.2f}'.format)
-        df_all['rates_x'] = df_all['rates_x'].map('{:,.2f}'.format)
+        df_all['rates_y'] = df_all['rates_y'].map('{:,.6f}'.format)
+        df_all['rates_x'] = df_all['rates_x'].map('{:,.6f}'.format)
         df_all['start'] = df_all['start'].map('{:,.6f}'.format)
         df_all['step'] = df_all['step'].map('{:,.6f}'.format)
         df_all['back'] = df_all['back'].map('{:,.6f}'.format)
