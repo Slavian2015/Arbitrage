@@ -64,7 +64,7 @@ def loadRSS():
         while True:
             proxy = choice(proxy_candidates)
 
-            # print('NEW PROXY  :', proxy)
+            print('NEW PROXY  ALFA:', proxy)
             session.proxies = {urlparse(proxy).scheme: proxy}
             if not verify:
                 return
@@ -84,30 +84,38 @@ def loadRSS():
 
         while True:
             # try:
-                for i in urls:
-                    ua = UserAgent()
-                    session = requests.Session()
-                    session.headers = {'User-Agent': ua.random}
-                    set_proxy(session)
-                    try:
-                        for k, item in i.items():
-                            resp = session.get(item)
-                            v = resp.json()
-                            alpha.update(
-                                {k: {'sell':
-                                         [[float(v['sell'][0]["price"]), float(v['sell'][0]["amount"])],
-                                          [float(v['sell'][1]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]))],
-                                          [float(v['sell'][2]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]) + float(v['sell'][2]["amount"]))]],
-                                          'buy':
-                                          [[float(v['buy'][0]["price"]), float(v['buy'][0]["amount"])],
-                                          [float(v['buy'][1]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]))],
-                                          [float(v['buy'][2]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]) + float(v['buy'][2]["amount"]))]]}})
+            for i in urls:
+                ua = UserAgent()
+                session = requests.Session()
+                session.headers = {'User-Agent': ua.random}
+                set_proxy(session)
+                try:
+                    for k, item in i.items():
+                        resp = session.get(item)
+                        v = resp.json()
+                        print('NEW URL ALFA :', item)
+                        alpha.update(
+                            {k: {'sell':
+                                     [[float(v['sell'][0]["price"]), float(v['sell'][0]["amount"])],
+                                      [float(v['sell'][1]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]))],
+                                      [float(v['sell'][2]["price"]), (float(v['sell'][0]["amount"]) + float(v['sell'][1]["amount"]) + float(v['sell'][2]["amount"]))],
+                                      [float(v['sell'][3]["price"]), (float(v['sell'][0]["amount"]) + float(
+                                          v['sell'][1]["amount"]) + float(v['sell'][2]["amount"]) + float(v['sell'][3]["amount"]))],
+                                      ],
+                                      'buy':
+                                      [[float(v['buy'][0]["price"]), float(v['buy'][0]["amount"])],
+                                      [float(v['buy'][1]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]))],
+                                      [float(v['buy'][2]["price"]), (float(v['buy'][0]["amount"]) + float(v['buy'][1]["amount"]) + float(v['buy'][2]["amount"]))],
+                                       [float(v['buy'][3]["price"]), (float(v['buy'][0]["amount"]) + float(
+                                           v['buy'][1]["amount"]) + float(v['buy'][2]["amount"]) + float(v['buy'][3]["amount"]))],
 
-                    except Exception as e:
-                        session.headers = {'User-Agent': ua.random}
-                        set_proxy(session, verify=True)
-                        sleep(0.1)
-                break
+                                       ]}})
+
+                except Exception as e:
+                    session.headers = {'User-Agent': ua.random}
+                    set_proxy(session, verify=True)
+                    sleep(0.1)
+            break
             # except Exception as e:
             #     session.headers = {'User-Agent': ua.random}
             #     set_proxy(session, verify=True)

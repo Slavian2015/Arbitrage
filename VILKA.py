@@ -192,7 +192,7 @@ def restart():
 
 
     valuta_main = Balance.balance()
-    valuta_main.to_csv(main_path_data + "\\balance.csv", index=False)
+    # valuta_main.to_csv(main_path_data + "\\balance.csv", index=False)
 
     def regim_filter():
         fids = pd.DataFrame()

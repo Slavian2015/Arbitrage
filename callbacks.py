@@ -75,96 +75,47 @@ def refresh(app: dash.Dash):
         if n is None:
             raise PreventUpdate
         start11 = time.process_time()
-        print ("###############  UPDATE   #########################")
-        def start_vilka():
-            df = VILKA.restart()
-            return df
-        # def working():
-        #     params = {
-        #         'limit_bids': 1,
-        #         'limit_asks': 1,
-        #     }
-        #     start_bal = time.process_time()
-        #     res_alfa = requests.get('https://btc-alpha.com/api/v1/orderbook/BTC_USD/', params=params)
-        #     # print("###############      3    #########################")
-        #     res_hot = requests.get('https://api.hotbit.io/api/v1/server.time')
-        #     # print("###############      4    #########################")
-        #     res_live = requests.get("https://api.livecoin.net/exchange/all/order_book")
-        #     # print("###############      5    #########################")
-        #
-        #     alf = json.loads(res_alfa.text)
-        #     hott = json.loads(res_hot.text)
-        #     livev = json.loads(res_live.text)
-        #
-        #     return alf, hott, livev
-        print("###############      1     #########################")
-        df = start_vilka()
-        print("###############      2    #########################")
-        # working = working()
-        print("###############      3    #########################")
-        df10 = df[0]
-        valuta = df[1]
-        df_all = df[2]
+        df10 = pd.read_csv(main_path_data + "\\chains.csv")
+        valuta = pd.read_csv(main_path_data + "\\balance.csv")
+        df_all = pd.read_csv(main_path_data + "\\all_data.csv")
 
-
-        # valuta = valuta.dropna(how='all')
-        print("###############      4    #########################")
-        # done_vilka = (time.process_time() - start11)
-        # print ('done_vilka', "\n", done_vilka, '\n')
-        # alf = working[0]
-        # hott = working[1]
-        # livev = working[2]
-
-        print("###############      5    #########################")
-        # working_last = pd.read_csv(main_path_data + "\\working.csv")
-        # if alf['sell'][0]['timestamp'] > working_last.iloc[0]['alfa']:
-        #     activ_alfa = "ОК"
-        # else:
-        #     activ_alfa = "НЕ РАБОТАЕТ"
-        # if hott['result'] > working_last.iloc[0]['hot']:
-        #     activ_hot = "ОК"
-        # else:
-        #     activ_hot = "НЕ РАБОТАЕТ"
-        # if livev['BTC/USD']['timestamp'] > working_last.iloc[0]['live']:
-        #     activ_live = "ОК"
-        # else:
-        #     activ_live = "НЕ РАБОТАЕТ"
+        My_chains = New_chains.film_list(df10)
 
         activ_alfa = "OK"
         activ_hot = "OK"
         activ_live = "OK"
 
-        print("###############      6    #########################")
-
-        # dict_ = {'alfa': alf['sell'][0]['timestamp'], 'hot': hott['result'], 'live': livev['BTC/USD']['timestamp']}
-        # working = pd.DataFrame([dict_])
-        # working.to_csv(main_path_data + "\\working.csv", index=False)
-
-        print("###############      7    #########################")
-
-        # done_bal = (time.process_time() - start_bal)
-        # print ('done_bal', "\n", done_bal, '\n')
+        if df_all.shape[0] > 0:
+            df_all['rates_y'] = df_all['rates_y'].map('{:,.6f}'.format)
+            df_all['rates_x'] = df_all['rates_x'].map('{:,.6f}'.format)
+            df_all['start'] = df_all['start'].map('{:,.6f}'.format)
+            df_all['step'] = df_all['step'].map('{:,.6f}'.format)
+            df_all['back'] = df_all['back'].map('{:,.6f}'.format)
+            df_all['profit'] = df_all['profit'].map('{:,.6f}'.format)
+            df_all['perc'] = df_all['perc'].map('{:,.3f}%'.format)
+        else:
+            pass
 
         now = dt.datetime.now()
-
-        print("###############      8    #########################")
         done = (time.process_time() - start11)
-        #
-        # print ('ALL done', "\n", done, '\n')
-        if df10.shape[0]>0:
+        if df10.shape[0] > 0:
             my_signal = html.Audio(src='data:audio/mpeg;base64,{}'.format(encoded_sound.decode()),
-                          controls=False,
-                          autoPlay=True,
-                          )
+                                   controls=False,
+                                   autoPlay=True,
+                                   )
             print("###############      df10  BIGGER    #########################")
             if valuta.shape[0] > 0:
-                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)), my_signal,
-                        ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
+                return [ddk.Block(width=100,
+                                  children="{},   ___СКОРОСТЬ : {},  ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(
+                                      now.strftime("%H:%M:%S"), done, activ_alfa, activ_hot, activ_live)), my_signal,
+                        ddk.Block(width=100, children=My_chains)], valuta.to_dict('records'), df_all.to_dict('records')
             else:
                 my_col = ['Valuta', 'alfa', 'hot', 'live', 'Summa']
                 valuta = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),my_signal,
-                        ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
+                return [ddk.Block(width=100,
+                                  children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(
+                                      now.strftime("%H:%M:%S"), done, activ_alfa, activ_hot, activ_live)), my_signal,
+                        ddk.Block(width=100, children=My_chains)], valuta.to_dict('records'), df_all.to_dict('records')
         else:
 
             print("###############      df10  SMALLER    #########################")
@@ -173,17 +124,21 @@ def refresh(app: dash.Dash):
                           'volume_x',
                           'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
                 df10 = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),
-                        ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
+                return [ddk.Block(width=100,
+                                  children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(
+                                      now.strftime("%H:%M:%S"), done, activ_alfa, activ_hot, activ_live)),
+                        ddk.Block(width=100, children=My_chains)], valuta.to_dict('records'), df_all.to_dict('records')
             else:
                 my_col1 = ['TIME', 'birga_x', 'birga_y', 'rates_x', 'rates_y', 'valin_x', 'valin_y', 'valout_y',
-                          'volume_x',
-                          'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
+                           'volume_x',
+                           'volume_y', 'start', 'step', 'back', 'profit', 'perc', 'volume']
                 df10 = pd.DataFrame(columns=my_col1)
                 my_col = ['Valuta', 'alfa', 'hot', 'live', 'Summa']
                 valuta = pd.DataFrame(columns=my_col)
-                return [ddk.Block(width=100, children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(now.strftime("%H:%M:%S"), done,activ_alfa,activ_hot,activ_live)),
-                        ddk.Block(width=100, children=New_chains.film_list(df10))], valuta.to_dict('records'), df_all.to_dict('records')
+                return [ddk.Block(width=100,
+                                  children="{},   ___СКОРОСТЬ : {}, ____ALFA: {},  ___HOT:  {},  ___LIVE: {}".format(
+                                      now.strftime("%H:%M:%S"), done, activ_alfa, activ_hot, activ_live)),
+                        ddk.Block(width=100, children=My_chains)], valuta.to_dict('records'), df_all.to_dict('records')
 
 def commis(app: dash.Dash):
     ###############################    ADD Commis     ########################################
@@ -280,7 +235,7 @@ def creat_reg(app: dash.Dash):
 
                 if not param:
                     next_id = 1
-                    data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                    data[next_id] = {"option": "off", "avtomat": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
                                      "profit": "",
                                      "order": "", "per": ""}
                     f = open(main_path_data + "\\regim.json", "w")
@@ -289,7 +244,7 @@ def creat_reg(app: dash.Dash):
                     f.close()
                 else:
                     next_id = str(int(param[-1]) + 1)
-                    data[next_id] = {"option": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
+                    data[next_id] = {"option": "off", "avtomat": "off", "val1": "", "val2": "", "val3": "", "birga1": "", "birga2": "",
                                      "profit": "",
                                      "order": "", "per": ""}
                     f = open(main_path_data + "\\regim.json", "w")
@@ -552,7 +507,7 @@ def new_order(app: dash.Dash):
                 kurs = (float(rate1) / float(val1_vol))
                 kurs2 = (float(val3_vol) / float(val4_vol))
                 kurs0 = (float(val2_vol) / float(val1_vol))
-                minA = regim[regims]["order"]
+                minA = regim[str(regims)]["order"]
                 minB = minA * kurs0
 
                 minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (
@@ -1075,7 +1030,7 @@ def new_order(app: dash.Dash):
                 kurs = (float(val1_vol) * float(val2_vol))
                 kurs2 = (float(val4_vol) / float(val3_vol))
                 kurs0 = (float(val1_vol) / float(val2_vol))
-                minB = regim[regims]["order"]
+                minB = regim[str(regims)]["order"]
                 minA = minB * kurs0
 
                 minbeta = (((float(val1_vol) - float(val2_vol) * float(rate1)) / (

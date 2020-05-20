@@ -1014,7 +1014,7 @@ def serve_layout():
                                      storage_type='session',  # IMPORTANT! see docstring of dcc.Store
                                      data=session_id)
 
-    interval = dcc.Interval(id='interval', interval=9000, n_intervals=0)
+    interval = dcc.Interval(id='interval', interval=1000, n_intervals=0)
 
     valuta = pd.read_csv(main_path_data + "\\balance.csv")
 

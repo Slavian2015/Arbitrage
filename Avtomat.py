@@ -4,20 +4,18 @@ import os
 import datetime as dt
 from decimal import ROUND_UP,Context,ROUND_DOWN
 import requests
-
 main_path_data = os.path.abspath("./data")
 
 from urllib.parse import urlencode
 import hashlib
 import hmac
-from time import time
 
 
 
 ########################     ALFA    ##########################
 def alfa(val1, val2, price, amount):
     #####  direction  (buy  / sell)
-
+    from time import time
 
     if val1 == 'USD' or val1 == 'USDT' or val2 == 'USD' or val2 == 'USDT':
         if val1 == 'USD' or val1 == 'USDT':
@@ -434,8 +432,8 @@ def bot_sendtext(bot_message):
     return
 def all_csv(birga_1, birga_2, rate1, rate2, val1, val2, val4, val1_vol, val2_vol, val4_vol, reponse_b1, reponse_b2, start11):
     ###################    APPEND to CSV   all_data    #####################
-
-    if reponse_b1 != 'Not Enough Money' or reponse_b2 != 'Not Enough Money':
+    import time
+    if reponse_b1 != 'Not Enough Money' and reponse_b2 != 'Not Enough Money':
         done = (time.process_time() - start11)
         now = dt.datetime.now()
         df_all = pd.read_csv(main_path_data + "\\all_data.csv")
